@@ -4,7 +4,7 @@
  * @Author: bin
  * @Date: 2025-02-26 21:05:44
  * @LastEditors: bin
- * @LastEditTime: 2025-12-10 14:26:02
+ * @LastEditTime: 2026-01-23 10:25:13
  */
 import axios, {
     type AxiosInstance,
@@ -320,6 +320,7 @@ export default class AxiosRequest {
         console.error(error)
         // err_msg 字段需要根据src/api/types/public.d 的 PublicAnswer进行自定义，供请求失败提示使用
         return Promise.reject({ ...(error as AxiosError), data: { err_msg: errorMessage } })
+        // message.error(error.data.err_msg || '未知错误')
     }
 
     // 暴露实例
