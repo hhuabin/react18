@@ -2,10 +2,11 @@
  * @Author: bin
  * @Date: 2025-06-30 15:24:14
  * @LastEditors: bin
- * @LastEditTime: 2025-12-24 10:19:15
+ * @LastEditTime: 2026-02-10 14:37:27
  */
 /**
  * 参考源码：ant-design/components/message/useMessage.tsx
+ * notification/src/Notifications.tsx
  */
 import {
     useState, useRef, forwardRef, useImperativeHandle,
@@ -57,7 +58,7 @@ const mergeConfig = <T extends object>(...objList: Partial<T>[]): T => {
  * 3. 消息列表 configList 将会被 <NoticeList /> 监控
  */
 // eslint-disable-next-line react-refresh/only-export-components, prefer-arrow-callback
-const Notifications = forwardRef(function Notifications(props: ConfigOptions, ref: ForwardedRef<NotificationsRef>) {
+const RCNotifications = forwardRef(function RCNotifications(props: ConfigOptions, ref: ForwardedRef<NotificationsRef>) {
 
     const {
         getContainer = () => document.body,
@@ -223,8 +224,8 @@ export const useInternalMessage = (messageConfig?: ConfigOptions): readonly [Mes
 
     return [
         wrapAPI,
-        <Notifications ref={notificationsRef} {...messageConfig} />,
-    ]
+        <RCNotifications ref={notificationsRef} {...messageConfig} />,
+    ] as const
 }
 
 const useMessage = (messageConfig?: ConfigOptions) => {

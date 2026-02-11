@@ -1,15 +1,11 @@
 import { useEffect, useRef } from 'react'
 
-import useMergedState from '@/hooks/reactHooks/useMergedState'
-import { renderToContainer } from './utils/renderToContainer'
-import './Mask.less'
+import './style/Mask.less'
 
 /**
  * @description 主要实现功能：
  * 1. 蒙层进入、退场动画
  * 2. 默认禁止 body 滑动
- * 3. 默认开启路由变化自动关闭蒙层
- * 4. 蒙层默认挂载到 body，在退场后不会卸载元素
  */
 
 type MaskProps = {
@@ -18,11 +14,11 @@ type MaskProps = {
     duration?: number;                         // 动画时长，单位为 ms
     bgColor?: string;                          // 蒙层背景颜色
     disableBodyScroll?: boolean;               // 是否禁用 body 滚动，默认为 true
-    closeOnPopstate?: boolean;                 // 是否在 popstate 时关闭图片预览，默认值 true
-    closeOnClickOverlay?: boolean;             // 是否在点击遮罩层后关闭，默认值 true
+    // closeOnPopstate?: boolean;                 // 是否在 popstate 时关闭图片预览，默认值 true
+    // closeOnClickOverlay?: boolean;             // 是否在点击遮罩层后关闭，默认值 true
     className?: string;                        // 自定义类名
     style?: React.CSSProperties;               // 自定义样式
-    getContainer?: HTMLElement | (() => HTMLElement) | null;       // 指定挂载的节点
+    // getContainer?: HTMLElement | (() => HTMLElement) | null;       // 指定挂载的节点
     onMaskClick?: (value?: boolean) => void;   // 点击遮罩层时触发
     afterClose?: () => void;                   // 完全关闭后触发
     children?: React.ReactNode | (() => React.ReactNode);          // Mask children
@@ -36,61 +32,32 @@ const Mask: React.FC<MaskProps> = (props) => {
         duration,
         bgColor,
         disableBodyScroll = true,
-        closeOnPopstate = true,
-        closeOnClickOverlay = true,
         className = '',
         style = {},
-        getContainer,
         onMaskClick,
         afterClose,
         children = null,
     } = props
 
-    const [mergeVisible, setMergeVisible] = useMergedState(true, {
-        value: visible,
-        onChange: (value) => { onMaskClick?.(value) },
-    })
     const maskRef = useRef<HTMLDivElement | null>(null)
-
-    /* useEffect(() => {
-        if (mergeVisible && maskRef.current) {
-            maskRef.current.style.display = ''
-        }
-    }, [mergeVisible]) */
 
     /**
      * @description 禁止 body 滚动
      */
     useEffect(() => {
         const origin = document.body.style.overflow
-        if (disableBodyScroll && mergeVisible) {
+        if (disableBodyScroll && visible) {
             // 禁止 body 滚动
             document.body.style.overflow = 'hidden'
         }
         return () => {
             document.body.style.overflow = origin
         }
-    }, [disableBodyScroll, mergeVisible])
-
-    /**
-     * @description 监听 popstate 事件，返回时关闭弹窗
-     */
-    useEffect(() => {
-        const handlePopState = (event: PopStateEvent) => {
-            if (closeOnPopstate) {
-                setMergeVisible(false)
-            }
-        }
-
-        window.addEventListener('popstate', handlePopState)
-        return () => {
-            window.removeEventListener('popstate', handlePopState)
-        }
-    }, [closeOnPopstate, setMergeVisible])
+    }, [disableBodyScroll, visible])
 
     const handleMaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        if (event.target === event.currentTarget && closeOnClickOverlay) {
-            setMergeVisible(false)
+        if (event.target === event.currentTarget) {
+            onMaskClick?.()
         }
     }
 
@@ -108,9 +75,7 @@ const Mask: React.FC<MaskProps> = (props) => {
         if (event.propertyName !== 'opacity') return
 
         // 👇 只在「隐藏完成」时处理
-        if (!mergeVisible) {
-            // 容易造成再次展示没有过渡效果
-            // maskRef.current && (maskRef.current.style.display = 'none')
+        if (!visible) {
             afterClose?.()
         }
     }
@@ -125,11 +90,11 @@ const Mask: React.FC<MaskProps> = (props) => {
         }
     }
 
-    return renderToContainer(
+    return (
         <div
             ref={maskRef}
             role='button'
-            className={'bin-mask' + (className ? ' ' + className : '') + (mergeVisible ? '' : ' bin-mask-hidden')}
+            className={'bin-mask' + (className ? ' ' + className : '') + (visible ? '' : ' bin-mask-hidden')}
             style={{
                 ...style,
                 '--z-index': zIndex ? zIndex : (style as Record<string, string>)['--z-index'],
@@ -141,8 +106,7 @@ const Mask: React.FC<MaskProps> = (props) => {
             onTransitionEnd={(e) => onTransitionEnd(e)}
         >
             { typeof children === 'function' ? children() : children }
-        </div>,
-        getContainer,
+        </div>
     )
 }
 

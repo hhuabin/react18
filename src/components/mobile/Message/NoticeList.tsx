@@ -2,10 +2,10 @@
  * @Author: bin
  * @Date: 2025-09-12 15:28:38
  * @LastEditors: bin
- * @LastEditTime: 2025-11-13 11:15:03
+ * @LastEditTime: 2026-02-10 14:39:25
  */
 /**
- * 参考源码：notification/src/Notice.tsx
+ * 参考源码：notification/src/NoticeList.tsx
  */
 import { useState, useEffect, useContext } from 'react'
 
@@ -33,7 +33,7 @@ const DEFAULT_DURATION = 3000
 /**
  * @description 执行关闭动画；倒计时结束关闭消息
  */
-const Notice: React.FC<NoticeProps> = (props) => {
+const RCNotice: React.FC<NoticeProps> = (props) => {
 
     const { notice } = props
 
@@ -113,7 +113,7 @@ const Notice: React.FC<NoticeProps> = (props) => {
  * 当 messageConfigList 原来的消息被删除时，noticeList 的对应元素添加 { isClose: true }
  * 当 visible = false 时，<Notice /> 执行关闭动画，动画完成时，删除 noticeList 的对应元素
  */
-const NoticeList: React.FC<NoticeListProps> = (props) => {
+const RCNoticeList: React.FC<NoticeListProps> = (props) => {
 
     const { messageConfigList } = props
 
@@ -273,12 +273,12 @@ const NoticeList: React.FC<NoticeListProps> = (props) => {
             <div className={'bin-message' + (forbidClick ? ' bin-forbid-click' : '')}>
                 {
                     noticeList.map(notice => (
-                        <Notice
+                        <RCNotice
                             key={notice.key}
                             notice={notice}
                             onNoticeClose={onNoticeClose}
                             onNoticeDelete={deleteNotice}
-                        ></Notice>
+                        ></RCNotice>
                     ))
                 }
             </div>
@@ -288,4 +288,4 @@ const NoticeList: React.FC<NoticeListProps> = (props) => {
     }
 }
 
-export default NoticeList
+export default RCNoticeList

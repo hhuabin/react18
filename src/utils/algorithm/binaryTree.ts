@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-12-08 15:54:41
  * @LastEditors: bin
- * @LastEditTime: 2025-12-08 15:59:23
+ * @LastEditTime: 2026-02-09 15:20:36
  */
 // 定义节点结构
 class TreeNode<T> {
@@ -59,7 +59,9 @@ export const BFSCreateTreeNode = <T>(arr: (T | null)[]): TreeNode<T> | null => {
 
     return root
 }
-/* TreeNode {
+
+/* // 创建出来的二叉树实例
+TreeNode {
     value: 1,
     left: TreeNode {
         value: 2,
@@ -95,5 +97,59 @@ export const BFSTreeNode = <T>(root: TreeNode<T> | null): T[] => {
         if (currentNode.right) queue.push(currentNode.right)
     }
 
+    return result
+}
+
+/**
+ * @description 前序遍历二叉树
+ */
+export const preOrderTraversal = <T>(root: TreeNode<T> | null): T[] => {
+    const result: T[] = []
+
+    // 递归获取节点值
+    const traverse = (node: TreeNode<T> | null) => {
+        if (!node) return
+        result.push(node.value)
+        traverse(node.left)
+        traverse(node.right)
+    }
+
+    traverse(root)
+    return result
+}
+
+/**
+ * @description 中序遍历二叉树
+ */
+export const inOrderTraversal = <T>(root: TreeNode<T> | null): T[] => {
+    const result: T[] = []
+
+    // 递归获取节点值
+    const traverse = (node: TreeNode<T> | null) => {
+        if (!node) return
+        traverse(node.left)
+        result.push(node.value)
+        traverse(node.right)
+    }
+
+    traverse(root)
+    return result
+}
+
+/**
+ * @description 后序遍历二叉树
+ */
+export const postOrderTraversal = <T>(root: TreeNode<T> | null): T[] => {
+    const result: T[] = []
+
+    // 递归获取节点值
+    const traverse = (node: TreeNode<T> | null) => {
+        if (!node) return
+        traverse(node.left)
+        traverse(node.right)
+        result.push(node.value)
+    }
+
+    traverse(root)
     return result
 }

@@ -1,3 +1,9 @@
+/**
+ * @Author: bin
+ * @Date: 2025-06-30 16:24:04
+ * @LastEditors: bin
+ * @LastEditTime: 2026-02-11 16:13:38
+ */
 import { StrictMode } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 

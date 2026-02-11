@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-04-16 14:12:24
  * @LastEditors: bin
- * @LastEditTime: 2026-01-21 09:44:04
+ * @LastEditTime: 2026-02-10 10:18:27
  */
 import { redirect, Navigate } from 'react-router-dom'
 
@@ -58,6 +58,17 @@ export const routes: RouteConfig[] = [
         },
         meta: {
             title: 'fileupload',
+            auth: false,
+        },
+    },
+    {
+        path: '/modal',
+        lazy: async () => {
+            const { default: Modal } = await import('@/pages/Modal/Modal')
+            return { Component: Modal }
+        },
+        meta: {
+            title: 'Modal',
             auth: false,
         },
     },

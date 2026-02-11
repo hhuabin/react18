@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-06-04 11:42:38
  * @LastEditors: bin
- * @LastEditTime: 2026-01-21 09:18:28
+ * @LastEditTime: 2026-02-10 10:18:56
  */
 import { useNavigate } from 'react-router-dom'
 
@@ -14,6 +14,10 @@ const routeList = [
     {
         label: '文件上传',
         path: '/fileupload',
+    },
+    {
+        label: 'Modal',
+        path: '/modal',
     },
     {
         label: 'fetch流式数据获取',
@@ -46,6 +50,7 @@ const Introduce: React.FC = () => {
     const goToMobileGuide = () => {
         if (!isMobile) {
             Modal.warning({
+                closable: true,
                 title: '提示',
                 content: (<div>若您处于PC端<br/>请从<span className='text-[#1677ff]'>浏览器开发者工具</span>进入移动端<br/>以完善体验</div>),
                 onOk: () => {
