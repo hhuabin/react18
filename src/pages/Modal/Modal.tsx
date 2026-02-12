@@ -31,15 +31,19 @@ const ModalComponents: React.FC = () => {
 
             <AntdModal
                 open={antdVisiable}
+                onOk={() => { console.log('ok') }}
                 onCancel={() => setAntdVisiable(false)}
             ></AntdModal>
 
             <Modal
-                visible={visible}
+                open={visible}
                 mask={true}
                 title='提示'
                 closable={true}
-                onClose={() => setVisible(false)}
+                onConfirm={() => {
+                    console.log('confirm')
+                }}
+                onCancel={() => setVisible(false)}
             >
                 我是一个弹窗
             </Modal>

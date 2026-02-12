@@ -7,10 +7,12 @@ type ContentProps = {
     onClose?: () => void;                      // Dialog 关闭时触发
     afterClose?: () => void;                   // 动画执行完成，关闭函数，可以执行卸载逻辑
 
-    title?: React.ReactNode | (() => React.ReactNode);           // RCDialog title
-    children?: React.ReactNode | (() => React.ReactNode);        // RCDialog content
-    footer?: React.ReactNode | (() => React.ReactNode);          // RCDialog footer
+    title?: React.ReactNode;                   // RCDialog title
+    children?: React.ReactNode;                // RCDialog content
+    footer?: React.ReactNode;                  // RCDialog footer
 
+    width?: string | number;                   // 宽度
+    height?: string | number;                  // 高度
     className?: string;                        // 自定义类名
     style?: React.CSSProperties;               // 自定义样式
 }
@@ -20,7 +22,7 @@ const Content: React.FC<ContentProps> = (props) => {
     const {
         visible = false,
         closable = false,
-        duration = 300,
+        duration,
         onClose,
         afterClose,
 
@@ -28,6 +30,8 @@ const Content: React.FC<ContentProps> = (props) => {
         children,
         footer,
 
+        width,
+        height,
         className,
         style = {},
     } = props
@@ -50,19 +54,19 @@ const Content: React.FC<ContentProps> = (props) => {
 
     const headerNode = title ? (
         <div className='bin-dialog-header'>
-            { typeof title === 'function' ? title() : title }
+            { title }
         </div>
     ) : null
 
     const content = (
         <div className='bin-dialog-body'>
-            { typeof children === 'function' ? children() : children }
+            { children }
         </div>
     )
 
     const footerNode = footer ? (
         <div className='bin-dialog-footer'>
-            { typeof footer === 'function' ? footer() : footer }
+            { footer }
         </div>
     ) : null
 
@@ -87,6 +91,8 @@ const Content: React.FC<ContentProps> = (props) => {
             onTransitionEnd={(e) => onTransitionEnd(e)}
             style={{
                 ...style,
+                width: width ? width : style['width'],
+                height: height ? height : style['height'],
                 '--animation-duration': duration ? duration + 'ms' : (style as Record<string, string>)['--animation-duration'],
             } as React.CSSProperties }
         >
