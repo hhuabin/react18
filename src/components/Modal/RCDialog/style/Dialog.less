@@ -19,12 +19,13 @@
             max-width: calc(100vw - 32px);
             padding: 0;
             padding-bottom: 24px;
-            margin: 0 auto;
+            margin: 8px auto;
             pointer-events: all;
-            opacity: 1;
             transform: scale(1);
-            transition-property: opacity, transform;
+            opacity: 1;
+            transition-property: transform, opacity;
             transition-duration: var(--animation-duration);
+            transition-timing-function: ease;
 
             .bin-dialog-content {
                 position: relative;

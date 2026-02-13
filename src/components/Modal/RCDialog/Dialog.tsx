@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-10 10:13:42
  * @LastEditors: bin
- * @LastEditTime: 2026-02-12 11:24:01
+ * @LastEditTime: 2026-02-13 15:59:23
  */
 import { renderToContainer } from './utils/renderToContainer'
 
@@ -15,7 +15,7 @@ type RCDialogProps = {
     closable?: boolean;                        // 是否显示关闭按钮，默认为 false
     mask?: boolean;                            // 是否显示 Mask 蒙层，默认为 false
     maskClosable?: boolean;                    // 点击蒙层是否允许关闭
-    destroyOnClose?: boolean;                  // 关闭时销毁 Dialog
+    destroyOnHidden?: boolean;                 // 关闭时销毁 Dialog
     duration?: number;                         // 动画时长，单位为 ms
     zIndex?: number;                           // 蒙层层级
     onClose?: () => void;                      // Dialog 关闭时触发
@@ -25,6 +25,7 @@ type RCDialogProps = {
     children?: React.ReactNode;                // RCDialog content
     footer?: React.ReactNode;                  // RCDialog footer
 
+    mousePosition?: {x:number, y:number};      // 设置当前鼠标的pageX和pageY
     width?: string | number;                   // 宽度
     height?: string | number;                  // 高度
     className?: string;                        // 自定义类名
@@ -40,7 +41,7 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
         closable = false,
         mask = true,
         maskClosable = false,
-        destroyOnClose = false,
+        destroyOnHidden = true,
         duration,
         zIndex = 999,
         onClose,
@@ -50,6 +51,7 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
         children,
         footer,
 
+        mousePosition,
         width,
         height,
         className,
@@ -93,6 +95,7 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
                     children={children}
                     footer={footer}
 
+                    mousePosition={mousePosition}
                     width={width}
                     height={height}
                     className={className}

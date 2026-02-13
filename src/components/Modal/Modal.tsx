@@ -21,6 +21,7 @@ const Modal: React.FC<ModalProps> = (props) => {
 
         onConfirm,
         onCancel,
+        afterClose,
 
         width = 520,
         height,
@@ -36,7 +37,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         onCancel?.()
     }
 
-    const dialogFooter = footer
+    const dialogFooter = footer !== undefined
         ?   footer
         :   (<Footer
                 confirmText={confirmText}
@@ -62,6 +63,7 @@ const Modal: React.FC<ModalProps> = (props) => {
             maskClosable={maskClosable}
 
             onClose={onCancel}
+            afterClose={afterClose}
 
             className={className}
             style={style}

@@ -1,5 +1,7 @@
 import { useRef } from 'react'
 
+import useRect, { getRect } from '@/hooks/domHooks/useRect'
+
 type ContentProps = {
     visible?: boolean;                         // 是否显示 Dialog，默认为 false
     closable?: boolean;                        // 是否显示关闭按钮
@@ -11,6 +13,7 @@ type ContentProps = {
     children?: React.ReactNode;                // RCDialog content
     footer?: React.ReactNode;                  // RCDialog footer
 
+    mousePosition?: {x:number, y:number};      // 设置当前鼠标的pageX和pageY
     width?: string | number;                   // 宽度
     height?: string | number;                  // 高度
     className?: string;                        // 自定义类名
@@ -30,6 +33,7 @@ const Content: React.FC<ContentProps> = (props) => {
         children,
         footer,
 
+        mousePosition = { x: 1, y: 1 },
         width,
         height,
         className,
@@ -37,6 +41,17 @@ const Content: React.FC<ContentProps> = (props) => {
     } = props
 
     const dialogRef = useRef<HTMLDivElement | null>(null)
+
+    // 获取元素尺寸
+    /* const dialogRect = getRect(dialogRef.current!)
+
+    const getTransformOrigin = (): string => {
+        console.log('dialogRect', dialogRect)
+        const transformOrigin = mousePosition && (mousePosition.x || mousePosition.y)
+            ? `${mousePosition.x - dialogRect.left}px ${mousePosition.y - dialogRect.top}px`
+            : ''
+        return transformOrigin
+    } */
 
     /**
      * @description 过渡结束触发
@@ -94,6 +109,7 @@ const Content: React.FC<ContentProps> = (props) => {
                 width: width ? width : style['width'],
                 height: height ? height : style['height'],
                 '--animation-duration': duration ? duration + 'ms' : (style as Record<string, string>)['--animation-duration'],
+                // transformOrigin: getTransformOrigin(),
             } as React.CSSProperties }
         >
             <div className='bin-dialog-content'>

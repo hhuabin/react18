@@ -20,6 +20,7 @@ export interface ModalProps {
 
     onConfirm?: () => void;
     onCancel?: () => void;
+    afterClose?: () => void;
 
     width?: string | number;                   // 宽度
     height?: string | number;                  // 高度
@@ -32,7 +33,7 @@ export interface ModalProps {
 export interface ModalFuncProps extends ModalProps {
     content?: React.ReactNode;
     afterClose?: () => void;
-    type?: 'info' | 'success' | 'error' | 'warn' | 'warning' | 'confirm'
+    type?: 'info' | 'success' | 'error' | 'warning' | 'confirm'
 }
 
 // info 等方法的函数

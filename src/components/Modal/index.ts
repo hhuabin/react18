@@ -11,7 +11,7 @@ type ModalType =
 
 const Modal = OriginModal as ModalType
 
-const StaticType: NonNullable<ModalFuncProps['type']>[] = ['info', 'success', 'error', 'warn', 'warning', 'confirm'] as const
+const StaticType: NonNullable<ModalFuncProps['type']>[] = ['info', 'success', 'error', 'warning', 'confirm'] as const
 // 定义静态方法
 StaticType.forEach((type) => {
     Modal[type] = (props) => confirm({
