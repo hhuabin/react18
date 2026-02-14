@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 import useRect, { getRect } from '@/hooks/domHooks/useRect'
 
@@ -13,7 +13,7 @@ type ContentProps = {
     children?: React.ReactNode;                // RCDialog content
     footer?: React.ReactNode;                  // RCDialog footer
 
-    mousePosition?: {x:number, y:number};      // 设置当前鼠标的pageX和pageY
+    mousePosition?: {x: number, y: number} | null;     // 设置当前鼠标的pageX和pageY
     width?: string | number;                   // 宽度
     height?: string | number;                  // 高度
     className?: string;                        // 自定义类名
@@ -33,7 +33,7 @@ const Content: React.FC<ContentProps> = (props) => {
         children,
         footer,
 
-        mousePosition = { x: 1, y: 1 },
+        mousePosition,
         width,
         height,
         className,
@@ -41,17 +41,28 @@ const Content: React.FC<ContentProps> = (props) => {
     } = props
 
     const dialogRef = useRef<HTMLDivElement | null>(null)
+    // 记忆鼠标位置
+    const [transformOrigin, setTransformOrigin] = useState('')
 
     // 获取元素尺寸
-    /* const dialogRect = getRect(dialogRef.current!)
+    const dialogRect = getRect(dialogRef.current!)
 
-    const getTransformOrigin = (): string => {
-        console.log('dialogRect', dialogRect)
+    useEffect(() => {
+        if (visible) {
+            changeTransformOrigin()
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [visible])
+
+    // 什么时候去改变 transformOrigin 的值？在
+    // transfrom 会改变元素的 getBoundingClientRect 返回值，所以解决该bug需要使用样式状态机
+    const changeTransformOrigin = () => {
         const transformOrigin = mousePosition && (mousePosition.x || mousePosition.y)
             ? `${mousePosition.x - dialogRect.left}px ${mousePosition.y - dialogRect.top}px`
             : ''
-        return transformOrigin
-    } */
+
+        setTransformOrigin(transformOrigin)
+    }
 
     /**
      * @description 过渡结束触发
@@ -108,7 +119,7 @@ const Content: React.FC<ContentProps> = (props) => {
                 width: width ? width : style['width'],
                 height: height ? height : style['height'],
                 '--animation-duration': duration ? duration + 'ms' : (style as Record<string, string>)['--animation-duration'],
-                // transformOrigin: getTransformOrigin(),
+                transformOrigin,
             } as React.CSSProperties }
         >
             <div className='bin-dialog-content'>

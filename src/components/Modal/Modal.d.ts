@@ -1,3 +1,7 @@
+
+// 记忆鼠标点击的位置
+export type MousePosition = { x: number; y: number } | null
+
 /**
  * @description Modal 组件的 props 参数，需要支持 Modal 的组件调用
  */
@@ -22,6 +26,7 @@ export interface ModalProps {
     onCancel?: () => void;
     afterClose?: () => void;
 
+    mousePosition?: MousePosition;
     width?: string | number;                   // 宽度
     height?: string | number;                  // 高度
     className?: string;                        // 自定义类名
@@ -44,4 +49,3 @@ export type ModalFunc = (props: ModalFuncProps) => {
 
 // 定义 info 等方法
 export type ModalStaticFunctions = Record<NonNullable<ModalFuncProps['type']>, ModalFunc>
-

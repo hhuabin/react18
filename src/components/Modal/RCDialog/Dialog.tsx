@@ -25,7 +25,7 @@ type RCDialogProps = {
     children?: React.ReactNode;                // RCDialog content
     footer?: React.ReactNode;                  // RCDialog footer
 
-    mousePosition?: {x:number, y:number};      // 设置当前鼠标的pageX和pageY
+    mousePosition?: {x: number, y: number} | null;     // 设置当前鼠标的pageX和pageY
     width?: string | number;                   // 宽度
     height?: string | number;                  // 高度
     className?: string;                        // 自定义类名

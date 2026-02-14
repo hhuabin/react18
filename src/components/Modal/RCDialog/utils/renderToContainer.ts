@@ -2,14 +2,14 @@
  * @Author: bin
  * @Date: 2026-01-04 10:36:21
  * @LastEditors: bin
- * @LastEditTime: 2026-01-14 10:51:11
+ * @LastEditTime: 2026-02-14 10:59:07
  */
 import { type ReactElement, type ReactPortal } from 'react'
 import { createPortal } from 'react-dom'
 
 // SSR、RSC 安全
 export const isBrowser = typeof window !== 'undefined'
-export const canUseDom = !!(
+export const canUseDom = () => !!(
     typeof window !== 'undefined' &&
     typeof document !== 'undefined' &&
     window.document &&
@@ -52,7 +52,7 @@ export const renderToContainer = (
     node: ReactElement,
     getContainer?: HTMLElement | (() => HTMLElement) | null,
 ): ReactElement | ReactPortal => {
-    if (!canUseDom) return node
+    if (!canUseDom()) return node
 
     const container = resolveContainer(getContainer)
 

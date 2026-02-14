@@ -1,6 +1,28 @@
 import Dialog from './RCDialog/Dialog'
-import type { ModalProps } from './Modal.d'
+import type { ModalProps, MousePosition } from './Modal.d'
 import Footer from './Footer/Footer'
+import { canUseDocElement } from './utils/canUseDom'
+
+let mousePosition: MousePosition
+
+const getClickPosition = (e: MouseEvent) => {
+    mousePosition = {
+        x: e.pageX,
+        y: e.pageY,
+    }
+
+    // 100ms 内发生过点击事件，则从点击位置动画展示
+    // 否则直接 zoom 展示
+    // 这样可以兼容非点击方式展开
+    setTimeout(() => {
+        mousePosition = null
+    }, 100)
+}
+
+// 只有点击事件支持从鼠标位置动画展开
+if (canUseDocElement()) {
+    document.documentElement.addEventListener('click', getClickPosition, true)
+}
 
 const Modal: React.FC<ModalProps> = (props) => {
 
@@ -23,6 +45,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         onCancel,
         afterClose,
 
+        mousePosition: customizeMousePosition,
         width = 520,
         height,
         className = '',
@@ -65,6 +88,7 @@ const Modal: React.FC<ModalProps> = (props) => {
             onClose={onCancel}
             afterClose={afterClose}
 
+            mousePosition={customizeMousePosition ?? mousePosition}
             className={className}
             style={style}
             getContainer={getContainer}

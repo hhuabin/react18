@@ -5,7 +5,7 @@ import type { PickerOption, PickerColumn } from './Picker.d'
 
 // SSR、RSC 安全
 export const isBrowser = typeof window !== 'undefined'
-export const canUseDom = !!(
+export const canUseDom = () => !!(
     typeof window !== 'undefined' &&
     typeof document !== 'undefined' &&
     window.document &&
@@ -48,7 +48,7 @@ export const renderToContainer = (
     node: ReactElement,
     getContainer?: HTMLElement | (() => HTMLElement) | null,
 ): ReactElement | ReactPortal => {
-    if (!canUseDom) return node
+    if (!canUseDom()) return node
 
     const container = resolveContainer(getContainer)
 
