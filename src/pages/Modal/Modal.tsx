@@ -20,6 +20,7 @@ const ModalComponents: React.FC = () => {
                             text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.info({
                             closable: true,
+                            title: '提示',
                             content: 'This is an info message',
                         })}
                     >

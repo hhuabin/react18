@@ -59,7 +59,6 @@ const Content: React.FC<ContentProps> = (props) => {
      */
     const onTransitionEnd = (event: React.TransitionEvent<HTMLDivElement>) => {
         if (event.target !== event.currentTarget) return
-        if (event.propertyName !== 'opacity') return
 
         // 👇 只在「隐藏完成」时处理
         if (!visible) {

@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-12 09:10:25
  * @LastEditors: bin
- * @LastEditTime: 2026-02-13 17:25:07
+ * @LastEditTime: 2026-02-14 10:29:07
  */
 import { unstableSetRender, type UnmountType } from './utils/reactRender'
 
@@ -10,6 +10,7 @@ import Modal from './Modal'
 import type { ModalFuncProps } from './Modal.d'
 import Footer from './Footer/Footer'
 import './ConfirmContent.less'
+import renderIcon from './utils/renderIcon'
 
 let dialogZIndex = 1000
 
@@ -18,8 +19,6 @@ let dialogZIndex = 1000
  * 如果以后有 useModal hooks，该对象需要和 useModal 结合使用
  */
 export const destroyFns: Array<() => void> = []
-
-import { useEffect } from 'react'
 
 // 代替 Dialog 的 content 渲染内容
 // eslint-disable-next-line react-refresh/only-export-components
@@ -52,10 +51,14 @@ const ConfirmContent: React.FC<ModalFuncProps & {close: () => void}> = (props) =
     return (
         <div className='bin-dialog-confirm-body-wrapper'>
             <div className='bin-dialog-confirm-body-has-title'>
-                <div className='bin-dialog-anticon-info-circle'></div>
+                <div className='bin-dialog-anticon-info-circle'>
+                    {renderIcon(type)}
+                </div>
 
                 <div className='bin-dialog-confirm-paragraph'>
-                    <div className='bin-dialog-confirm-title'>{title}</div>
+                    {
+                        title && (<div className='bin-dialog-confirm-title'>{title}</div>)
+                    }
                     <div className='bin-dialog-confirm-content'>{content}</div>
                 </div>
             </div>
@@ -65,6 +68,7 @@ const ConfirmContent: React.FC<ModalFuncProps & {close: () => void}> = (props) =
                     confirmType={confirmType}
                     cancelText={cancelText}
                     cancelColor={cancelColor}
+                    showCancelButton={type === 'confirm'}
                     onConfirm={handleConfirm}
                     onCancel={handleCancel}
                 ></Footer>

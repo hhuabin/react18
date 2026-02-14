@@ -2,12 +2,13 @@
  * @Author: bin
  * @Date: 2026-02-12 09:41:46
  * @LastEditors: bin
- * @LastEditTime: 2026-02-12 11:17:58
+ * @LastEditTime: 2026-02-14 10:38:02
  */
 import type { ModalProps } from '../Modal.d'
 import './Footer.less'
 
 type FooterProps = {
+    showCancelButton?: boolean;
     onConfirm?: () => void;
     onCancel?: () => void;
 } & Pick<ModalProps, 'confirmText' | 'confirmType' | 'cancelText' | 'cancelColor'>
@@ -19,6 +20,7 @@ const Footer: React.FC<FooterProps> = (props) => {
         confirmType = 'primary',
         cancelText = '取消',
         cancelColor = '',
+        showCancelButton = true,
 
         onConfirm,
         onCancel,
@@ -33,13 +35,17 @@ const Footer: React.FC<FooterProps> = (props) => {
 
     return (
         <>
-            <button
-                type='button'
-                className='bin-modal-cancel-btn'
-                onClick={() => handleCancel()}
-            >
-                <span style={{ color: cancelColor }}>{ cancelText }</span>
-            </button>
+            {
+                showCancelButton && (
+                    <button
+                        type='button'
+                        className='bin-modal-cancel-btn'
+                        onClick={() => handleCancel()}
+                    >
+                        <span style={{ color: cancelColor }}>{ cancelText }</span>
+                    </button>
+                )
+            }
 
             <button
                 type='button'
