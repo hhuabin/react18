@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-08-13 11:52:25
  * @LastEditors: bin
- * @LastEditTime: 2026-01-20 10:43:28
+ * @LastEditTime: 2026-02-26 15:37:06
  */
 /* eslint-disable max-lines */
 import {
@@ -35,6 +35,7 @@ type UploadProps = {
     className?: string;                         // 自定义类名
     style?: React.CSSProperties;                // 自定义样式
     children?: React.ReactNode;                 // 自定义 Upload children
+    isImageUrl?: (file: UploadFile) => boolean; // 用户自定义判断该文件是否为图片的方法
     onChange?: (info: UploadFile[]) => void;    // 上传文件改变时的回调，上传每个阶段都会触发该事件
     beforeRead?: UploaderBeforeRead;            // 读取文件之前的回调，返回 false | resolve(false) | reject()，则停止上传；切忌不可返回 pedding 状态的 Promise
     afterRead?: UploaderAfterRead;              // 文件读取完成后的回调
@@ -60,6 +61,7 @@ export default forwardRef(function Upload(props: UploadProps, ref: ForwardedRef<
         className = '',
         style = {},
         children,
+        isImageUrl = isImageFile,
         beforeRead,
         afterRead,
         beforeDelete,
@@ -390,6 +392,10 @@ export default forwardRef(function Upload(props: UploadProps, ref: ForwardedRef<
             const result = await beforeDelete?.(uploadFile, index)
             if (result === false) return
             const _fileList = mergedFileList.filter(item => item.key !== uploadFile.key)
+            // 释放临时 url
+            if (uploadFile.tempUrl?.startsWith('blob:')) {
+                URL.revokeObjectURL(uploadFile.tempUrl)
+            }
             controller.current.get(uploadFile.key!)?.abort()
             changeMergeFile(_fileList)
         } catch (error) {
@@ -418,7 +424,7 @@ export default forwardRef(function Upload(props: UploadProps, ref: ForwardedRef<
                     style={style}
                 >
                     {
-                        isImageFile(uploadFile) ? (
+                        isImageUrl(uploadFile) ? (
                             // 图片显示
                             <div className='bin-upload-image'>
                                 <img src={uploadFile.url || uploadFile.tempUrl} className={'bin-upload-image-' + fit} />

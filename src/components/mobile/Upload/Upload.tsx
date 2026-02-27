@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-08-13 11:52:25
  * @LastEditors: bin
- * @LastEditTime: 2026-01-21 16:31:01
+ * @LastEditTime: 2026-02-26 15:02:04
  */
 /* eslint-disable max-lines */
 import {
@@ -65,6 +65,7 @@ export default forwardRef(function Upload(props: UploadProps, ref: ForwardedRef<
         className = '',
         style = {},
         children,
+        isImageUrl = isImageFile,
         beforeRead,
         afterRead,
         beforeDelete,
@@ -391,7 +392,7 @@ export default forwardRef(function Upload(props: UploadProps, ref: ForwardedRef<
         const previewImagesSrc: string[] = []
         let defaultIndex = 0
         mergedFileList.forEach((item, index) => {
-            const isImage = props.isImageUrl ? props.isImageUrl(item) : isImageFile(item)
+            const isImage = isImageUrl(item)
             // 过滤掉非图片的 src，避免图片显示错误
             if (isImage) {
                 previewImagesSrc.push((item.url || item.tempUrl) as string)
@@ -415,6 +416,10 @@ export default forwardRef(function Upload(props: UploadProps, ref: ForwardedRef<
             const result = await beforeDelete?.(uploadFile, index)
             if (result === false) return
             const _fileList = mergedFileList.filter(item => item.key !== uploadFile.key)
+            // 释放临时 url
+            if (uploadFile.tempUrl?.startsWith('blob:')) {
+                URL.revokeObjectURL(uploadFile.tempUrl)
+            }
             controller.current.get(uploadFile.key!)?.abort()
             changeMergeFile(_fileList)
         } catch (error) {
@@ -443,7 +448,7 @@ export default forwardRef(function Upload(props: UploadProps, ref: ForwardedRef<
                     style={style}
                 >
                     {
-                        (props.isImageUrl ? props.isImageUrl(uploadFile) : isImageFile(uploadFile)) ? (
+                        isImageUrl(uploadFile) ? (
                             // 图片显示、图片预览
                             <div className='bin-upload-image' onClick={() => previewImage(uploadFile, index)}>
                                 <Image src={uploadFile.url || uploadFile.tempUrl || ''} fit={fit} ></Image>

@@ -38,7 +38,7 @@ export const readFileContent = (file: File) => {
             }
             reader.readAsDataURL(file)
         } else {
-            // 非图片类型，创建临时 URL
+            // 非图片类型，创建临时 URL，需要使用URL.revokeObjectURL(url)去释放
             resolve(URL.createObjectURL(file))
         }
     })
