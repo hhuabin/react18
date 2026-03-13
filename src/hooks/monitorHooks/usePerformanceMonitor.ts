@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2024-12-11 17:27:34
  * @LastEditors: bin
- * @LastEditTime: 2025-10-29 09:50:37
+ * @LastEditTime: 2026-03-13 17:57:18
  */
 import { useEffect } from 'react'
 
@@ -20,6 +20,7 @@ export default function usePerformanceMonitor() {
             const entries = entryList.getEntries()
             const lcpEntry = entries[entries.length - 1]
             console.log('LCP: ', lcpEntry.startTime, 'ms')
+            console.groupEnd()                           // 结束分组打印
         })
         observer.observe({ type: 'largest-contentful-paint', buffered: true })
 
@@ -28,6 +29,7 @@ export default function usePerformanceMonitor() {
             const paintEntries = performance.getEntriesByType('paint')
             const navigationEntries = performance.getEntriesByType('navigation')
 
+            console.group('performance-monitor')         // 分组打印
             const navTiming = navigationEntries[0] as PerformanceNavigationTiming      // 通常只有一个导航条目
             console.log(navTiming)
             console.log('DOMContentLoaded: ', navTiming.domContentLoadedEventEnd - navTiming.startTime, 'ms')

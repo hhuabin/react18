@@ -106,6 +106,17 @@ export const routes: RouteConfig[] = [
         },
     },
     {
+        path: '/cssmotion',
+        lazy: async () => {
+            const { default: CSSMotion } = await import('@/pages/CSSMotion/CSSMotion')
+            return { Component: CSSMotion }
+        },
+        meta: {
+            title: 'cssmotion',
+            auth: false,
+        },
+    },
+    {
         path: '/svgicon',
         lazy: async () => {
             const { default: SvgIcon } = await import('@/pages/SvgIcon/SvgIcon')

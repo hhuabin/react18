@@ -1,0 +1,113 @@
+// 通用 box 样式
+.box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
+    height: 60px;
+    border-radius: 8px;
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.noTransition {
+    // 用于 deadline demo，故意不写 transition
+}
+
+.slideWrap {
+    overflow: hidden;
+}
+
+.slideBox {
+    padding: 12px 16px;
+    background: var(--color-fill-secondary, #f5f5f5);
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 28px;
+}
+
+// ─── fade ────────────────────────────────────────────────────
+
+:global {
+    .demo-fade-appear,
+    .demo-fade-enter {
+        opacity: 0;
+    }
+
+    .demo-fade-appear-active,
+    .demo-fade-enter-active {
+        opacity: 1;
+        transition: opacity 300ms ease;
+    }
+
+    .demo-fade-leave {
+        opacity: 1;
+    }
+
+    .demo-fade-leave-active {
+        opacity: 0;
+        transition: opacity 300ms ease;
+    }
+
+    // ─── slide ───────────────────────────────────────────────
+
+    .demo-slide-appear,
+    .demo-slide-enter {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+    }
+
+    .demo-slide-appear-active,
+    .demo-slide-enter-active {
+        max-height: 200px;
+        opacity: 1;
+        overflow: hidden;
+        transition: max-height 350ms ease, opacity 350ms ease;
+    }
+
+    .demo-slide-leave {
+        max-height: 200px;
+        opacity: 1;
+        overflow: hidden;
+    }
+
+    .demo-slide-leave-active {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 350ms ease, opacity 350ms ease;
+    }
+
+    // ─── zoom ────────────────────────────────────────────────
+
+    .demo-zoom-appear,
+    .demo-zoom-enter {
+        transform: scale(0.5);
+        opacity: 0;
+        transform-origin: left center;
+    }
+
+    .demo-zoom-appear-active,
+    .demo-zoom-enter-active {
+        transform: scale(1);
+        opacity: 1;
+        transform-origin: left center;
+        transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 300ms ease;
+    }
+
+    .demo-zoom-leave {
+        transform: scale(1);
+        opacity: 1;
+        transform-origin: left center;
+    }
+
+    .demo-zoom-leave-active {
+        transform: scale(0.5);
+        opacity: 0;
+        transform-origin: left center;
+        transition: transform 300ms ease, opacity 300ms ease;
+    }
+}

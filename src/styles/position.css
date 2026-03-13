@@ -1,0 +1,97 @@
+/* ================= position ================= */
+
+.static {
+    position: static;
+}
+.relative {
+    position: relative;
+}
+.absolute {
+    position: absolute;
+}
+.fixed {
+    position: fixed;
+}
+.sticky {
+    position: sticky;
+}
+
+/* ================= 定位方向 ================= */
+
+.top-0 {
+    top: 0;
+}
+.right-0 {
+    right: 0;
+}
+.bottom-0 {
+    bottom: 0;
+}
+.left-0 {
+    left: 0;
+}
+
+/* ================= 绝对填充 ================= */
+
+.inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+/* ================= 绝对水平居中 ================= */
+
+.abs-center-x {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ================= 绝对垂直居中 ================= */
+
+.abs-center-y {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ================= 绝对水平+垂直居中 ================= */
+
+.abs-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* ================= fixed居中 ================= */
+
+.fixed-center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* ================= 覆盖父元素 ================= */
+
+.fill-parent {
+    position: absolute;
+    inset: 0;
+}
+
+/* ================= z-index ================= */
+
+.z-1 {
+    z-index: 1;
+}
+.z-10 {
+    z-index: 10;
+}
+.z-100 {
+    z-index: 100;
+}
+.z-1000 {
+    z-index: 1000;
+}

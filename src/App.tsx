@@ -2,19 +2,25 @@
  * @Author: bin
  * @Date: 2024-05-29 22:12:59
  * @LastEditors: bin
- * @LastEditTime: 2026-01-06 15:25:48
+ * @LastEditTime: 2026-03-13 16:44:58
  */
 import { useLayoutEffect, useEffect } from 'react'
 
 import AppRouter from '@/router'
 
-import useAuth from '@/hooks/authHooks/useAuth'
-import usePerformanceMonitor from '@/hooks/utilsHooks/usePerformanceMonitor'
-import useProjectAutoUpdate from '@/hooks/domHooks/useProjectAutoUpdate'
+import {
+    useGlobalErrorMonitor,
+    usePerformanceMonitor,
+    useProjectAutoUpdate,
+    useAuth,
+} from '@/hooks'
+
 import './App.less'
 
 const App: React.FC = () => {
 
+    // 全局错误监控
+    useGlobalErrorMonitor()
     // 性能监控
     usePerformanceMonitor()
     // 项目自动检测更新

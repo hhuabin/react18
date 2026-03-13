@@ -1,0 +1,1 @@
+rc-motion 本质是一个状态机，根据组件生命周期（appear / enter / leave），在不同阶段给 DOM 添加不同的 CSS class，通过 CSS transition/animation 触发动画，并监听 transitionend/animationend 事件判断动画结束

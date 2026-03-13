@@ -13,13 +13,7 @@ const Home: React.FC = () => {
                 <Header></Header>
 
                 <div className='w-full h-full'>
-                    {
-                        navigation.state === 'loading' ? (
-                            <Loading />
-                        ) : (
-                            <Outlet />
-                        )
-                    }
+                    <Outlet />
                 </div>
             </div>
         </>

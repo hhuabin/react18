@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-09-16 14:40:22
  * @LastEditors: bin
- * @LastEditTime: 2026-01-16 08:30:43
+ * @LastEditTime: 2026-03-12 10:38:39
  */
 /* eslint-disable max-lines */
 import React, {
@@ -621,8 +621,13 @@ const Swiper = forwardRef(function Swiper(props: SwiperProps, ref: ForwardedRef<
         const animation = trackRef.current?.animate(keyframes, options)
         animation?.finished.then(() => {
             // moving.current = false
-            // 循环时，首尾无感切换。动画结束触发
-            if (loop && swiperItemCount > 1) {
+            /**
+             * 当处于循环状态下，实现首尾无感切换。
+             * 1. 滚动到第一个时，判断当前偏移量是否小于等于最小偏移量，如果是则触发动画，并切换到最后一个
+             * 2. 滚动到最后一个时，判断当前偏移量是否大于等于最大偏移量，如果是则触動动画，并切换到第一个
+             * 3. 正在动画中，则不处理
+             */
+            if (loop && swiperItemCount > 1 && !moving.current) {
                 if (direction === 'horizontal') {
                     // stableTrackState().offset <= getMinOffset() 严格计算，必须小于等于它
                     if (stableTrackState().active === 0 && stableTrackState().offset <= getMinOffset()) {
