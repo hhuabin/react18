@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * @Author: bin
  * @Date: 2026-03-13 16:06:36
  * @LastEditors: bin
- * @LastEditTime: 2026-03-13 17:42:40
+ * @LastEditTime: 2026-03-13 18:20:38
  */
 // 初始化判断
 let initialized = false
@@ -16,8 +17,6 @@ const canUseDom = () => !!(
     window.document.createElement
 )
 
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const report = (type: string, data: any) => {
     console.warn('[useGlobalErrorMonitor]', type, data)
 
@@ -28,12 +27,38 @@ const report = (type: string, data: any) => {
     // })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isChunkLoadError = (error: any) => {
-    const msg = error?.message || ''
-    return msg.includes('Loading chunk') || msg.includes('ChunkLoadError')
+const isChunkLoadError = (error: unknown): boolean => {
+    if (!error) return false
+    if (error instanceof Error) {
+        return error.message.includes('Loading chunk') || error.message.includes('ChunkLoadError')
+    }
+    if (typeof error === 'object' && 'message' in error && typeof (error as any).message === 'string') {
+        return (error as any).message.includes('Loading chunk') || (error as any).message.includes('ChunkLoadError')
+    }
+    return false
 }
 
+// 判断资源加载错误，并返回资源信息
+const isResourceError = (event: ErrorEvent) => {
+    // 资源加载错误：target 指向 link/script/img 等}
+    const target = event.target as HTMLElement | null
+    if (!target) return false
+
+    const resourceTags = ['SCRIPT', 'LINK', 'IMG']
+    if (resourceTags.includes(target.tagName)) {
+        return {
+            tagName: target.tagName,
+            src: (target as any).src || (target as any).href || '',
+        }
+    }
+
+    return false
+}
+
+/**
+ * @description 错误处理
+ * 还未完善，如需使用，请适当完善内容
+ */
 export default function useGlobalErrorMonitor() {
     if (!isBrowser) return
     if (initialized) return
@@ -43,19 +68,25 @@ export default function useGlobalErrorMonitor() {
      * @description JS Error / 资源加载错误
      */
     const errorHandler = (event: ErrorEvent) => {
-        // JS 运行时错误
-        report('js_error', {
-            message: event.message,
-            filename: event.filename,
-            lineno: event.lineno,
-            colno: event.colno,
-        })
+        // console.log('event', event)
+        const resource = isResourceError(event)
 
         if (isChunkLoadError(event.error || event)) {
-            console.warn('chunk load failed, reload')
+            // JS 运行时错误
+            report('JS_ERROR', {
+                message: event.message,
+                filename: event.filename,
+                lineno: event.lineno,
+                colno: event.colno,
+                error: event.error,
+            })
+
             if (window.confirm('加载失败，是否重新加载？')) {
                 window.location.reload()
             }
+        } else if (resource) {
+            // 资源加载错误
+            report('RESOURCE_ERROR', resource)
         }
     }
 
@@ -63,7 +94,7 @@ export default function useGlobalErrorMonitor() {
      * @description Promise 未捕获异常（Promise没有catch）
      */
     const rejectionHandler = (event: PromiseRejectionEvent) => {
-        report('promise_error', {
+        report('PROMISE_ERROR', {
             reason: event.reason,
         })
 
