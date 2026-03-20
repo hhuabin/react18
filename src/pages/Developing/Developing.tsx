@@ -6,12 +6,18 @@
  */
 import { useEffect } from 'react'
 
+import { message, Button } from 'antd'
+
 const Developing: React.FC = () => {
 
+    useEffect(() => {
+        message.info('Developing')
+    }, [])
+
     return (
-        <div>
+        <Button onClick={() => message.info('Developing')}>
             Developing
-        </div>
+        </Button>
     )
 }
 

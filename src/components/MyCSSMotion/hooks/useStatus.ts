@@ -2,14 +2,14 @@ import { useState, useRef, useLayoutEffect, useEffect, useCallback } from 'react
 import {
     STATUS_NONE, STATUS_APPEAR, STATUS_ENTER, STATUS_LEAVE,
     STEP_PREPARE, STEP_START, STEP_ACTIVE,
-    type MotionStatus, type MotionStep, type CSSMotionProps, type MotionEvent,
+    type MotionStatus, type MotionStep as StepStatus, type CSSMotionProps, type MotionEvent,
 } from '../interface'
 import useStepQueue, { DoStep, SkipStep, isActive } from './useStepQueue'
 import useDomMotionEvents from './useDomMotionEvents'
 
 type UseStatusReturn = [
     status: MotionStatus,
-    step: MotionStep,
+    step: StepStatus,
     style: React.CSSProperties | null,
     mergedVisible: boolean,
 ]
@@ -49,7 +49,7 @@ export default function useStatus(
     // status ref 供事件回调同步读取（避免闭包旧值）
     const statusRef = useRef<MotionStatus>(STATUS_NONE)
     const [status, _setStatus] = useState<MotionStatus>(STATUS_NONE)
-    function setStatus(next: MotionStatus) {
+    const setStatus = (next: MotionStatus) => {
         statusRef.current = next
         _setStatus(next)
     }
@@ -62,7 +62,7 @@ export default function useStatus(
     const activeRef = useRef(false)
 
     // ─── 工具：根据当前 status 获取各步骤的用户回调 ──────────
-    function getEventHandlers(targetStatus: MotionStatus) {
+    const getEventHandlers = (targetStatus: MotionStatus) => {
         switch (targetStatus) {
             case STATUS_APPEAR:
                 return { [STEP_PREPARE]: onAppearPrepare, [STEP_START]: onAppearStart, [STEP_ACTIVE]: onAppearActive }
@@ -76,7 +76,7 @@ export default function useStatus(
     }
 
     // ─── 动画结束处理 ─────────────────────────────────────────
-    function updateMotionEndStatus() {
+    const updateMotionEndStatus = () => {
         setStatus(STATUS_NONE)
         setStyle(null)
     }

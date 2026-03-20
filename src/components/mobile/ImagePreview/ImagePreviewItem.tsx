@@ -3,7 +3,7 @@
  * @Author: bin
  * @Date: 2025-12-25 19:45:38
  * @LastEditors: bin
- * @LastEditTime: 2026-01-16 14:56:50
+ * @LastEditTime: 2026-03-20 15:28:49
  */
 // https://picsum.photos/800/1600 随机生成图片尺寸的网址
 import {
@@ -396,8 +396,10 @@ export default forwardRef(function ImagePreviewItem(props: ImagePreviewItemProps
                         }, TAP_TIME)
                     }
                 } else {
-                    // 如果禁止双击缩放，即刻执行单击事件
-                    isTapAndCheckClose(event)
+                    // 如果禁止双击缩放，下一帧执行单击事件，防止点击穿透
+                    window.requestAnimationFrame(() => {
+                        isTapAndCheckClose(event)
+                    })
                 }
             }
 
