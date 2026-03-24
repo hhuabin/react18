@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-03-16 14:49:24
  * @LastEditors: bin
- * @LastEditTime: 2026-03-19 11:00:50
+ * @LastEditTime: 2026-03-24 11:23:17
  */
 import { useState, useEffect } from 'react'
 
@@ -89,7 +89,8 @@ export default function useStepQueue(
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [status, step])
 
-    useEffect(() => cancelNextFrame, [cancelNextFrame])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => cancelNextFrame, [])
 
     return [startStep, step]
 }

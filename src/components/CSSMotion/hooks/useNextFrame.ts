@@ -2,9 +2,11 @@
  * @Author: bin
  * @Date: 2026-03-16 15:03:38
  * @LastEditors: bin
- * @LastEditTime: 2026-03-16 16:05:27
+ * @LastEditTime: 2026-03-24 11:21:39
  */
 import { useRef, useEffect } from 'react'
+
+import raf from '../util/raf'
 
 /**
  * @description 封装 requestAnimationFrame，实现“延迟 N 帧执行 + 可取消”的调度工具
@@ -19,14 +21,14 @@ import { useRef, useEffect } from 'react'
         if (isCanceled()) return       // 当 nextFrameId 被取消时，不执行逻辑
     })
  */
-export default function useNextFrame() {
-    const nextFrameIdRef = useRef<number | null>(null)
+export default function useNextFrame(): [
+(callback: (info: { isCanceled: () => boolean }) => void) => void,
+() => void,
+] {
+    const nextFrameRef = useRef<number | null>(null)
 
     const cancelNextFrame = () => {
-        if (nextFrameIdRef.current !== null) {
-            cancelAnimationFrame(nextFrameIdRef.current)
-            nextFrameIdRef.current = null
-        }
+        raf.cancel(nextFrameRef.current!)
     }
 
     const nextFrame = (
@@ -35,16 +37,16 @@ export default function useNextFrame() {
     ) => {
         cancelNextFrame()
 
-        const nextFrameId = requestAnimationFrame(() => {
+        // 此处的 ref 可以使用 window.requestAnimationFrame 替代，但是考虑到 ssr 兼容，此处使用引入的 raf
+        const nextFrameId = raf(() => {
             if (delay <= 1) {
-                callback({
-                    isCanceled: () => nextFrameId !== nextFrameIdRef.current,
-                })
+                callback({ isCanceled: () => nextFrameId !== nextFrameRef.current })
             } else {
                 nextFrame(callback, delay - 1)
             }
         })
-        nextFrameIdRef.current = nextFrameId
+
+        nextFrameRef.current = nextFrameId
     }
 
     useEffect(() => cancelNextFrame, [])

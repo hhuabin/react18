@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-28 09:50:08
  * @LastEditors: bin
- * @LastEditTime: 2026-03-20 16:49:24
+ * @LastEditTime: 2026-03-24 15:46:39
  */
 /* eslint-disable max-lines */
 import { useState, useRef, useEffect, useMemo } from 'react'
@@ -36,14 +36,14 @@ import { useInternalLayoutEffect } from '@/hooks/reactHooks/useLayoutUpdateEffec
  * PREPARED：动画结束，清理 style 和 status
  * @param supportMotion 表示当前环境和配置是否真的支持动画；如 浏览器不支持 transition/animation
  * @param visible 当前目标可见状态；`false -> true` 可能触发 `appear` 或 `enter`；`true -> false` 可能触发 `leave`
- * @param getElement 返回真实 DOM 元素；绑定 / 解绑 transitionend 和 animationend 事件
+ * @param getElement 返回真实 DOM 元素；绑定 / 解绑 transitionend 和 animationend 事件，如果无法获取则无法绑定事件，导致 updateMotionEndStatus() 无法执行，动画一直处于 active 状态
  * @param { CSSMotionProps } props 里面包含各种 motion 配置和回调
  * @returns [status, step, style, visible, styleReady] 当前渲染所需要的信息 [状态, 步骤, 当前步骤计算出来的 style, 可见性, 样式是否准备好]
  */
 export default function useStatus(
     supportMotion: boolean,
     visible: boolean,
-    getElement: () => HTMLElement,
+    getElement: () => HTMLElement | null,
     props: CSSMotionProps,
 ): [
     status: () => MotionStatus,

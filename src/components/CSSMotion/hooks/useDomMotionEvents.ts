@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-03-19 09:56:17
  * @LastEditors: bin
- * @LastEditTime: 2026-03-19 10:31:22
+ * @LastEditTime: 2026-03-24 14:52:07
  */
 import { useRef, useEffect } from 'react'
 
@@ -14,7 +14,7 @@ import type { MotionEvent } from '../interface'
  */
 export default function useDomMotionEvents(
     onInternalMotionEnd: (event: MotionEvent) => void,
-): [(element: HTMLElement) => void, (element: HTMLElement) => void] {
+): [(element: HTMLElement | null) => void, (element: HTMLElement | null) => void] {
     const cacheElementRef = useRef<HTMLElement | null>(null)
 
     // Remove events

@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-28 09:51:31
  * @LastEditors: bin
- * @LastEditTime: 2026-03-19 17:08:25
+ * @LastEditTime: 2026-03-24 14:52:39
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -46,18 +46,18 @@ export type MotionEvent = (TransitionEvent | AnimationEvent) & {
 }
 
 export type MotionPrepareEventHandler = (
-    element: HTMLElement,
+    element: HTMLElement | null,
 ) => Promise<any> | void;
 
 /** 动画阶段回调，可返回样式对象或 Promise（异步 prepare） */
 export type MotionEventHandler = (
-    element: HTMLElement,            // 触发动画的元素
+    element: HTMLElement | null,            // 触发动画的元素
     event: MotionEvent | null,       // 触发动画的 DOM 事件
 ) => React.CSSProperties | void
 
 /** 动画结束回调，返回 false 可阻止结束 */
 export type MotionEndEventHandler = (
-    element: HTMLElement,
+    element: HTMLElement | null,
     event: MotionEvent,
 ) => boolean | void
 

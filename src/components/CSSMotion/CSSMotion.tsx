@@ -2,33 +2,29 @@
  * @Author: bin
  * @Date: 2026-02-28 09:33:53
  * @LastEditors: bin
- * @LastEditTime: 2026-03-20 18:05:47
+ * @LastEditTime: 2026-03-24 15:46:51
  */
 // https://github.com/react-component/motion.git
 import {
     useRef, useMemo,
     forwardRef, useImperativeHandle, type ForwardedRef,
+    isValidElement, cloneElement,
 } from 'react'
 
 import useStatus from './hooks/useStatus'
 import { isActive } from './hooks/useStepQueue'
 
-import {
-    STATUS_NONE, STEP_PREPARE, STEP_START,
-    type CSSMotionProps, type MotionStatus,
-    type MotionPrepareEventHandler, type MotionEventHandler, type MotionEndEventHandler,
-} from './interface'
+import { STATUS_NONE, STEP_PREPARE, STEP_START, type CSSMotionProps } from './interface'
+import { getTransitionName, supportTransition } from './util/motion'
 import { clsx } from './util/clsx'
 import { getDOM } from './util/findDOMNode'
-import { getTransitionName, supportTransition } from './util/motion'
+import { supportRef, getNodeRef } from './util/ref'
 
 export interface CSSMotionRef {
     nativeElement: HTMLElement;
     inMotion: () => boolean;          // 当前是否处于动画阶段
     enableMotion: () => boolean;      // 当前是否允许动画
 }
-
-// CSSMotion 负责“渲染的 className / style”
 
 // 检测是否支持 transition
 const isSupportTransition = (props: CSSMotionProps) => (!!props.motionName && supportTransition)
@@ -48,6 +44,7 @@ export default forwardRef(function CSSMotion(props: CSSMotionProps, ref: Forward
 
     const supportMotion = isSupportTransition(props)
 
+    // 挂载到子元素身上获取真实 DOM
     const nodeRef = useRef<HTMLDivElement | null>(null)
 
     const getDomElement = () => getDOM(nodeRef.current) as HTMLElement
@@ -155,21 +152,25 @@ export default forwardRef(function CSSMotion(props: CSSMotionProps, ref: Forward
             )
         }
 
-        /* if (
-            React.isValidElement(motionChildren) &&
-            supportRef(motionChildren)
-        ) {
+        /**
+         * @description 作用：给 motionChildren 挂上 ref 在 CSSMotion/动画组件，让动画逻辑能直接操作真实 DOM
+         * ** 这里很重要，无论什么情况，CSSMotion 都必须拿到子元素的真实 DOM 节点，才能驱动动画 **；对于拿不到真实 DOM 的，CSSMotion 将会卡在 active 状态
+         * 是 React 元素 并且 支持 ref 进入该条件
+         * 只有 DOM 元素、class 组件、forwardRef 才支持 ref
+         * 如 <div /> 可以进入该 if，但是 memo 组件（不能挂 ref）不可以进入，memo 组件可以搭配 forwardRef 进入该 if
+         */
+        if (isValidElement(motionChildren) && supportRef(motionChildren)) {
+            // 获取子元素 ref，若有，则该 ref 须是 nodeRef；若没有则给子元素就加上 nodeRef
             const originNodeRef = getNodeRef(motionChildren)
 
             if (!originNodeRef) {
-                motionChildren = React.cloneElement(
+                // cloneElement 本身只是把 ref “传给组件”，组件内部不挂，ref 无法落地
+                motionChildren = cloneElement(
                     motionChildren as React.ReactElement,
-                    {
-                        ref: nodeRef,
-                    },
+                    { ref: nodeRef },
                 )
             }
-        } */
+        }
 
         return motionChildren
     // eslint-disable-next-line react-hooks/exhaustive-deps

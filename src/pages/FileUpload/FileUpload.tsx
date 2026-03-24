@@ -131,7 +131,7 @@ const FileUpload: React.FC = () => {
 
             <div className='w-full my-4'>
                 <input
-                    className='block w-[800px] h-9 px-2 border border-[#ebedf0] outline-0 bg-[#fff]'
+                    className='block w-full max-w-[600px] px-2 h-9 border border-[#ebedf0] outline-none bg-[#fff]'
                     type='text'
                     placeholder='请输入你的上传地址'
                     value={uploadUrl}
