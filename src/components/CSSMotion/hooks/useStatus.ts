@@ -304,6 +304,7 @@ export default function useStatus(
         if (asyncVisible !== undefined && currentStatus === STATUS_NONE) {
             // 跳过首次 invisible 的无意义通知
             if (firstMountChangeRef.current || asyncVisible) {
+                // 当 asyncVisible === false 表示动画完全关闭，可以触发完全关闭事件
                 onVisibleChanged?.(asyncVisible)
             }
             firstMountChangeRef.current = true

@@ -28,6 +28,11 @@ type MaskProps = {
     children?: React.ReactNode | (() => React.ReactNode);          // Mask children
 }
 
+/**
+ * @deprecated
+ * @description 与 mobile 的 Mask 功能一致
+ * 该版本没有使用 CSSMotion 。留着做纪念吧，有需要直接使用 mobile 里的 Mask 即可
+ */
 const Mask: React.FC<MaskProps> = (props) => {
 
     const {

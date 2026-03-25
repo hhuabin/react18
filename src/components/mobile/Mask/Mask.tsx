@@ -1,7 +1,10 @@
-import { useEffect, useRef } from 'react'
+import { useRef, useEffect } from 'react'
 
 import useMergedState from '@/hooks/reactHooks/useMergedState'
 import { renderToContainer } from './utils/renderToContainer'
+
+import CSSMotion from '@/components/CSSMotion'
+import { clsx } from './utils/clsx'
 import './Mask.less'
 
 /**
@@ -48,15 +51,20 @@ const Mask: React.FC<MaskProps> = (props) => {
 
     const [mergeVisible, setMergeVisible] = useMergedState(true, {
         value: visible,
-        onChange: (value) => { onMaskClick?.(value) },
+        onChange: (value) => {
+            // 只有 value === false 触发
+            onMaskClick?.(value)
+        },
     })
-    const maskRef = useRef<HTMLDivElement | null>(null)
 
-    /* useEffect(() => {
-        if (mergeVisible && maskRef.current) {
-            maskRef.current.style.display = ''
+    // 动画状态锁，防止开发环境下的热更新持续触发 afterClose
+    const animatedVisibleRef = useRef(mergeVisible)
+
+    useEffect(() => {
+        if (mergeVisible) {
+            animatedVisibleRef.current = true
         }
-    }, [mergeVisible]) */
+    }, [mergeVisible])
 
     /**
      * @description 禁止 body 滚动
@@ -94,54 +102,48 @@ const Mask: React.FC<MaskProps> = (props) => {
         }
     }
 
+    const onVisibleChanged = (visible: boolean) => {
+        if (!visible) {
+            // 保证显示是从 true -> false 才会触发 afterClose
+            if (animatedVisibleRef.current) {
+                afterClose?.()
+            }
+            animatedVisibleRef.current = false
+        }
+    }
+
     // 阻止滑动穿透
     const onTouchMove = (event: React.TouchEvent) => {
         if (disableBodyScroll) event.stopPropagation()
     }
 
-    /**
-     * @description 过渡结束触发
-     * 相比 onAnimationEnd，不会造成初始的 bin-mask-hidden 动画执行
-     */
-    const onTransitionEnd = (event: React.TransitionEvent<HTMLDivElement>) => {
-        if (event.target !== event.currentTarget) return
-        if (event.propertyName !== 'opacity') return
-
-        // 👇 只在「隐藏完成」时处理
-        if (!mergeVisible) {
-            // 容易造成再次展示没有过渡效果
-            // maskRef.current && (maskRef.current.style.display = 'none')
-            afterClose?.()
-        }
-    }
-    /**
-     * @description 动画结束后执行
-     */
-    const onAnimationEnd = (event: React.AnimationEvent<HTMLDivElement>) => {
-        // 与动画名字绑定，若修改 css 需要修改此处
-        if (event.animationName === 'mask-out') {
-            maskRef.current && (maskRef.current.style.display = 'none')
-            afterClose?.()
-        }
-    }
-
     return renderToContainer(
-        <div
-            ref={maskRef}
-            role='button'
-            className={'bin-mask' + (className ? ' ' + className : '') + (mergeVisible ? '' : ' bin-mask-hidden')}
-            style={{
-                ...style,
-                '--z-index': zIndex ? zIndex : (style as Record<string, string>)['--z-index'],
-                '--animation-duration': duration ? duration + 'ms' : (style as Record<string, string>)['--animation-duration'],
-                '--bg-color': bgColor ? bgColor : (style as Record<string, string>)['--bg-color'],
-            } as React.CSSProperties }
-            onClick={(event) => handleMaskClick(event)}
-            onTouchMove={onTouchMove}
-            onTransitionEnd={(e) => onTransitionEnd(e)}
+        <CSSMotion
+            visible={mergeVisible}
+            motionName={'bin-mask-fade'}
+            removeOnLeave={false}
+            leavedClassName={'bin-mask-hidden'}
+            onVisibleChanged={onVisibleChanged}
         >
-            { typeof children === 'function' ? children() : children }
-        </div>,
+            {({ className: motionClassName, style: motionStyle }, ref) => (
+                <div
+                    ref={ref}
+                    role='button'
+                    className={clsx('bin-mask', motionClassName, className)}
+                    style={{
+                        ...motionStyle,
+                        ...style,
+                        '--z-index': zIndex ? zIndex : (style as Record<string, string>)['--z-index'],
+                        '--animation-duration': duration ? duration + 'ms' : (style as Record<string, string>)['--animation-duration'],
+                        '--bg-color': bgColor ? bgColor : (style as Record<string, string>)['--bg-color'],
+                    } as React.CSSProperties }
+                    onClick={(event) => handleMaskClick(event)}
+                    onTouchMove={onTouchMove}
+                >
+                    { typeof children === 'function' ? children() : children }
+                </div>
+            )}
+        </CSSMotion>,
         getContainer,
     )
 }

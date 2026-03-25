@@ -10,39 +10,27 @@
     height: 100%;
     background-color: var(--bg-color);
     z-index: var(--z-index);
-    opacity: 1;
     transition-property: opacity;
     transition-duration: var(--animation-duration);
-    /* 
-        transition 和 animation 的效率几乎是相等的，只要不修改 width/height 等会触发布局 / 回流的属性，动画就很流畅。
-        修改 opacity、transform 属性都是较快的
-        这里为什么使用 transition 呢？纯粹是因为 transition 心智负担低
-        animation 的优势在于多关键帧
-     */
-    /* animation: mask-in var(--animation-duration);
-
-    @keyframes mask-in {
-        from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
-    } */
 }
+
+.bin-mask-fade-enter {
+    opacity: 0;
+}
+
+.bin-mask-fade-enter-active {
+    opacity: 1;
+}
+
+.bin-mask-fade-leave {
+    opacity: 1;
+}
+
+.bin-mask-fade-leave-active {
+    opacity: 0;
+}
+
 .bin-mask-hidden {
     opacity: 0;
     pointer-events: none;
-    /* animation: mask-out var(--animation-duration);
-
-    @keyframes mask-out {
-        from {
-            opacity: 1;
-        }
-
-        to {
-            opacity: 0;
-        }
-    } */
 }
