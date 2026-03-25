@@ -2,10 +2,11 @@
  * @Author: bin
  * @Date: 2026-02-10 10:13:42
  * @LastEditors: bin
- * @LastEditTime: 2026-02-13 15:59:23
+ * @LastEditTime: 2026-03-25 17:30:29
  */
-import { renderToContainer } from './utils/renderToContainer'
+import { useRef, useEffect } from 'react'
 
+import { renderToContainer } from './utils/renderToContainer'
 import Mask from './Mask'
 import Content from './Content'
 import './style/Dialog.less'
@@ -59,10 +60,29 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
         getContainer,
     } = props
 
+    // 动画状态锁，防止开发环境下的热更新持续触发 afterClose
+    const animatedVisibleRef = useRef(visible)
+
+    useEffect(() => {
+        if (visible) {
+            animatedVisibleRef.current = true
+        }
+    }, [visible])
+
     // 点击遮罩层时触发
     const onMaskClick = () => {
         if (maskClosable) {
             onClose?.()
+        }
+    }
+
+    const onDialogVisibleChanged = (dialogVisible: boolean) => {
+        if (!dialogVisible) {
+            // 保证显示是从 true -> false 才会触发 afterClose
+            if (animatedVisibleRef.current) {
+                afterClose?.()
+            }
+            animatedVisibleRef.current = false
         }
     }
 
@@ -88,14 +108,16 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
                     visible={visible}
                     closable={closable}
                     duration={duration}
+                    forceRender={destroyOnHidden}
                     onClose={() => onClose?.()}
-                    afterClose={() => afterClose?.()}
+                    onVisibleChanged={onDialogVisibleChanged}
 
                     title={title}
                     children={children}
                     footer={footer}
 
                     mousePosition={mousePosition}
+                    motionName={'bin-dialog-zoom'}
                     width={width}
                     height={height}
                     className={className}

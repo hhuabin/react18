@@ -106,7 +106,7 @@ export default forwardRef(function CSSMotion(props: CSSMotionProps, ref: Forward
                 // nodeRef 需要被 CSSMotion 拿到用于绑定 transitionend / animationend 事件等
                 motionChildren = children({ ...mergedProps }, nodeRef)
             } else if (!removeOnLeave && renderedRef.current && leavedClassName) {
-                // 2. 不移除节点，且有 `leavedClassName`
+                // 2. 不移除节点，但有 leavedClassName，那就直接赋值 leavedClassName
                 motionChildren = children(
                     { ...mergedProps, className: leavedClassName },
                     nodeRef,

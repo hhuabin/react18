@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-28 09:51:31
  * @LastEditors: bin
- * @LastEditTime: 2026-03-24 14:52:39
+ * @LastEditTime: 2026-03-25 17:25:06
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -83,12 +83,12 @@ export interface CSSMotionProps {
     eventProps?: Record<string, unknown>;
 
     // 准备阶段用于测量 element 信息。即使运动关闭，它也会始终触发
-    onAppearPrepare?: MotionPrepareEventHandler;
+    onAppearPrepare?: MotionPrepareEventHandler;         // 可以在该阶段测量 element 尺寸等信息
     onAppearStart?: MotionEventHandler;
     onAppearActive?: MotionEventHandler;
     onAppearEnd?: MotionEndEventHandler;
 
-    onEnterPrepare?: MotionPrepareEventHandler;
+    onEnterPrepare?: MotionPrepareEventHandler;          // 可以在该阶段测量 element 尺寸等信息
     onEnterStart?: MotionEventHandler;
     onEnterActive?: MotionEventHandler;
     onEnterEnd?: MotionEndEventHandler;

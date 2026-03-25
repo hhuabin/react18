@@ -21,8 +21,6 @@
             padding-bottom: 24px;
             margin: 8px auto;
             pointer-events: all;
-            transform: scale(1);
-            opacity: 1;
             transition-property: transform, opacity;
             transition-duration: var(--animation-duration);
 
@@ -71,10 +69,39 @@
             }
         }
 
-        .bin-dialog-hidden {
+        .bin-dialog-zoom-appear,
+        .bin-dialog-zoom-enter {
             transform: scale(0);
             opacity: 0;
-            pointer-events: none;
+            user-select: none;
+        }
+
+        .bin-dialog-zoom-appear-prepare,
+        .bin-dialog-zoom-enter-prepare {
+            // 重置缩放比例以避免 mousePosition bug
+            transform: none;
+            opacity: 0;
+            user-select: none;
+        }
+
+        .bin-dialog-zoom-appear-active,
+        .bin-dialog-zoom-enter-active {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .bin-dialog-zoom-leave {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .bin-dialog-zoom-leave-active {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        .bin-dialog-hidden {
+            opacity: 0;
         }
     }
 }

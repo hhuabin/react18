@@ -1,19 +1,26 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 
-import useRect, { getRect } from '@/hooks/domHooks/useRect'
+import CSSMotion, { type CSSMotionRef } from '@/components/CSSMotion'
+import { clsx } from './utils/clsx'
+import { getRect } from '@/hooks/domHooks/useRect'
 
 type ContentProps = {
     visible?: boolean;                         // 是否显示 Dialog，默认为 false
     closable?: boolean;                        // 是否显示关闭按钮
+    destroyOnHidden?: boolean;                 // 关闭时销毁 Modal 里的子元素
+    forceRender?: boolean;                     // 强制渲染 Modal
     duration?: number;                         // 动画时长，单位为 ms
     onClose?: () => void;                      // Dialog 关闭时触发
-    afterClose?: () => void;                   // 动画执行完成，关闭函数，可以执行卸载逻辑
+    onVisibleChanged?: (visible: boolean) => void;      // 显示状态改变时触发
 
+    // 弹窗内容
     title?: React.ReactNode;                   // RCDialog title
     children?: React.ReactNode;                // RCDialog content
     footer?: React.ReactNode;                  // RCDialog footer
 
+    // 弹窗样式
     mousePosition?: {x: number, y: number} | null;     // 设置当前鼠标的pageX和pageY
+    motionName?: string;                       // 动画名称
     width?: string | number;                   // 宽度
     height?: string | number;                  // 高度
     className?: string;                        // 自定义类名
@@ -25,56 +32,41 @@ const Content: React.FC<ContentProps> = (props) => {
     const {
         visible = false,
         closable = false,
+        destroyOnHidden = false,
+        forceRender = false,
         duration,
         onClose,
-        afterClose,
+        onVisibleChanged,
 
         title,
         children,
         footer,
 
         mousePosition,
+        motionName,
         width,
         height,
         className,
         style = {},
     } = props
 
-    const dialogRef = useRef<HTMLDivElement | null>(null)
+    const dialogRef = useRef<CSSMotionRef>(null)
+
     // 记忆鼠标位置
     const [transformOrigin, setTransformOrigin] = useState('')
 
-    // 获取元素尺寸
-    const dialogRect = getRect(dialogRef.current!)
+    // 测量弹窗大小
+    const onPrepare = () => {
+        if (!dialogRef.current?.nativeElement) return
 
-    useEffect(() => {
-        if (visible) {
-            changeTransformOrigin()
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [visible])
+        // 获取元素尺寸
+        const dialogRect = getRect(dialogRef.current.nativeElement)
 
-    // 什么时候去改变 transformOrigin 的值？在
-    // transfrom 会改变元素的 getBoundingClientRect 返回值，所以解决该bug需要使用样式状态机
-    const changeTransformOrigin = () => {
         const transformOrigin = mousePosition && (mousePosition.x || mousePosition.y)
-            ? `${mousePosition.x - dialogRect.left}px ${mousePosition.y - dialogRect.top}px`
+            ? `${mousePosition.x - dialogRect.left - window.pageXOffset}px ${mousePosition.y - dialogRect.top - window.pageXOffset}px`
             : ''
 
         setTransformOrigin(transformOrigin)
-    }
-
-    /**
-     * @description 过渡结束触发
-     * 相比 onAnimationEnd，不会造成初始的 bin-mask-hidden 动画执行
-     */
-    const onTransitionEnd = (event: React.TransitionEvent<HTMLDivElement>) => {
-        if (event.target !== event.currentTarget) return
-
-        // 👇 只在「隐藏完成」时处理
-        if (!visible) {
-            afterClose?.()
-        }
     }
 
     const headerNode = title ? (
@@ -109,26 +101,39 @@ const Content: React.FC<ContentProps> = (props) => {
     ) : null
 
     return (
-        <div
-            role='dialog'
+        <CSSMotion
             ref={dialogRef}
-            className={'bin-dialog' + (className ? ' ' + className : '') + (visible ? '' : ' bin-dialog-hidden')}
-            onTransitionEnd={(e) => onTransitionEnd(e)}
-            style={{
-                ...style,
-                width: width ? width : style['width'],
-                height: height ? height : style['height'],
-                '--animation-duration': duration ? duration + 'ms' : (style as Record<string, string>)['--animation-duration'],
-                transformOrigin,
-            } as React.CSSProperties }
+            visible={visible}
+            motionName={motionName}
+            forceRender={forceRender}
+            removeOnLeave={destroyOnHidden}
+            onVisibleChanged={onVisibleChanged}
+            onAppearPrepare={onPrepare}
+            onEnterPrepare={onPrepare}
         >
-            <div className='bin-dialog-content'>
-                {headerNode}
-                {content}
-                {footerNode}
-                {closerNode}
-            </div>
-        </div>
+            {({ className: motionClassName, style: motionStyle }, ref) => (
+                <div
+                    role='dialog'
+                    ref={ref}
+                    className={clsx('bin-dialog', motionClassName, className)}
+                    style={{
+                        ...motionStyle,
+                        ...style,
+                        width: width ? width : style['width'],
+                        height: height ? height : style['height'],
+                        '--animation-duration': duration ? duration + 'ms' : (style as Record<string, string>)['--animation-duration'],
+                        transformOrigin,
+                    } as React.CSSProperties }
+                >
+                    <div className='bin-dialog-content'>
+                        {headerNode}
+                        {content}
+                        {footerNode}
+                        {closerNode}
+                    </div>
+                </div>
+            )}
+        </CSSMotion>
     )
 }
 

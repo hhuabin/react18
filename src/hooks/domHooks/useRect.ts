@@ -1,3 +1,9 @@
+/**
+ * @Author: bin
+ * @Date: 2026-01-06 15:51:37
+ * @LastEditors: bin
+ * @LastEditTime: 2026-03-25 17:53:07
+ */
 import { useLayoutEffect, useState, type RefObject } from 'react'
 
 export interface Rect {
@@ -22,7 +28,7 @@ const EMPTY_RECT: Rect = {
 }
 
 /**
- * @description 从 HTMLElement 读取最新的布局信息
+ * @description 获取 元素相对于**浏览器可视区域（viewport）**的位置
  * 注意：只能在 DOM 已挂载后调用
  * @example
  * const rect = getRect(ref.current) => 一次性获取，不监听元素变化

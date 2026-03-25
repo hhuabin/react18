@@ -79,6 +79,7 @@ const ModalComponents: React.FC = () => {
                         onClick={() => AntdModal.info({
                             title: '提示',
                             content: 'This is an info message',
+                            forceRender: true,
                         })}
                     >
                         <span>AntdModal.info</span>
@@ -175,6 +176,7 @@ const ModalComponents: React.FC = () => {
                 open={antdVisiable}
                 onOk={() => { message.info('ok') }}
                 onCancel={() => setAntdVisiable(false)}
+                forceRender={true}
             >
                 我是一个弹窗
             </AntdModal>
