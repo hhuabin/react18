@@ -1,3 +1,9 @@
+/**
+ * @Author: bin
+ * @Date: 2026-02-10 17:03:16
+ * @LastEditors: bin
+ * @LastEditTime: 2026-03-26 11:15:44
+ */
 import Dialog from './RCDialog/Dialog'
 import type { ModalProps, MousePosition } from './Modal.d'
 import Footer from './Footer/Footer'
@@ -6,6 +12,7 @@ import { canUseDocElement } from './utils/canUseDom'
 let mousePosition: MousePosition
 
 const getClickPosition = (e: MouseEvent) => {
+    // 获取相对 html 的鼠标点击位置
     mousePosition = {
         x: e.pageX,
         y: e.pageY,
@@ -36,7 +43,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         cancelText = '取消',
         cancelColor = '',
 
-        zIndex = 1000,
+        zIndex,
         closable = false,
         mask = true,
         maskClosable = false,

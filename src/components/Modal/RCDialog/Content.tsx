@@ -4,27 +4,13 @@ import CSSMotion, { type CSSMotionRef } from '@/components/CSSMotion'
 import { clsx } from './utils/clsx'
 import { getRect } from '@/hooks/domHooks/useRect'
 
-type ContentProps = {
-    visible?: boolean;                         // 是否显示 Dialog，默认为 false
-    closable?: boolean;                        // 是否显示关闭按钮
-    destroyOnHidden?: boolean;                 // 关闭时销毁 Modal 里的子元素
-    forceRender?: boolean;                     // 强制渲染 Modal
-    duration?: number;                         // 动画时长，单位为 ms
-    onClose?: () => void;                      // Dialog 关闭时触发
-    onVisibleChanged?: (visible: boolean) => void;      // 显示状态改变时触发
+import type { RCDialogProps } from './interface.d'
 
-    // 弹窗内容
-    title?: React.ReactNode;                   // RCDialog title
-    children?: React.ReactNode;                // RCDialog content
-    footer?: React.ReactNode;                  // RCDialog footer
-
-    // 弹窗样式
-    mousePosition?: {x: number, y: number} | null;     // 设置当前鼠标的pageX和pageY
-    motionName?: string;                       // 动画名称
-    width?: string | number;                   // 宽度
-    height?: string | number;                  // 高度
-    className?: string;                        // 自定义类名
-    style?: React.CSSProperties;               // 自定义样式
+interface ContentProps extends Omit<
+    RCDialogProps,
+    'mask' | 'maskClosable' | 'zIndex' | 'afterClose'    // 这些是 RCDialog 需要消费的属性
+> {
+    onVisibleChanged?: (visible: boolean) => void;       // 弹窗显示状态改变时触发
 }
 
 const Content: React.FC<ContentProps> = (props) => {
@@ -43,7 +29,7 @@ const Content: React.FC<ContentProps> = (props) => {
         footer,
 
         mousePosition,
-        motionName,
+        motionName = 'bin-dialog-zoom',
         width,
         height,
         className,
@@ -62,8 +48,12 @@ const Content: React.FC<ContentProps> = (props) => {
         // 获取元素尺寸
         const dialogRect = getRect(dialogRef.current.nativeElement)
 
+        console.log('mousePosition', mousePosition, window.pageXOffset + ',' + window.pageYOffset);
+
         const transformOrigin = mousePosition && (mousePosition.x || mousePosition.y)
-            ? `${mousePosition.x - dialogRect.left - window.pageXOffset}px ${mousePosition.y - dialogRect.top - window.pageXOffset}px`
+            ? `${mousePosition.x - dialogRect.left - window.pageXOffset}px ${
+                mousePosition.y - dialogRect.top - window.pageYOffset
+            }px`
             : ''
 
         setTransformOrigin(transformOrigin)

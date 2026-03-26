@@ -5,18 +5,13 @@
  * @LastEditTime: 2026-03-26 09:44:51
  */
 /**
- * Portions of this file are derived from:
+ * Portions of this file are derived from rc-motion:
  * https://github.com/react-component/motion
  *
  * The original work is licensed under the MIT License.
+ * Copyright (c) 2019-present afc163
  *
- * Copyright (c) react-component
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction...
- *
- * Modifications have been made to this file.
+ * This file has been modified for this project.
  */
 import {
     useRef, useMemo,

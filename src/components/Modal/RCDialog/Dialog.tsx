@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-10 10:13:42
  * @LastEditors: bin
- * @LastEditTime: 2026-03-25 17:30:29
+ * @LastEditTime: 2026-03-26 11:04:55
  */
 import { useRef, useEffect } from 'react'
 
@@ -11,38 +11,25 @@ import Mask from './Mask'
 import Content from './Content'
 import './style/Dialog.less'
 
-type RCDialogProps = {
-    visible?: boolean;                         // 是否显示 Dialog，默认为 false
-    closable?: boolean;                        // 是否显示关闭按钮，默认为 false
-    mask?: boolean;                            // 是否显示 Mask 蒙层，默认为 false
-    maskClosable?: boolean;                    // 点击蒙层是否允许关闭
-    destroyOnHidden?: boolean;                 // 关闭时销毁 Dialog
-    duration?: number;                         // 动画时长，单位为 ms
-    zIndex?: number;                           // 蒙层层级
-    onClose?: () => void;                      // Dialog 关闭时触发
-    afterClose?: () => void;                   // 动画执行完成，关闭函数，可以执行卸载逻辑
+import type { RCDialogProps } from './interface.d'
 
-    title?: React.ReactNode;                   // RCDialog title
-    children?: React.ReactNode;                // RCDialog content
-    footer?: React.ReactNode;                  // RCDialog footer
-
-    mousePosition?: {x: number, y: number} | null;     // 设置当前鼠标的pageX和pageY
-    width?: string | number;                   // 宽度
-    height?: string | number;                  // 高度
-    className?: string;                        // 自定义类名
-    style?: React.CSSProperties;               // 自定义样式
-
-    getContainer?: HTMLElement | (() => HTMLElement) | null;     // 指定挂载的节点
-}
-
+/**
+ * Portions of this file are derived from rc-motion:
+ * https://github.com/react-component/dialog
+ *
+ * The original work is licensed under the MIT License.
+ * Copyright (c) 2019-present afc163
+ *
+ * This file has been modified for this project.
+ */
 const RCDialog: React.FC<RCDialogProps> = (props) => {
 
     const {
         visible = false,
         closable = false,
         mask = true,
+        destroyOnHidden = false,
         maskClosable = false,
-        destroyOnHidden = true,
         duration,
         zIndex = 999,
         onClose,
@@ -53,6 +40,7 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
         footer,
 
         mousePosition,
+        motionName = 'bin-dialog-zoom',
         width,
         height,
         className,
@@ -88,7 +76,7 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
 
     return renderToContainer(
         // 统一容器
-        <div className='rc-dialog'>
+        <div className='bin-dialog-root'>
             {/* 蒙层 */}
             <Mask
                 visible={mask && visible}
@@ -107,8 +95,9 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
                 <Content
                     visible={visible}
                     closable={closable}
-                    duration={duration}
+                    destroyOnHidden={destroyOnHidden}
                     forceRender={destroyOnHidden}
+                    duration={duration}
                     onClose={() => onClose?.()}
                     onVisibleChanged={onDialogVisibleChanged}
 
@@ -117,7 +106,7 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
                     footer={footer}
 
                     mousePosition={mousePosition}
-                    motionName={'bin-dialog-zoom'}
+                    motionName={motionName}
                     width={width}
                     height={height}
                     className={className}

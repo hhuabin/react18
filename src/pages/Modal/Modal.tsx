@@ -4,14 +4,33 @@ import message from '@/components/Message'
 import Modal from '@/components/Modal'
 import { Modal as AntdModal } from 'antd'
 
+import Dialog from '@/components/Modal/RCDialog'
+
 const ModalComponents: React.FC = () => {
+
+    const [dialogVisiable, setDialogVisiable] = useState(false)
 
     const [visible, setVisible] = useState(false)
     const [antdVisiable, setAntdVisiable] = useState(false)
 
     return (
         <>
+            <div className='w-full h-[1000px]'></div>
             <div className='w-full mb-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>基础组件 Dialog 的组件化调用</div>
+                <div className='w-full px-4'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => setDialogVisiable(!dialogVisiable)}
+                    >
+                        <span>open dialog</span>
+                    </button>
+                </div>
+            </div>
+
+            <div className='w-full my-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>基础用法</div>
                 <div className='w-full px-4'>
                     <button
@@ -158,6 +177,15 @@ const ModalComponents: React.FC = () => {
                     </button>
                 </div>
             </div>
+
+            <Dialog
+                visible={dialogVisiable}
+                closable={true}
+                onClose={() => setDialogVisiable(false)}
+                title='标题'
+                footer=''
+                width={500}
+            >我是一个弹窗</Dialog>
 
             <Modal
                 open={visible}

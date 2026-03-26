@@ -2,14 +2,14 @@
  * @Author: bin
  * @Date: 2026-02-12 09:10:25
  * @LastEditors: bin
- * @LastEditTime: 2026-02-14 10:29:07
+ * @LastEditTime: 2026-03-26 10:03:32
  */
 import { unstableSetRender, type UnmountType } from './utils/reactRender'
 
 import Modal from './Modal'
 import type { ModalFuncProps } from './Modal.d'
 import Footer from './Footer/Footer'
-import './ConfirmContent.less'
+import './style/ConfirmContent.less'
 import renderIcon from './utils/renderIcon'
 
 let dialogZIndex = 1000

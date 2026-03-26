@@ -2,17 +2,17 @@
  * @Author: bin
  * @Date: 2026-01-06 15:51:37
  * @LastEditors: bin
- * @LastEditTime: 2026-03-25 17:53:07
+ * @LastEditTime: 2026-03-26 14:33:18
  */
 import { useLayoutEffect, useState, type RefObject } from 'react'
 
 export interface Rect {
-    width: number;
-    height: number;
-    top: number;
-    left: number;
-    right: number;
-    bottom: number;
+    width: number;         // 元素的宽（包含 padding + border）
+    height: number;        // 元素的高（包含 padding + border）
+    top: number;           // 元素顶部 到 视口顶部 的距离
+    left: number;          // 元素左边 到 视口左边 的距离
+    right: number;         // left + width
+    bottom: number;        // top + height
 }
 
 /**
