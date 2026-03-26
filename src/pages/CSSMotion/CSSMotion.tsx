@@ -1,8 +1,9 @@
-import { useState, memo, forwardRef } from 'react'
+import { useState, memo, forwardRef, useRef } from 'react'
 
-import CSSMotion from '@/components/CSSMotion'
+import CSSMotion, { type CSSMotionRef } from '@/components/CSSMotion'
 
 import './CSSMotion.less'
+import { getRect } from '@/hooks/domHooks/useRect'
 
 type MemoProps = {
     visible?: boolean;
@@ -35,6 +36,9 @@ const CSSMotionComponents: React.FC = () => {
     const [enterVisible, setEnterVisible] = useState(true)
     const [memoVisible, setMemoVisible] = useState(true)
 
+    const [prepareVisible, setPrepareVisible] = useState(true)
+    const dialogRef = useRef<CSSMotionRef>(null)
+
     const changeShowAppear = () => {
         if (!showAppear) {
             setShowAppear(true)
@@ -45,6 +49,16 @@ const CSSMotionComponents: React.FC = () => {
     }
     const onVisibleChanged = (visible: boolean) => {
         setShowAppear(visible)
+    }
+
+    const onPrepare = () => {
+        if (!dialogRef.current?.nativeElement) return
+
+        // 获取元素尺寸
+        const dialogRect = getRect(dialogRef.current.nativeElement)
+
+        console.log('dialogRect', dialogRect)
+
     }
 
     return (
@@ -134,6 +148,39 @@ const CSSMotionComponents: React.FC = () => {
                         removeOnLeave={false}
                     >
                         {({ className, style }) => <MemoComponent className={className} style={style} />}
+                    </CSSMotion>
+                </div>
+            </div>
+
+            <div className='w-full p-3' key={4}>
+                <div className='flex items-center full'>
+                    <div className=''>配合 prepare 测量 DOM</div>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => { setPrepareVisible(!prepareVisible) }}
+                    >
+                        <span>appear</span>
+                    </button>
+                </div>
+                <div className='w-full h-[150px] mt-2'>
+                    <CSSMotion
+                        ref={dialogRef}
+                        visible={prepareVisible}
+                        motionName="fade"
+                        motionAppear={false}
+                        removeOnLeave={false}
+                        onAppearPrepare={onPrepare}
+                        onEnterPrepare={onPrepare}
+                    >
+                        {({ className: motionClassName, style: motionStyle }, motionRef) => (
+                            <div
+                                ref={motionRef}
+                                className={'motion-children' + (motionClassName ? ' ' + motionClassName : '')}
+                                style={motionStyle}
+                            ></div>
+                        )}
                     </CSSMotion>
                 </div>
             </div>

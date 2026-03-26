@@ -2,9 +2,22 @@
  * @Author: bin
  * @Date: 2026-02-28 09:33:53
  * @LastEditors: bin
- * @LastEditTime: 2026-03-24 15:46:51
+ * @LastEditTime: 2026-03-26 09:44:51
  */
-// https://github.com/react-component/motion.git
+/**
+ * Portions of this file are derived from:
+ * https://github.com/react-component/motion
+ *
+ * The original work is licensed under the MIT License.
+ *
+ * Copyright (c) react-component
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction...
+ *
+ * Modifications have been made to this file.
+ */
 import {
     useRef, useMemo,
     forwardRef, useImperativeHandle, type ForwardedRef,
@@ -153,7 +166,7 @@ export default forwardRef(function CSSMotion(props: CSSMotionProps, ref: Forward
         }
 
         /**
-         * @description 作用：给 motionChildren 挂上 ref 在 CSSMotion/动画组件，让动画逻辑能直接操作真实 DOM
+         * @description 作用：给 motionChildren 挂上 ref；在 CSSMotion/动画组件，让动画逻辑能直接操作真实 DOM
          * ** 这里很重要，无论什么情况，CSSMotion 都必须拿到子元素的真实 DOM 节点，才能驱动动画 **；对于拿不到真实 DOM 的，CSSMotion 将会卡在 active 状态
          * 是 React 元素 并且 支持 ref 进入该条件
          * 只有 DOM 元素、class 组件、forwardRef 才支持 ref

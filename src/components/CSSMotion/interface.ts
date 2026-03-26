@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-28 09:51:31
  * @LastEditors: bin
- * @LastEditTime: 2026-03-25 17:25:06
+ * @LastEditTime: 2026-03-26 09:36:02
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -51,7 +51,7 @@ export type MotionPrepareEventHandler = (
 
 /** 动画阶段回调，可返回样式对象或 Promise（异步 prepare） */
 export type MotionEventHandler = (
-    element: HTMLElement | null,            // 触发动画的元素
+    element: HTMLElement | null,     // 触发动画的元素
     event: MotionEvent | null,       // 触发动画的 DOM 事件
 ) => React.CSSProperties | void
 

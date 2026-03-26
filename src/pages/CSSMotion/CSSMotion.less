@@ -13,8 +13,17 @@
     .fade-appear,
     .fade-enter {
         opacity: 0;
-        transform: scale(0.9);
+        transform: scale(0);
     }
+
+    .fade-appear-prepare,
+    .fade-enter-prepare {
+        // 重置缩放比例以避免 mousePosition bug
+        transform: none;
+        opacity: 0;
+        user-select: none;
+    }
+
     .fade-appear-active,
     .fade-enter-active {
         opacity: 1;
@@ -28,7 +37,7 @@
     }
     .fade-leave-active {
         opacity: 0;
-        transform: scale(0.9);
+        transform: scale(0);
         transition: opacity 500ms ease, transform 500ms ease;
     }
 }
