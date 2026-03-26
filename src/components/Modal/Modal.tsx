@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-10 17:03:16
  * @LastEditors: bin
- * @LastEditTime: 2026-03-26 11:15:44
+ * @LastEditTime: 2026-03-26 17:20:57
  */
 import Dialog from './RCDialog/Dialog'
 import type { ModalProps, MousePosition } from './Modal.d'
@@ -31,28 +31,42 @@ if (canUseDocElement()) {
     document.documentElement.addEventListener('click', getClickPosition, true)
 }
 
+/**
+ * @description Modal 弹窗组件
+ * 把所有的参数透传给 Dialog
+ * 1. 新增鼠标位置信息
+ * 2. 自定义默认页脚
+ */
 const Modal: React.FC<ModalProps> = (props) => {
 
     const {
         open = false,
-        title = null,
-        children = null,
-        footer = null,
+
+        // 弹窗属性
+        zIndex,
+        closable = false,
+        mask = true,
+        maskClosable = false,
+        destroyOnHidden = false,
+        forceRender = false,
+
+        // 弹窗内容
+        title,
+        children,
+        footer,
         confirmText = '确定',
         confirmType = 'primary',
         cancelText = '取消',
         cancelColor = '',
 
-        zIndex,
-        closable = false,
-        mask = true,
-        maskClosable = false,
-
+        // 弹窗事件
         onConfirm,
         onCancel,
         afterClose,
 
+        // 弹窗样式
         mousePosition: customizeMousePosition,
+        motionName,
         width = 520,
         height,
         className = '',
@@ -67,35 +81,36 @@ const Modal: React.FC<ModalProps> = (props) => {
         onCancel?.()
     }
 
-    const dialogFooter = footer !== undefined
-        ?   footer
-        :   (<Footer
-                confirmText={confirmText}
-                confirmType={confirmType}
-                cancelText={cancelText}
-                cancelColor={cancelColor}
+    // 自定义页脚
+    const dialogFooter = footer !== null
+        ?   (<Footer
+                {...props}
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
-            ></Footer>)
+            />)
+        :   null
 
     return (
         <Dialog
             visible={open}
-            title={title}
-            children={children}
-            footer={dialogFooter}
-
-            width={width}
-            height={height}
             zIndex={zIndex}
             closable={closable}
             mask={mask}
             maskClosable={maskClosable}
+            destroyOnHidden={destroyOnHidden}
+            forceRender={forceRender}
 
-            onClose={onCancel}
+            title={title}
+            children={children}
+            footer={dialogFooter}
+
+            onClose={handleCancel}
             afterClose={afterClose}
 
             mousePosition={customizeMousePosition ?? mousePosition}
+            motionName={motionName}
+            width={width}
+            height={height}
             className={className}
             style={style}
             getContainer={getContainer}

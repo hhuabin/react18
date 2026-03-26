@@ -2,16 +2,16 @@
  * @Author: bin
  * @Date: 2026-02-10 10:13:42
  * @LastEditors: bin
- * @LastEditTime: 2026-03-26 11:04:55
+ * @LastEditTime: 2026-03-26 16:42:08
  */
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 
 import { renderToContainer } from './utils/renderToContainer'
 import Mask from './Mask'
 import Content from './Content'
 import './style/Dialog.less'
 
-import type { RCDialogProps } from './interface.d'
+import type { DialogProps } from './interface.d'
 
 /**
  * Portions of this file are derived from rc-motion:
@@ -22,16 +22,17 @@ import type { RCDialogProps } from './interface.d'
  *
  * This file has been modified for this project.
  */
-const RCDialog: React.FC<RCDialogProps> = (props) => {
+const RCDialog: React.FC<DialogProps> = (props) => {
 
     const {
         visible = false,
         closable = false,
         mask = true,
         destroyOnHidden = false,
+        forceRender = false,
         maskClosable = false,
         duration,
-        zIndex = 999,
+        zIndex,
         onClose,
         afterClose,
 
@@ -49,11 +50,11 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
     } = props
 
     // 动画状态锁，防止开发环境下的热更新持续触发 afterClose
-    const animatedVisibleRef = useRef(visible)
+    const [animatedVisible, setAnimatedVisible] = useState(visible)
 
     useEffect(() => {
         if (visible) {
-            animatedVisibleRef.current = true
+            setAnimatedVisible(true)
         }
     }, [visible])
 
@@ -67,11 +68,16 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
     const onDialogVisibleChanged = (dialogVisible: boolean) => {
         if (!dialogVisible) {
             // 保证显示是从 true -> false 才会触发 afterClose
-            if (animatedVisibleRef.current) {
+            if (animatedVisible) {
                 afterClose?.()
             }
-            animatedVisibleRef.current = false
+            setAnimatedVisible(false)
         }
+    }
+
+    // 动画结束，销毁组件
+    if (!forceRender && destroyOnHidden && !animatedVisible) {
+        return null
     }
 
     return renderToContainer(
@@ -86,9 +92,8 @@ const RCDialog: React.FC<RCDialogProps> = (props) => {
             ></Mask>
 
             <div
-                className={'bin-dialog-warp' + (className ? ' ' + className : '')}
+                className='bin-dialog-warp'
                 style={{
-                    ...style,
                     '--z-index': zIndex ? zIndex : (style as Record<string, string>)['--z-index'],
                 } as React.CSSProperties}
             >

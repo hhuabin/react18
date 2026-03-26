@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-12 09:10:25
  * @LastEditors: bin
- * @LastEditTime: 2026-03-26 10:03:32
+ * @LastEditTime: 2026-03-26 17:17:13
  */
 import { unstableSetRender, type UnmountType } from './utils/reactRender'
 
@@ -16,7 +16,7 @@ let dialogZIndex = 1000
 
 /**
  * @description: 销毁所有 Modal
- * 如果以后有 useModal hooks，该对象需要和 useModal 结合使用
+ * 暴露给 Modal.destroyAll() 使用
  */
 export const destroyFns: Array<() => void> = []
 
@@ -26,13 +26,8 @@ const ConfirmContent: React.FC<ModalFuncProps & {close: () => void}> = (props) =
 
     const {
         type,
-        title = null,
+        title,
         content = null,
-        footer = null,
-        confirmText = '确定',
-        confirmType = 'primary',
-        cancelText = '取消',
-        cancelColor = '',
 
         onConfirm,
         onCancel,
@@ -49,25 +44,22 @@ const ConfirmContent: React.FC<ModalFuncProps & {close: () => void}> = (props) =
     }
 
     return (
-        <div className='bin-dialog-confirm-body-wrapper'>
-            <div className='bin-dialog-confirm-body-has-title'>
-                <div className='bin-dialog-anticon-info-circle'>
+        <div className='bin-modal-confirm-body-wrapper'>
+            <div className='bin-modal-confirm-body-has-title'>
+                <div className='bin-modal-anticon-info-circle'>
                     {renderIcon(type)}
                 </div>
 
-                <div className='bin-dialog-confirm-paragraph'>
+                <div className='bin-modal-confirm-paragraph'>
                     {
-                        title && (<div className='bin-dialog-confirm-title'>{title}</div>)
+                        title && (<div className='bin-modal-confirm-title'>{title}</div>)
                     }
-                    <div className='bin-dialog-confirm-content'>{content}</div>
+                    <div className='bin-modal-confirm-content'>{content}</div>
                 </div>
             </div>
-            <div className='bin-dialog-confirm-btns'>
+            <div className='bin-modal-confirm-btns'>
                 <Footer
-                    confirmText={confirmText}
-                    confirmType={confirmType}
-                    cancelText={cancelText}
-                    cancelColor={cancelColor}
+                    {...props}
                     showCancelButton={type === 'confirm'}
                     onConfirm={handleConfirm}
                     onCancel={handleCancel}
@@ -95,6 +87,7 @@ export default function confirm(config: ModalFuncProps) {
     // 卸载函数
     let reactUnmount: UnmountType
 
+    // 该函数中 container 始终是一份，故 render 重复调用触发的是 React 的 diff
     const render = (props: ModalFuncProps) => {
         const reactRender = unstableSetRender()
 
@@ -105,6 +98,8 @@ export default function confirm(config: ModalFuncProps) {
                 title={null}
                 footer={null}
                 onCancel={() => {
+                    // 右上角的 关闭按钮 触发的事件
+                    props.onCancel?.()
                     close?.()
                 }}
             >
@@ -115,9 +110,19 @@ export default function confirm(config: ModalFuncProps) {
     }
 
     const destroy = () => {
+        for (let i = 0; i < destroyFns.length; i++) {
+            const fn = destroyFns[i]
+            if (fn === close) {
+                destroyFns.splice(i, 1)
+                break
+            }
+        }
         reactUnmount()
     }
 
+    /**
+     * @description: 等待动画执行完毕，关闭弹窗
+     */
     const close = () => {
         currentConfig = {
             ...config,
@@ -133,11 +138,15 @@ export default function confirm(config: ModalFuncProps) {
         render(currentConfig)
     }
 
+    // 传入参数，直接更新即可
     const update = (config: ModalFuncProps) => {
-
+        currentConfig = { ...currentConfig, ...config }
+        render(currentConfig)
     }
 
     render(currentConfig)
+
+    destroyFns.push(close)
 
     return {
         destroy: close,

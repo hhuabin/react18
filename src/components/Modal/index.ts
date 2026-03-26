@@ -26,9 +26,7 @@ StaticType.forEach((type) => {
 Modal.destroyAll = () => {
     while (destroyFns.length) {
         const close = destroyFns.pop()
-        if (close) {
-            close()
-        }
+        close?.()
     }
 }
 

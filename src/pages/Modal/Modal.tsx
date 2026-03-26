@@ -15,7 +15,6 @@ const ModalComponents: React.FC = () => {
 
     return (
         <>
-            <div className='w-full h-[1000px]'></div>
             <div className='w-full mb-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>基础组件 Dialog 的组件化调用</div>
                 <div className='w-full px-4'>
@@ -180,18 +179,17 @@ const ModalComponents: React.FC = () => {
 
             <Dialog
                 visible={dialogVisiable}
+                destroyOnHidden={true}
                 closable={true}
                 onClose={() => setDialogVisiable(false)}
                 title='标题'
-                footer=''
+                footer='页脚'
                 width={500}
             >我是一个弹窗</Dialog>
 
             <Modal
                 open={visible}
-                mask={true}
                 title='提示'
-                closable={true}
                 onConfirm={() => {
                     message.info('confirm')
                 }}
@@ -202,9 +200,9 @@ const ModalComponents: React.FC = () => {
 
             <AntdModal
                 open={antdVisiable}
+                title='提示'
                 onOk={() => { message.info('ok') }}
                 onCancel={() => setAntdVisiable(false)}
-                forceRender={true}
             >
                 我是一个弹窗
             </AntdModal>

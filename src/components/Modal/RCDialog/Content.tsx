@@ -4,10 +4,10 @@ import CSSMotion, { type CSSMotionRef } from '@/components/CSSMotion'
 import { clsx } from './utils/clsx'
 import { getRect } from '@/hooks/domHooks/useRect'
 
-import type { RCDialogProps } from './interface.d'
+import type { DialogProps } from './interface.d'
 
 interface ContentProps extends Omit<
-    RCDialogProps,
+    DialogProps,
     'mask' | 'maskClosable' | 'zIndex' | 'afterClose'    // 这些是 RCDialog 需要消费的属性
 > {
     onVisibleChanged?: (visible: boolean) => void;       // 弹窗显示状态改变时触发
@@ -24,9 +24,9 @@ const Content: React.FC<ContentProps> = (props) => {
         onClose,
         onVisibleChanged,
 
-        title,
-        children,
-        footer,
+        title = null,
+        children = null,
+        footer = null,
 
         mousePosition,
         motionName = 'bin-dialog-zoom',
@@ -48,8 +48,7 @@ const Content: React.FC<ContentProps> = (props) => {
         // 获取元素尺寸
         const dialogRect = getRect(dialogRef.current.nativeElement)
 
-        console.log('mousePosition', mousePosition, window.pageXOffset + ',' + window.pageYOffset);
-
+        // mousePosition 是相对于视口的，dialogRect 是相对于 html 的，故而需要加入 pageXOffset 计算
         const transformOrigin = mousePosition && (mousePosition.x || mousePosition.y)
             ? `${mousePosition.x - dialogRect.left - window.pageXOffset}px ${
                 mousePosition.y - dialogRect.top - window.pageYOffset

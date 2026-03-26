@@ -2,20 +2,22 @@
  * @Author: bin
  * @Date: 2026-02-12 09:41:46
  * @LastEditors: bin
- * @LastEditTime: 2026-02-14 10:38:02
+ * @LastEditTime: 2026-03-26 17:47:44
  */
 import type { ModalProps } from '../Modal.d'
 import './Footer.less'
 
-type FooterProps = {
+type FooterProps = ModalProps & {
     showCancelButton?: boolean;
-    onConfirm?: () => void;
-    onCancel?: () => void;
-} & Pick<ModalProps, 'confirmText' | 'confirmType' | 'cancelText' | 'cancelColor'>
+}
 
+/**
+ * @description TODO：需要兼容开发者传入的 footer
+ */
 const Footer: React.FC<FooterProps> = (props) => {
 
     const {
+        footer,
         confirmText = '确定',
         confirmType = 'primary',
         cancelText = '取消',
@@ -33,29 +35,41 @@ const Footer: React.FC<FooterProps> = (props) => {
         onCancel?.()
     }
 
-    return (
-        <>
-            {
-                showCancelButton && (
-                    <button
-                        type='button'
-                        className='bin-modal-cancel-btn'
-                        onClick={() => handleCancel()}
-                    >
-                        <span style={{ color: cancelColor }}>{ cancelText }</span>
-                    </button>
-                )
-            }
+    let footerNode: React.ReactNode
 
-            <button
-                type='button'
-                className='bin-modal-confirm-btn'
-                onClick={() => handleConfirm()}
-            >
-                <span>{ confirmText }</span>
-            </button>
-        </>
-    )
+    if (footer) {
+        if (typeof footer === 'function') {
+            footerNode = footer(handleConfirm, handleCancel)
+        } else {
+            footerNode = footer
+        }
+    } else {
+        footerNode = (
+            <>
+                {
+                    showCancelButton && (
+                        <button
+                            type='button'
+                            className='bin-modal-cancel-btn'
+                            onClick={() => handleCancel()}
+                        >
+                            <span style={{ color: cancelColor }}>{ cancelText }</span>
+                        </button>
+                    )
+                }
+
+                <button
+                    type='button'
+                    className='bin-modal-confirm-btn'
+                    onClick={() => handleConfirm()}
+                >
+                    <span>{ confirmText }</span>
+                </button>
+            </>
+        )
+    }
+
+    return footerNode
 }
 
 export default Footer

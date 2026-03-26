@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-06-04 11:42:38
  * @LastEditors: bin
- * @LastEditTime: 2026-03-02 14:16:19
+ * @LastEditTime: 2026-03-26 17:51:43
  */
 import { useNavigate } from 'react-router-dom'
 
@@ -16,7 +16,7 @@ const routeList = [
         path: '/fileupload',
     },
     {
-        label: 'CSSMotion（开发中）',
+        label: 'CSSMotion',
         path: '/cssmotion',
     },
     {
