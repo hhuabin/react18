@@ -21,7 +21,7 @@ type MaskProps = {
     className?: string;                        // 自定义类名
     style?: React.CSSProperties;               // 自定义样式
     // getContainer?: HTMLElement | (() => HTMLElement) | null;       // 指定挂载的节点
-    onMaskClick?: (value?: boolean) => void;   // 点击遮罩层时触发
+    onMaskClick?: (event: React.MouseEvent) => void;                  // 点击遮罩层时触发
     afterClose?: () => void;                   // 完全关闭后触发
     children?: React.ReactNode | (() => React.ReactNode);          // Mask children
 }
@@ -66,7 +66,7 @@ const Mask: React.FC<MaskProps> = (props) => {
 
     const handleMaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (event.target === event.currentTarget) {
-            onMaskClick?.()
+            onMaskClick?.(event)
         }
     }
 

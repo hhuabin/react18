@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-12 09:10:25
  * @LastEditors: bin
- * @LastEditTime: 2026-03-26 17:17:13
+ * @LastEditTime: 2026-03-27 09:55:24
  */
 import { unstableSetRender, type UnmountType } from './utils/reactRender'
 
@@ -22,7 +22,7 @@ export const destroyFns: Array<() => void> = []
 
 // 代替 Dialog 的 content 渲染内容
 // eslint-disable-next-line react-refresh/only-export-components
-const ConfirmContent: React.FC<ModalFuncProps & {close: () => void}> = (props) => {
+const ConfirmContent: React.FC<ModalFuncProps & { close: () => void} > = (props) => {
 
     const {
         type,
@@ -34,12 +34,12 @@ const ConfirmContent: React.FC<ModalFuncProps & {close: () => void}> = (props) =
         close,
     } = props
 
-    const handleConfirm = () => {
-        onConfirm?.()
+    const handleConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
+        onConfirm?.(e)
         close?.()
     }
-    const handleCancel = () => {
-        onCancel?.(),
+    const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+        onCancel?.(e),
         close?.()
     }
 
@@ -60,7 +60,6 @@ const ConfirmContent: React.FC<ModalFuncProps & {close: () => void}> = (props) =
             <div className='bin-modal-confirm-btns'>
                 <Footer
                     {...props}
-                    showCancelButton={type === 'confirm'}
                     onConfirm={handleConfirm}
                     onCancel={handleCancel}
                 ></Footer>
@@ -95,11 +94,11 @@ export default function confirm(config: ModalFuncProps) {
             <Modal
                 {...props}
                 zIndex={mergedZIndex}
-                title={null}
-                footer={null}
-                onCancel={() => {
+                title={null}            // 置空，使用 confirm 自定义标题
+                footer={null}           // 置空，使用 confirm 自定义底部内容
+                onCancel={(e) => {
                     // 右上角的 关闭按钮 触发的事件
-                    props.onCancel?.()
+                    props.onCancel?.(e)
                     close?.()
                 }}
             >

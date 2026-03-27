@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-10 10:13:42
  * @LastEditors: bin
- * @LastEditTime: 2026-03-26 16:42:08
+ * @LastEditTime: 2026-03-27 10:55:20
  */
 import { useRef, useEffect, useState } from 'react'
 
@@ -28,9 +28,9 @@ const RCDialog: React.FC<DialogProps> = (props) => {
         visible = false,
         closable = false,
         mask = true,
+        maskClosable = false,
         destroyOnHidden = false,
         forceRender = false,
-        maskClosable = false,
         duration,
         zIndex,
         onClose,
@@ -59,9 +59,9 @@ const RCDialog: React.FC<DialogProps> = (props) => {
     }, [visible])
 
     // 点击遮罩层时触发
-    const onMaskClick = () => {
+    const onMaskClick = (e: React.MouseEvent) => {
         if (maskClosable) {
-            onClose?.()
+            onClose?.(e)
         }
     }
 
@@ -87,8 +87,10 @@ const RCDialog: React.FC<DialogProps> = (props) => {
             <Mask
                 visible={mask && visible}
                 duration={duration}
-                zIndex={zIndex}
                 onMaskClick={onMaskClick}
+                style={{
+                    '--z-index': zIndex ? zIndex : (style as Record<string, string>)['--z-index'],
+                } as React.CSSProperties}
             ></Mask>
 
             <div
@@ -103,7 +105,7 @@ const RCDialog: React.FC<DialogProps> = (props) => {
                     destroyOnHidden={destroyOnHidden}
                     forceRender={destroyOnHidden}
                     duration={duration}
-                    onClose={() => onClose?.()}
+                    onClose={(e) => onClose?.(e)}
                     onVisibleChanged={onDialogVisibleChanged}
 
                     title={title}

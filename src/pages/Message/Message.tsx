@@ -1,10 +1,37 @@
-import message from '@/components/mobile/Message'
+import { useRef } from 'react'
 
-const Message: React.FC = () => {
+import message, { type MessageType } from '@/components/Message'
+
+const MessageComponent: React.FC = () => {
 
     const [messageApi, contextHolder] = message.useMessage()
 
-    const openMessage = () => {
+    const messageRef = useRef<MessageType | null>(null)
+
+    const getCloseFunc = () => {
+        if (messageRef.current) return
+        messageRef.current = message.info('This is a message', 0)
+        messageRef.current.then(() => {
+            console.log('getCloseFunc 消息已关闭')
+        })
+
+        setTimeout(() => {
+            messageRef.current?.()
+            messageRef.current = null
+        }, 3000)
+    }
+
+    const open = () => {
+        messageApi.info({
+            content: 'this is message hooks',
+        })
+    }
+
+    const destroy = () => {
+        messageApi.destroy()
+    }
+
+    const updateMessage = () => {
         message.open({
             key: 'updatable',
             type: 'loading',
@@ -19,56 +46,60 @@ const Message: React.FC = () => {
         }, 2000)
     }
 
-    const openCustomMessage = () => {
-        message.open({
-            content: <div className='text-[24px] text-[#f00]'>This is a custom message</div>,
-        })
-    }
-
     return (
         <>
-            <div className='w-full mb-10'>
+            <div className='w-full mb-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>基础用法</div>
                 <div className='w-full px-4'>
                     <button
                         type='button'
                         className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
                             text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                        onClick={() => message.info('This is an info message')}
+                        onClick={() => message.info({
+                            content: 'This is an info message',
+                        })}
                     >
-                        <span>Info</span>
+                        <span>message.info</span>
                     </button>
                     <button
                         type='button'
                         className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
                             text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                        onClick={() => message.success('This is a success message')}
+                        onClick={() => message.success({
+                            content: 'This is an success message',
+                        })}
                     >
-                        <span>Success</span>
+                        <span>message.success</span>
                     </button>
                     <button
                         type='button'
                         className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
                             text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                        onClick={() => message.error('This is an error message')}
+                        onClick={() => message.error({
+                            content: 'This is an error message',
+                        })}
                     >
-                        <span>Error</span>
+                        <span>message.error</span>
                     </button>
                     <button
                         type='button'
                         className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
                             text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                        onClick={() => message.warning('This is a warning message')}
+                        onClick={() => message.warning({
+                            content: 'This is an warning message',
+                        })}
                     >
-                        <span>Warning</span>
+                        <span>message.warning</span>
                     </button>
                     <button
                         type='button'
                         className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
                             text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                        onClick={() => message.loading('This is a loading message')}
+                        onClick={() => message.loading({
+                            content: 'This is an loading message',
+                        })}
                     >
-                        <span>Loading</span>
+                        <span>message.loading</span>
                     </button>
                     <button
                         type='button'
@@ -76,26 +107,70 @@ const Message: React.FC = () => {
                             text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => message.destroy()}
                     >
-                        <span>Destroy</span>
+                        <span>message.destroy</span>
                     </button>
                 </div>
             </div>
 
-            <div className='w-full my-5'>
-                <div className='w-full p-4 text-[16px] leading-[24px]'>可以通过唯一的 key 来更新内容</div>
+            <div className='w-full mb-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>关闭函数</div>
                 <div className='w-full px-4'>
                     <button
                         type='button'
                         className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
                             text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                        onClick={() => openMessage()}
+                        onClick={() => {
+                            message.info({
+                                content: 'This is an info message',
+                                onClose: () => {
+                                    console.log('消息已关闭1')
+                                },
+                            })
+                            .then(() => {
+                                console.log('消息已关闭2')
+                            })
+                        }}
                     >
-                        <span>Open the message box</span>
+                        <span>onClose</span>
+                    </button>
+
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => getCloseFunc()}
+                    >
+                        <span>getCloseFunc</span>
                     </button>
                 </div>
             </div>
 
-            <div className='w-full my-5'>
+            <div className='w-full mb-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>实例化 Hooks</div>
+                <div className='w-full px-4'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => open()}
+                    >
+                        <span>open</span>
+                    </button>
+
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => destroy()}
+                    >
+                        <span>destroy</span>
+                    </button>
+                </div>
+            </div>
+
+            { contextHolder }
+
+            <div className='w-full mb-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>手动关闭</div>
                 <div className='w-full px-4'>
                     <button
@@ -108,21 +183,21 @@ const Message: React.FC = () => {
                             showCloseBtn: true,
                         })}
                     >
-                        <span>Open the message box</span>
+                        <span>showCloseBtn</span>
                     </button>
                 </div>
             </div>
 
-            <div className='w-full my-5'>
-                <div className='w-full p-4 text-[16px] leading-[24px]'>自定义样式</div>
+            <div className='w-full mb-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>通过唯一 key 更新消息内容</div>
                 <div className='w-full px-4'>
                     <button
                         type='button'
                         className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
                             text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                        onClick={() => openCustomMessage()}
+                        onClick={() => updateMessage()}
                     >
-                        <span>openCustomMessage</span>
+                        <span>update by key</span>
                     </button>
                 </div>
             </div>
@@ -130,4 +205,4 @@ const Message: React.FC = () => {
     )
 }
 
-export default Message
+export default MessageComponent

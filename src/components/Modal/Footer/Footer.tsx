@@ -2,19 +2,15 @@
  * @Author: bin
  * @Date: 2026-02-12 09:41:46
  * @LastEditors: bin
- * @LastEditTime: 2026-03-26 17:47:44
+ * @LastEditTime: 2026-03-27 09:59:04
  */
-import type { ModalProps } from '../Modal.d'
+import type { ModalProps, ModalFuncProps } from '../Modal.d'
 import './Footer.less'
-
-type FooterProps = ModalProps & {
-    showCancelButton?: boolean;
-}
 
 /**
  * @description TODO：需要兼容开发者传入的 footer
  */
-const Footer: React.FC<FooterProps> = (props) => {
+const Footer: React.FC<ModalProps | ModalFuncProps> = (props) => {
 
     const {
         footer,
@@ -22,17 +18,23 @@ const Footer: React.FC<FooterProps> = (props) => {
         confirmType = 'primary',
         cancelText = '取消',
         cancelColor = '',
-        showCancelButton = true,
 
         onConfirm,
         onCancel,
     } = props
 
-    const handleConfirm = () => {
-        onConfirm?.()
+    const showCancelButton = () => {
+        if ('type' in props) {
+            return props.type === 'confirm'
+        }
+        return true
     }
-    const handleCancel = () => {
-        onCancel?.()
+
+    const handleConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
+        onConfirm?.(e)
+    }
+    const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+        onCancel?.(e)
     }
 
     let footerNode: React.ReactNode
@@ -47,11 +49,11 @@ const Footer: React.FC<FooterProps> = (props) => {
         footerNode = (
             <>
                 {
-                    showCancelButton && (
+                    showCancelButton() && (
                         <button
                             type='button'
                             className='bin-modal-cancel-btn'
-                            onClick={() => handleCancel()}
+                            onClick={(e) => handleCancel(e)}
                         >
                             <span style={{ color: cancelColor }}>{ cancelText }</span>
                         </button>
@@ -61,7 +63,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                 <button
                     type='button'
                     className='bin-modal-confirm-btn'
-                    onClick={() => handleConfirm()}
+                    onClick={(e) => handleConfirm(e)}
                 >
                     <span>{ confirmText }</span>
                 </button>

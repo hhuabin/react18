@@ -201,8 +201,8 @@ const Message = () => {
         })
     }
 
-    const destory = () => {
-        messageApi.destory()
+    const destroy = () => {
+        messageApi.destroy()
     }
 
     return (

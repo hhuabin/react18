@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-10 17:03:16
  * @LastEditors: bin
- * @LastEditTime: 2026-03-26 17:20:57
+ * @LastEditTime: 2026-03-27 09:39:20
  */
 import Dialog from './RCDialog/Dialog'
 import type { ModalProps, MousePosition } from './Modal.d'
@@ -74,11 +74,11 @@ const Modal: React.FC<ModalProps> = (props) => {
         getContainer,
     } = props
 
-    const handleConfirm = () => {
-        onConfirm?.()
+    const handleConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
+        onConfirm?.(e)
     }
-    const handleCancel = () => {
-        onCancel?.()
+    const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+        onCancel?.(e)
     }
 
     // 自定义页脚
@@ -104,7 +104,8 @@ const Modal: React.FC<ModalProps> = (props) => {
             children={children}
             footer={dialogFooter}
 
-            onClose={handleCancel}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onClose={handleCancel as any}
             afterClose={afterClose}
 
             mousePosition={customizeMousePosition ?? mousePosition}

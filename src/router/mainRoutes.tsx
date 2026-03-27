@@ -51,13 +51,24 @@ export const routes: RouteConfig[] = [
         },
     },
     {
-        path: '/fileupload',
+        path: '/cssmotion',
         lazy: async () => {
-            const { default: FileUpload } = await import('@/pages/FileUpload/FileUpload')
-            return { Component: FileUpload }
+            const { default: CSSMotion } = await import('@/pages/CSSMotion/CSSMotion')
+            return { Component: CSSMotion }
         },
         meta: {
-            title: 'fileupload',
+            title: 'cssmotion',
+            auth: false,
+        },
+    },
+    {
+        path: '/message',
+        lazy: async () => {
+            const { default: Message } = await import('@/pages/Message/Message')
+            return { Component: Message }
+        },
+        meta: {
+            title: 'Message',
             auth: false,
         },
     },
@@ -69,6 +80,17 @@ export const routes: RouteConfig[] = [
         },
         meta: {
             title: 'Modal',
+            auth: false,
+        },
+    },
+    {
+        path: '/fileupload',
+        lazy: async () => {
+            const { default: FileUpload } = await import('@/pages/FileUpload/FileUpload')
+            return { Component: FileUpload }
+        },
+        meta: {
+            title: 'fileupload',
             auth: false,
         },
     },
@@ -102,17 +124,6 @@ export const routes: RouteConfig[] = [
         },
         meta: {
             title: 'skeleton',
-            auth: false,
-        },
-    },
-    {
-        path: '/cssmotion',
-        lazy: async () => {
-            const { default: CSSMotion } = await import('@/pages/CSSMotion/CSSMotion')
-            return { Component: CSSMotion }
-        },
-        meta: {
-            title: 'cssmotion',
             auth: false,
         },
     },

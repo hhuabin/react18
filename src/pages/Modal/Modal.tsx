@@ -177,14 +177,47 @@ const ModalComponents: React.FC = () => {
                 </div>
             </div>
 
+            <div className='w-full my-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>自定义页脚</div>
+                <div className='w-full px-4'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => Modal.confirm({
+                            content: '自定义页脚',
+                            footer: (handleConfirm, handleCancel) => (
+                                <>
+                                    <button
+                                        type='button'
+                                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                                        onClick={handleConfirm}
+                                    >确定</button>
+                                    <button
+                                        type='button'
+                                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                                        onClick={handleCancel}
+                                    >取消</button>
+                                </>
+                            ),
+                        })}
+                    >
+                        <span>open modal</span>
+                    </button>
+                </div>
+            </div>
+
             <Dialog
                 visible={dialogVisiable}
+                width={520}
                 destroyOnHidden={true}
                 closable={true}
                 onClose={() => setDialogVisiable(false)}
+                afterClose={() => console.log('动画结束')}
                 title='标题'
                 footer='页脚'
-                width={500}
             >我是一个弹窗</Dialog>
 
             <Modal

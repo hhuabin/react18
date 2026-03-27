@@ -16,28 +16,28 @@ export interface ModalProps {
     open?: boolean;
 
     // 弹窗属性
-    zIndex?: number;
-    closable?: boolean;
-    mask?: boolean;
-    maskClosable?: boolean;
+    zIndex?: number;                           // 设置 Modal 的 z-index
+    closable?: boolean;                        // 是否显示右上角的关闭按钮
+    mask?: boolean;                            // 是否展示遮罩
+    maskClosable?: boolean;                    // 点击遮罩层是否可以关闭
     destroyOnHidden?: boolean;                 // 关闭时销毁 Dialog
     forceRender?: boolean;                     // 强制渲染 Modal
 
     // 弹窗内容
-    title?: React.ReactNode;
-    children?: React.ReactNode;
-    footer?: ModalFooter
-    confirmText?: string;
+    title?: React.ReactNode;                   // 弹窗标题
+    children?: React.ReactNode;                // 弹窗内容
+    footer?: ModalFooter                       // 弹窗底部内容
+    confirmText?: string;                      // 确定按钮文字
     confirmType?: 'default' | 'primary';       // 确定按钮样式
-    cancelText?: string;
-    cancelColor?: string;
+    cancelText?: string;                       // 取消按钮文字
+    cancelColor?: string;                      // 取消按钮颜色
 
     // 弹窗事件
-    onConfirm?: () => void;
-    onCancel?: () => void;
-    afterClose?: () => void;
+    onConfirm?: (e: React.MouseEvent<HTMLButtonElement>) => void;  // 点击确定按钮的回调
+    onCancel?: (e: React.MouseEvent<HTMLButtonElement>) => void;   // 点击遮罩层或右上角叉或取消按钮的回调
+    afterClose?: () => void;                   // 弹窗关闭后回调
 
-    mousePosition?: MousePosition;
+    mousePosition?: MousePosition;             // 自定义鼠标点击的位置
     motionName?: string;                       // 动画名称
     width?: string | number;                   // 宽度
     height?: string | number;                  // 高度
@@ -52,11 +52,13 @@ export interface ModalFuncProps extends ModalProps {
     type?: 'info' | 'success' | 'error' | 'warning' | 'confirm'
 }
 
-// info 等方法的函数
-export type ModalFunc = (props: ModalFuncProps) => {
+export interface ModalType {
     destroy: () => void;
     update: (config: ModalFuncProps) => void;
 }
+
+// info 等方法的函数
+export type ModalFunc = (props: ModalFuncProps) => ModalFuncType
 
 // 定义 info 等方法
 export type ModalStaticFunctions = Record<NonNullable<ModalFuncProps['type']>, ModalFunc>
