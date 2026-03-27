@@ -1,3 +1,9 @@
+/**
+ * @Author: bin
+ * @Date: 2025-06-05 15:29:04
+ * @LastEditors: bin
+ * @LastEditTime: 2026-03-27 16:32:57
+ */
 import { useNavigate } from 'react-router-dom'
 
 const guideList = [
@@ -5,6 +11,11 @@ const guideList = [
         label: 'Message',
         path: '/mobile/message',
         explanation: '消息提示',
+    },
+    {
+        label: 'Dialog',
+        path: '/mobile/dialog',
+        explanation: 'Dialog对话框',
     },
     {
         label: 'Mask',

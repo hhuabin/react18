@@ -1,0 +1,38 @@
+.bin-mask {
+    --z-index: 999;
+    --animation-duration: 0.3s;
+    --bg-color: rgba(0, 0, 0, .55);
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    z-index: var(--z-index);
+    transition-property: opacity;
+    transition-duration: var(--animation-duration);
+}
+
+.bin-mask-fade-appear,
+.bin-mask-fade-enter {
+    opacity: 0;
+}
+
+.bin-mask-fade-appear-active,
+.bin-mask-fade-enter-active {
+    opacity: 1;
+}
+
+.bin-mask-fade-leave {
+    opacity: 1;
+}
+
+.bin-mask-fade-leave-active {
+    opacity: 0;
+}
+
+.bin-mask-hidden {
+    opacity: 0;
+    pointer-events: none;
+}

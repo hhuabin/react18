@@ -44,6 +44,17 @@ export const mobileRoute: RouteConfig[] = [
                 },
             },
             {
+                path: 'dialog',
+                lazy: async () => {
+                    const { default: Dialog } = await import('@/pages/mobile/Dialog/Dialog')
+                    return { Component: Dialog }
+                },
+                meta: {
+                    auth: false,
+                    title: 'dialog',
+                },
+            },
+            {
                 path: 'mask',
                 lazy: async () => {
                     const { default: Mask } = await import('@/pages/mobile/Mask/Mask')
