@@ -22,7 +22,7 @@ export const destroyFns: Array<() => void> = []
 
 // 代替 Dialog 的 content 渲染内容
 // eslint-disable-next-line react-refresh/only-export-components
-const ConfirmContent: React.FC<ModalFuncProps & { close: () => void} > = (props) => {
+const ConfirmContent: React.FC<ModalFuncProps & { close: () => void } > = (props) => {
 
     const {
         type,

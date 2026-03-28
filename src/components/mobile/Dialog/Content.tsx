@@ -58,36 +58,51 @@ const Content: React.FC<ContentProps> = (props) => {
         setTransformOrigin(transformOrigin)
     }
 
-    const headerNode = title ? (
-        <div className='bin-dialog-header'>
-            { title }
-        </div>
-    ) : null
+    const headerNode = (): React.ReactNode => {
+        const headerClassName = children ? 'bin-dialog-header' : 'bin-dialog-header bin-dialog-header-isolated'
+        if (title) {
+            return (
+                <div className={headerClassName}>
+                    { title }
+                </div>
+            )
+        }
+        return null
+    }
 
-    const content = (
-        <div className='bin-dialog-body'>
-            { children }
-        </div>
-    )
+    const content = () => {
+        const contentClassName = title ? 'bin-dialog-content' : 'bin-dialog-content bin-dialog-content-isolated'
 
-    const footerNode = footer ? (
-        <div className='bin-dialog-footer'>
-            { footer }
-        </div>
-    ) : null
+        if (children) {
+            return (
+                <div className={contentClassName}>
+                    { children }
+                </div>
+            )
+        }
+        return null
+    }
 
-    const closerNode = closable ? (
-        <button
-            type='button'
-            onClick={() => onClose?.()}
-            className='bin-dialog-close'
-        >
-            <svg width='100%' height='100%' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
-                <line x1='35' y1='35' x2='65' y2='65' stroke='currentColor' strokeWidth='4' strokeLinecap='round' />
-                <line x1='65' y1='35' x2='35' y2='65' stroke='currentColor' strokeWidth='4' strokeLinecap='round' />
-            </svg>
-        </button>
-    ) : null
+    const footerNode = () => {
+        if (footer) return footer
+
+        return (
+            <div className='bin-dialog-footer'>
+                <button
+                    type='button'
+                    className='bin-dialog-footer-button bin-dialog-dividing-line'
+                >
+                    <span className='bin-dialog-footer-button-content'>取消</span>
+                </button>
+                <button
+                    type='button'
+                    className='bin-dialog-footer-button bin-dialog-footer-confirm-button'
+                >
+                    <span className='bin-dialog-footer-button-content'>确认</span>
+                </button>
+            </div>
+        )
+    }
 
     return (
         <CSSMotion
@@ -114,11 +129,10 @@ const Content: React.FC<ContentProps> = (props) => {
                         transformOrigin,
                     } as React.CSSProperties }
                 >
-                    <div className='bin-dialog-content'>
-                        {headerNode}
-                        {content}
-                        {footerNode}
-                        {closerNode}
+                    <div className='bin-dialog-body'>
+                        {headerNode()}
+                        {content()}
+                        {footerNode()}
                     </div>
                 </div>
             )}
