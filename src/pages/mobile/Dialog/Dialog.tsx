@@ -41,7 +41,12 @@ const DialogComponent: React.FC = () => {
 
             <Dialog
                 visible={dialogVisiable}
-            ></Dialog>
+                title={'nijhao'}
+                onCancel={() => setDialogVisiable(false)}
+                onConfirm={() => setDialogVisiable(false)}
+            >
+                我是一个弹窗
+            </Dialog>
         </>
     )
 }

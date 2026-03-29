@@ -4,14 +4,39 @@
  * @LastEditors: bin
  * @LastEditTime: 2026-03-27 10:55:20
  */
-import { useRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { renderToContainer } from './utils/renderToContainer'
 import Mask from './Mask'
 import Content from './Content'
+
+import { renderToContainer } from './utils/renderToContainer'
+import { canUseDocElement } from './utils/canUseDom'
+
+import type { DialogProps, MousePosition } from './interface.d'
+
 import './style/Dialog.less'
 
-import type { DialogProps } from './interface.d'
+let mousePosition: MousePosition
+
+const getClickPosition = (e: MouseEvent) => {
+    // 获取相对 html 的鼠标点击位置
+    mousePosition = {
+        x: e.pageX,
+        y: e.pageY,
+    }
+
+    // 100ms 内发生过点击事件，则从点击位置动画展示
+    // 否则直接 zoom 展示
+    // 这样可以兼容非点击方式展开
+    setTimeout(() => {
+        mousePosition = null
+    }, 100)
+}
+
+// 只有点击事件支持从鼠标位置动画展开
+if (canUseDocElement()) {
+    document.documentElement.addEventListener('click', getClickPosition, true)
+}
 
 /**
  * Portions of this file are derived from rc-motion:
@@ -26,26 +51,35 @@ const RCDialog: React.FC<DialogProps> = (props) => {
 
     const {
         visible = false,
-        closable = false,
+        showConfirmButton,
+        showCancelButton,
+        confirmButtonText,
+        confirmButtonColor,
+        cancelButtonText,
+        cancelButtonColor,
+
         mask = true,
-        maskClosable = false,
+        closeOnMaskClick = false,
+        closeOnPopstate = true,
+        disableBodyScroll = true,
         destroyOnHidden = false,
         forceRender = false,
         duration,
         zIndex,
-        onClose,
+        onCancel,
+        onConfirm,
         afterClose,
 
         title,
         children,
         footer,
 
-        mousePosition,
+        mousePosition: customizeMousePosition,
         motionName = 'bin-dialog-zoom',
         width,
-        height,
         className,
         style = {},
+
         getContainer,
     } = props
 
@@ -58,11 +92,44 @@ const RCDialog: React.FC<DialogProps> = (props) => {
         }
     }, [visible])
 
+    /**
+     * @description 禁止 body 滚动
+     */
+    useEffect(() => {
+        const origin = document.body.style.overflow
+        if (disableBodyScroll && visible) {
+            // 禁止 body 滚动
+            document.body.style.overflow = 'hidden'
+        }
+        return () => {
+            document.body.style.overflow = origin
+        }
+    }, [disableBodyScroll, visible])
+
+    useEffect(() => {
+        const handlePopState = (event: PopStateEvent) => {
+            if (closeOnPopstate) {
+                onCancel?.()
+            }
+        }
+
+        window.addEventListener('popstate', handlePopState)
+        return () => {
+            window.removeEventListener('popstate', handlePopState)
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [closeOnPopstate])
+
     // 点击遮罩层时触发
     const onMaskClick = () => {
-        if (maskClosable) {
-            onClose?.()
+        if (closeOnMaskClick) {
+            onCancel?.()
         }
+    }
+
+    // 阻止滑动穿透
+    const onTouchMove = (event: React.TouchEvent) => {
+        if (disableBodyScroll) event.stopPropagation()
     }
 
     const onDialogVisibleChanged = (dialogVisible: boolean) => {
@@ -88,6 +155,7 @@ const RCDialog: React.FC<DialogProps> = (props) => {
                 visible={mask && visible}
                 duration={duration}
                 onMaskClick={onMaskClick}
+                disableBodyScroll={disableBodyScroll}
                 style={{
                     '--z-index': zIndex ? zIndex : (style as Record<string, string>)['--z-index'],
                 } as React.CSSProperties}
@@ -98,24 +166,31 @@ const RCDialog: React.FC<DialogProps> = (props) => {
                 style={{
                     '--z-index': zIndex ? zIndex : (style as Record<string, string>)['--z-index'],
                 } as React.CSSProperties}
+                onTouchMove={onTouchMove}
             >
                 <Content
                     visible={visible}
-                    closable={closable}
+                    showConfirmButton={showConfirmButton}
+                    showCancelButton={showCancelButton}
+                    confirmButtonText={confirmButtonText}
+                    confirmButtonColor={confirmButtonColor}
+                    cancelButtonText={cancelButtonText}
+                    cancelButtonColor={cancelButtonColor}
+
                     destroyOnHidden={destroyOnHidden}
                     forceRender={destroyOnHidden}
                     duration={duration}
-                    onClose={() => onClose?.()}
+                    onCancel={() => onCancel?.()}
+                    onConfirm={() => onConfirm?.()}
                     onVisibleChanged={onDialogVisibleChanged}
 
                     title={title}
                     children={children}
                     footer={footer}
 
-                    mousePosition={mousePosition}
+                    mousePosition={customizeMousePosition ?? mousePosition}
                     motionName={motionName}
                     width={width}
-                    height={height}
                     className={className}
                     style={style}
                 ></Content>

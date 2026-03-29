@@ -85,7 +85,11 @@ const Modal: React.FC<ModalProps> = (props) => {
     const dialogFooter = footer !== null
         ?   (<Footer
                 {...props}
+                confirmText={confirmText}
                 onConfirm={handleConfirm}
+                confirmType={confirmType}
+                cancelText={cancelText}
+                cancelColor={cancelColor}
                 onCancel={handleCancel}
             />)
         :   null

@@ -8,7 +8,7 @@ import type { DialogProps } from './interface.d'
 
 interface ContentProps extends Omit<
     DialogProps,
-    'mask' | 'maskClosable' | 'zIndex' | 'afterClose'    // 这些是 RCDialog 需要消费的属性
+    'mask' | 'closeOnMaskClick' | 'zIndex' | 'afterClose'    // 这些是 RCDialog 需要消费的属性
 > {
     onVisibleChanged?: (visible: boolean) => void;       // 弹窗显示状态改变时触发
 }
@@ -17,11 +17,18 @@ const Content: React.FC<ContentProps> = (props) => {
 
     const {
         visible = false,
-        closable = false,
+        showConfirmButton = true,
+        showCancelButton = false,
+        confirmButtonText = '确认',
+        confirmButtonColor,
+        cancelButtonText = '取消',
+        cancelButtonColor,
+
         destroyOnHidden = false,
         forceRender = false,
         duration,
-        onClose,
+        onCancel,
+        onConfirm,
         onVisibleChanged,
 
         title = null,
@@ -31,7 +38,6 @@ const Content: React.FC<ContentProps> = (props) => {
         mousePosition,
         motionName = 'bin-dialog-zoom',
         width,
-        height,
         className,
         style = {},
     } = props
@@ -72,11 +78,14 @@ const Content: React.FC<ContentProps> = (props) => {
 
     const content = () => {
         const contentClassName = title ? 'bin-dialog-content' : 'bin-dialog-content bin-dialog-content-isolated'
+        const messageClassName = title ? 'bin-dialog-message bin-dialog-message-has-title' : 'bin-dialog-message'
 
         if (children) {
             return (
                 <div className={contentClassName}>
-                    { children }
+                    <div className={messageClassName}>
+                        { children }
+                    </div>
                 </div>
             )
         }
@@ -91,14 +100,18 @@ const Content: React.FC<ContentProps> = (props) => {
                 <button
                     type='button'
                     className='bin-dialog-footer-button bin-dialog-dividing-line'
+                    style={{ color: cancelButtonColor ? cancelButtonColor : '' }}
+                    onClick={() => onCancel?.()}
                 >
-                    <span className='bin-dialog-footer-button-content'>取消</span>
+                    <span className='bin-dialog-footer-button-content'>{ cancelButtonText }</span>
                 </button>
                 <button
                     type='button'
                     className='bin-dialog-footer-button bin-dialog-footer-confirm-button'
+                    style={{ color: confirmButtonColor ? confirmButtonColor : '' }}
+                    onClick={() => onConfirm?.()}
                 >
-                    <span className='bin-dialog-footer-button-content'>确认</span>
+                    <span className='bin-dialog-footer-button-content'>{ confirmButtonText }</span>
                 </button>
             </div>
         )
@@ -124,7 +137,6 @@ const Content: React.FC<ContentProps> = (props) => {
                         ...motionStyle,
                         ...style,
                         width: width ? width : style['width'],
-                        height: height ? height : style['height'],
                         '--animation-duration': duration ? duration + 'ms' : (style as Record<string, string>)['--animation-duration'],
                         transformOrigin,
                     } as React.CSSProperties }

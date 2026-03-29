@@ -12,7 +12,6 @@
         margin: 0 auto;
         transform: translateY(-50%);
         z-index: var(--z-index);
-        overflow: auto;
         pointer-events: none;
 
         .bin-dialog {
@@ -25,7 +24,6 @@
             position: relative;
             width: var(--dialog-width);
             max-width: calc(100vw - 32px);
-            max-height: 100vh;
             margin: 0 auto;
             pointer-events: all;
             transition-property: transform, opacity;
@@ -52,21 +50,28 @@
                     padding-bottom: 26px;
                 }
                 .bin-dialog-content {
-                    width: 100%;
-                    padding: 8px 24px 26px 24px;
-                    box-sizing: border-box;
-                    color: #646566;
-                    font-size: 14px;
-                    line-height: 20px;
-                    text-align: center;
+
+                    .bin-dialog-message {
+                        width: 100%;
+                        max-height: 60vh;
+                        padding: 26px 24px;
+                        box-sizing: border-box;
+                        color: #323233;
+                        font-size: 14px;
+                        line-height: 20px;
+                        text-align: center;
+                        overflow-y: auto;
+                    }
+                    .bin-dialog-message-has-title {
+                        padding-top: 8px;
+                        color: #646566;
+                    }
                 }
                 .bin-dialog-content-isolated {
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     min-height: 104px;
-                    padding-top: 26px;
-                    color: #323233;
                 }
                 .bin-dialog-footer {
                     position: relative;

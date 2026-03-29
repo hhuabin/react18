@@ -7,7 +7,6 @@ import './style/Mask.less'
 /**
  * @description 主要实现功能：
  * 1. 蒙层进入、退场动画
- * 2. 默认禁止 body 滑动
  */
 
 type MaskProps = {
@@ -49,20 +48,6 @@ const Mask: React.FC<MaskProps> = (props) => {
             animatedVisibleRef.current = true
         }
     }, [visible])
-
-    /**
-     * @description 禁止 body 滚动
-     */
-    useEffect(() => {
-        const origin = document.body.style.overflow
-        if (disableBodyScroll && visible) {
-            // 禁止 body 滚动
-            document.body.style.overflow = 'hidden'
-        }
-        return () => {
-            document.body.style.overflow = origin
-        }
-    }, [disableBodyScroll, visible])
 
     const handleMaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (event.target === event.currentTarget) {
