@@ -88,16 +88,16 @@ const Mask: React.FC<MaskProps> = (props) => {
     return (
         <CSSMotion
             visible={visible}
-            motionName={'bin-mask-fade'}
+            motionName={'bin-dialog-mask-fade'}
             removeOnLeave={false}
-            leavedClassName={'bin-mask-hidden'}
+            leavedClassName={'bin-dialog-mask-hidden'}
             onVisibleChanged={onVisibleChanged}
         >
             {({ className: motionClassName, style: motionStyle }, ref) => (
                 <div
                     ref={ref}
                     role='button'
-                    className={clsx('bin-mask', motionClassName, className)}
+                    className={clsx('bin-dialog-mask', motionClassName, className)}
                     style={{
                         ...motionStyle,
                         ...style,

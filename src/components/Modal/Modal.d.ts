@@ -1,3 +1,9 @@
+/**
+ * @Author: bin
+ * @Date: 2026-02-11 17:20:36
+ * @LastEditors: bin
+ * @LastEditTime: 2026-03-30 15:11:32
+ */
 
 // 记忆鼠标点击的位置
 export type MousePosition = { x: number; y: number } | null
@@ -5,8 +11,8 @@ export type MousePosition = { x: number; y: number } | null
 export type ModalFooter =
     | React.ReactNode
     | ((
-        handleConfirm: NonNullable<ModalProps['onConfirm']>,
-        handleCancel: NonNullable<ModalProps['onCancel']>,
+        onConfirm: NonNullable<ModalProps['onConfirm']>,
+        onCancel: NonNullable<ModalProps['onCancel']>,
     ) => React.ReactNode)
 
 /**
@@ -16,7 +22,6 @@ export interface ModalProps {
     open?: boolean;
 
     // 弹窗属性
-    zIndex?: number;                           // 设置 Modal 的 z-index
     closable?: boolean;                        // 是否显示右上角的关闭按钮
     mask?: boolean;                            // 是否展示遮罩
     maskClosable?: boolean;                    // 点击遮罩层是否可以关闭
@@ -40,7 +45,8 @@ export interface ModalProps {
     mousePosition?: MousePosition;             // 自定义鼠标点击的位置
     motionName?: string;                       // 动画名称
     width?: string | number;                   // 宽度
-    height?: string | number;                  // 高度
+    duration?: number;                         // 动画时长，单位为 ms
+    zIndex?: number;                           // 设置 Modal 的 z-index
     className?: string;                        // 自定义类名
     style?: React.CSSProperties;               // 自定义样式
 
@@ -49,7 +55,7 @@ export interface ModalProps {
 
 export interface ModalFuncProps extends ModalProps {
     content?: React.ReactNode;
-    type?: 'info' | 'success' | 'error' | 'warning' | 'confirm'
+    type?: 'info' | 'success' | 'error' | 'warning' | 'confirm';
 }
 
 export interface ModalType {
@@ -58,7 +64,7 @@ export interface ModalType {
 }
 
 // info 等方法的函数
-export type ModalFunc = (props: ModalFuncProps) => ModalFuncType
+export type ModalFunc = (props: ModalFuncProps) => ModalType
 
 // 定义 info 等方法
 export type ModalStaticFunctions = Record<NonNullable<ModalFuncProps['type']>, ModalFunc>

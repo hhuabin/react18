@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-10 17:03:16
  * @LastEditors: bin
- * @LastEditTime: 2026-03-27 09:39:20
+ * @LastEditTime: 2026-03-30 15:11:08
  */
 import Dialog from './RCDialog/Dialog'
 import type { ModalProps, MousePosition } from './Modal.d'
@@ -43,7 +43,6 @@ const Modal: React.FC<ModalProps> = (props) => {
         open = false,
 
         // 弹窗属性
-        zIndex,
         closable = false,
         mask = true,
         maskClosable = false,
@@ -54,10 +53,6 @@ const Modal: React.FC<ModalProps> = (props) => {
         title,
         children,
         footer,
-        confirmText = '确定',
-        confirmType = 'primary',
-        cancelText = '取消',
-        cancelColor = '',
 
         // 弹窗事件
         onConfirm,
@@ -68,7 +63,8 @@ const Modal: React.FC<ModalProps> = (props) => {
         mousePosition: customizeMousePosition,
         motionName,
         width = 520,
-        height,
+        duration,
+        zIndex,
         className = '',
         style = {},
         getContainer,
@@ -85,11 +81,7 @@ const Modal: React.FC<ModalProps> = (props) => {
     const dialogFooter = footer !== null
         ?   (<Footer
                 {...props}
-                confirmText={confirmText}
                 onConfirm={handleConfirm}
-                confirmType={confirmType}
-                cancelText={cancelText}
-                cancelColor={cancelColor}
                 onCancel={handleCancel}
             />)
         :   null
@@ -97,7 +89,6 @@ const Modal: React.FC<ModalProps> = (props) => {
     return (
         <Dialog
             visible={open}
-            zIndex={zIndex}
             closable={closable}
             mask={mask}
             maskClosable={maskClosable}
@@ -115,7 +106,8 @@ const Modal: React.FC<ModalProps> = (props) => {
             mousePosition={customizeMousePosition ?? mousePosition}
             motionName={motionName}
             width={width}
-            height={height}
+            duration={duration}
+            zIndex={zIndex}
             className={className}
             style={style}
             getContainer={getContainer}

@@ -49,6 +49,20 @@ const Mask: React.FC<MaskProps> = (props) => {
         }
     }, [visible])
 
+    /**
+     * @description 禁止 body 滚动
+     */
+    useEffect(() => {
+        const origin = document.body.style.overflow
+        if (disableBodyScroll && visible) {
+            // 禁止 body 滚动
+            document.body.style.overflow = 'hidden'
+        }
+        return () => {
+            document.body.style.overflow = origin
+        }
+    }, [disableBodyScroll, visible])
+
     const handleMaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (event.target === event.currentTarget) {
             onMaskClick?.(event)
@@ -73,16 +87,16 @@ const Mask: React.FC<MaskProps> = (props) => {
     return (
         <CSSMotion
             visible={visible}
-            motionName={'bin-mask-fade'}
+            motionName={'bin-dialog-mask-fade'}
             removeOnLeave={false}
-            leavedClassName={'bin-mask-hidden'}
+            leavedClassName={'bin-dialog-mask-hidden'}
             onVisibleChanged={onVisibleChanged}
         >
             {({ className: motionClassName, style: motionStyle }, ref) => (
                 <div
                     ref={ref}
                     role='button'
-                    className={clsx('bin-mask', motionClassName, className)}
+                    className={clsx('bin-dialog-mask', motionClassName, className)}
                     style={{
                         ...motionStyle,
                         ...style,

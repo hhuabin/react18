@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { useState } from 'react'
 
 import message from '@/components/Message'
@@ -25,6 +26,28 @@ const ModalComponents: React.FC = () => {
                         onClick={() => setDialogVisiable(!dialogVisiable)}
                     >
                         <span>open dialog</span>
+                    </button>
+                </div>
+            </div>
+
+            <div className='w-full my-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>组件化调用</div>
+                <div className='w-full px-4'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => setVisible(!visible)}
+                    >
+                        <span>open modal</span>
+                    </button>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => setAntdVisiable(!antdVisiable)}
+                    >
+                        <span>open antd modal</span>
                     </button>
                 </div>
             </div>
@@ -83,6 +106,105 @@ const ModalComponents: React.FC = () => {
                         })}
                     >
                         <span>Modal.confirm</span>
+                    </button>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => Modal.destroyAll()}
+                    >
+                        <span>Modal.destroyAll</span>
+                    </button>
+                </div>
+            </div>
+
+            <div className='w-full my-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>自定义页脚</div>
+                <div className='w-full px-4'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => Modal.confirm({
+                            content: '自定义页脚',
+                            footer: (handleConfirm, handleCancel) => (
+                                <>
+                                    <button
+                                        type='button'
+                                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                                        onClick={handleConfirm}
+                                    >确定</button>
+                                    <button
+                                        type='button'
+                                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                                        onClick={handleCancel}
+                                    >取消</button>
+                                </>
+                            ),
+                        })}
+                    >
+                        <span>open modal</span>
+                    </button>
+                </div>
+            </div>
+
+            <div className='w-full my-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>蒙层</div>
+                <div className='w-full px-4'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => Modal.info({
+                            mask: false,
+                            content: '我是一个弹窗',
+                        })}
+                    >
+                        <span>不要蒙层</span>
+                    </button>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => Modal.info({
+                            content: '我是一个弹窗',
+                            maskClosable: true,
+                        })}
+                    >
+                        <span>点击蒙层关闭</span>
+                    </button>
+                </div>
+            </div>
+
+            <div className='w-full my-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>自定义样式</div>
+                <div className='w-full px-4'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => Modal.info({
+                            width: 400,
+                            content: '我是一个弹窗',
+                        })}
+                    >
+                        <span>自定义宽度</span>
+                    </button>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => Modal.info({
+                            content: '我是一个弹窗',
+                            duration: 3000,
+                            /* style: {
+                                '--animation-duration': '3s',
+                            } as React.CSSProperties, */
+                        })}
+                    >
+                        <span>自定义动画时长</span>
                     </button>
                 </div>
             </div>
@@ -151,60 +273,6 @@ const ModalComponents: React.FC = () => {
                         })}
                     >
                         <span>AntdModal.confirm</span>
-                    </button>
-                </div>
-            </div>
-
-            <div className='w-full my-5'>
-                <div className='w-full p-4 text-[16px] leading-[24px]'>组件化调用</div>
-                <div className='w-full px-4'>
-                    <button
-                        type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                        onClick={() => setVisible(!visible)}
-                    >
-                        <span>open modal</span>
-                    </button>
-                    <button
-                        type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                        onClick={() => setAntdVisiable(!antdVisiable)}
-                    >
-                        <span>open antd modal</span>
-                    </button>
-                </div>
-            </div>
-
-            <div className='w-full my-5'>
-                <div className='w-full p-4 text-[16px] leading-[24px]'>自定义页脚</div>
-                <div className='w-full px-4'>
-                    <button
-                        type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                        onClick={() => Modal.confirm({
-                            content: '自定义页脚',
-                            footer: (handleConfirm, handleCancel) => (
-                                <>
-                                    <button
-                                        type='button'
-                                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                                        onClick={handleConfirm}
-                                    >确定</button>
-                                    <button
-                                        type='button'
-                                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                                        onClick={handleCancel}
-                                    >取消</button>
-                                </>
-                            ),
-                        })}
-                    >
-                        <span>open modal</span>
                     </button>
                 </div>
             </div>

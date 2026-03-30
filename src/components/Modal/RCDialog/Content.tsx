@@ -20,7 +20,6 @@ const Content: React.FC<ContentProps> = (props) => {
         closable = false,
         destroyOnHidden = false,
         forceRender = false,
-        duration,
         onClose,
         onVisibleChanged,
 
@@ -31,7 +30,7 @@ const Content: React.FC<ContentProps> = (props) => {
         mousePosition,
         motionName = 'bin-dialog-zoom',
         width,
-        height,
+        duration,
         className,
         style = {},
     } = props
@@ -65,7 +64,7 @@ const Content: React.FC<ContentProps> = (props) => {
     ) : null
 
     const content = (
-        <div className='bin-dialog-body'>
+        <div className='bin-dialog-content'>
             { children }
         </div>
     )
@@ -109,12 +108,11 @@ const Content: React.FC<ContentProps> = (props) => {
                         ...motionStyle,
                         ...style,
                         width: width ? width : style['width'],
-                        height: height ? height : style['height'],
                         '--animation-duration': duration ? duration + 'ms' : (style as Record<string, string>)['--animation-duration'],
                         transformOrigin,
                     } as React.CSSProperties }
                 >
-                    <div className='bin-dialog-content'>
+                    <div className='bin-dialog-body'>
                         {headerNode}
                         {content}
                         {footerNode}

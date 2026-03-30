@@ -36,6 +36,7 @@ const Content: React.FC<ContentProps> = (props) => {
         footer = null,
 
         mousePosition,
+        diableMousePosition = false,
         motionName = 'bin-dialog-zoom',
         width,
         className,
@@ -49,6 +50,7 @@ const Content: React.FC<ContentProps> = (props) => {
 
     // 测量弹窗大小
     const onPrepare = () => {
+        if (diableMousePosition) return
         if (!dialogRef.current?.nativeElement) return
 
         // 获取元素尺寸
@@ -64,6 +66,13 @@ const Content: React.FC<ContentProps> = (props) => {
         setTransformOrigin(transformOrigin)
     }
 
+    const handleConfirm = () => {
+        onConfirm?.()
+    }
+    const handleCancel = () => {
+        onCancel?.()
+    }
+
     const headerNode = (): React.ReactNode => {
         const headerClassName = children ? 'bin-dialog-header' : 'bin-dialog-header bin-dialog-header-isolated'
         if (title) {
@@ -77,44 +86,68 @@ const Content: React.FC<ContentProps> = (props) => {
     }
 
     const content = () => {
+
         const contentClassName = title ? 'bin-dialog-content' : 'bin-dialog-content bin-dialog-content-isolated'
         const messageClassName = title ? 'bin-dialog-message bin-dialog-message-has-title' : 'bin-dialog-message'
 
-        if (children) {
-            return (
-                <div className={contentClassName}>
-                    <div className={messageClassName}>
-                        { children }
-                    </div>
-                </div>
-            )
-        }
-        return null
+        return (
+            <div className={contentClassName}>
+                {
+                    (typeof children === 'string' || typeof children === 'number') ? (
+                        <div className={messageClassName}>
+                            { children }
+                        </div>
+                    ) : (
+                        children
+                    )
+                }
+            </div>
+        )
     }
 
     const footerNode = () => {
-        if (footer) return footer
+        let footerNode: React.ReactNode
+        if (footer) {
+            if (typeof footer === 'function') {
+                footerNode = footer(handleConfirm, handleCancel)
+            } else {
+                footerNode = footer
+            }
+        } else {
+            // 当也有确认按钮的时候，展示按钮中间的分隔线
+            const cancelButtonClassName = showConfirmButton ? 'bin-dialog-footer-button bin-dialog-dividing-line' : 'bin-dialog-footer-button'
 
-        return (
-            <div className='bin-dialog-footer'>
-                <button
-                    type='button'
-                    className='bin-dialog-footer-button bin-dialog-dividing-line'
-                    style={{ color: cancelButtonColor ? cancelButtonColor : '' }}
-                    onClick={() => onCancel?.()}
-                >
-                    <span className='bin-dialog-footer-button-content'>{ cancelButtonText }</span>
-                </button>
-                <button
-                    type='button'
-                    className='bin-dialog-footer-button bin-dialog-footer-confirm-button'
-                    style={{ color: confirmButtonColor ? confirmButtonColor : '' }}
-                    onClick={() => onConfirm?.()}
-                >
-                    <span className='bin-dialog-footer-button-content'>{ confirmButtonText }</span>
-                </button>
-            </div>
-        )
+            footerNode = (
+                <div className='bin-dialog-footer'>
+                    {
+                        showCancelButton && (
+                            <button
+                                type='button'
+                                className={cancelButtonClassName}
+                                style={{ color: cancelButtonColor ? cancelButtonColor : '' }}
+                                onClick={() => handleCancel?.()}
+                            >
+                                <span className='bin-dialog-footer-button-content'>{ cancelButtonText }</span>
+                            </button>
+                        )
+                    }
+                    {
+                        showConfirmButton && (
+                            <button
+                                type='button'
+                                className='bin-dialog-footer-button bin-dialog-footer-confirm-button'
+                                style={{ color: confirmButtonColor ? confirmButtonColor : '' }}
+                                onClick={() => handleConfirm?.()}
+                            >
+                                <span className='bin-dialog-footer-button-content'>{ confirmButtonText }</span>
+                            </button>
+                        )
+                    }
+                </div>
+            )
+        }
+
+        return footerNode
     }
 
     return (

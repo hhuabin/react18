@@ -62,20 +62,19 @@
 | `maskClosable` | 点击遮罩层是否触发关闭 | `boolean` | `false` |
 | `destroyOnHidden` | 关闭后是否销毁内容节点 | `boolean` | `false` |
 | `forceRender` | 是否在首次隐藏时也提前渲染内容 | `boolean` | `false` |
-| `duration` | 动画时长，单位毫秒 | `number` | `300` |
-| `zIndex` | 遮罩层与弹窗层级 | `number` | `999` |
-| `onClose` | 请求关闭时触发 | `(e: React.SyntheticEvent) => void` | - |
-| `afterClose` | 关闭动画结束后触发 | `() => void` | - |
-| `title` | 弹窗头部内容 | `ReactNode` | `null` |
-| `children` | 弹窗主体内容 | `ReactNode` | `null` |
-| `footer` | 弹窗底部内容 | `ReactNode` | `null` |
-| `mousePosition` | 用于计算开始动画原点 | `{ x: number, y: number } | null` | - |
-| `motionName` | 内容区动画名前缀 | `string` | `'bin-dialog-zoom'` |
-| `width` | 弹窗宽度 | `string | number` | - |
-| `height` | 弹窗高度 | `string | number` | - |
-| `className` | 自定义类名 | `string` | - |
-| `style` | 自定义样式 | `React.CSSProperties` | `{}` |
-| `getContainer` | 指定挂载容器 | `HTMLElement | (() => HTMLElement) | null` | `document.body` |
+| `onClose`         | 请求关闭时触发                 | `(e: React.SyntheticEvent) => void`        | -                   |
+| `afterClose`      | 关闭动画结束后触发             | `() => void`                               | -                   |
+| `title`           | 弹窗头部内容                   | `ReactNode`                                | `null`              |
+| `children`        | 弹窗主体内容                   | `ReactNode`                                | `null`              |
+| `footer`          | 弹窗底部内容                   | `ReactNode`                                | `null`              |
+| `mousePosition`   | 用于计算开始动画原点           | `{ x: number, y: number } | null`          | -                   |
+| `motionName`      | 内容区动画名前缀               | `string`                                   | `'bin-dialog-zoom'` |
+| `width`           | 弹窗宽度                       | `string | number`                          | -                   |
+| `duration`        | 动画时长，单位毫秒             | `number`                                   | `300`               |
+| `zIndex`          | 遮罩层与弹窗层级               | `number`                                   | `999`               |
+| `className`       | 自定义类名                     | `string`                                   | -                   |
+| `style`           | 自定义样式                     | `React.CSSProperties`                      | `{}`                |
+| `getContainer`    | 指定挂载容器                   | `HTMLElement | (() => HTMLElement) | null` | `document.body`     |
 
 
 

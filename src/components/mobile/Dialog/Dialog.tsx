@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-10 10:13:42
  * @LastEditors: bin
- * @LastEditTime: 2026-03-27 10:55:20
+ * @LastEditTime: 2026-03-30 15:54:02
  */
 import { useEffect, useState } from 'react'
 
@@ -47,7 +47,7 @@ if (canUseDocElement()) {
  *
  * This file has been modified for this project.
  */
-const RCDialog: React.FC<DialogProps> = (props) => {
+const Dialog: React.FC<DialogProps> = (props) => {
 
     const {
         visible = false,
@@ -75,6 +75,7 @@ const RCDialog: React.FC<DialogProps> = (props) => {
         footer,
 
         mousePosition: customizeMousePosition,
+        diableMousePosition,
         motionName = 'bin-dialog-zoom',
         width,
         className,
@@ -91,20 +92,6 @@ const RCDialog: React.FC<DialogProps> = (props) => {
             setAnimatedVisible(true)
         }
     }, [visible])
-
-    /**
-     * @description 禁止 body 滚动
-     */
-    useEffect(() => {
-        const origin = document.body.style.overflow
-        if (disableBodyScroll && visible) {
-            // 禁止 body 滚动
-            document.body.style.overflow = 'hidden'
-        }
-        return () => {
-            document.body.style.overflow = origin
-        }
-    }, [disableBodyScroll, visible])
 
     useEffect(() => {
         const handlePopState = (event: PopStateEvent) => {
@@ -158,6 +145,7 @@ const RCDialog: React.FC<DialogProps> = (props) => {
                 disableBodyScroll={disableBodyScroll}
                 style={{
                     '--z-index': zIndex ? zIndex : (style as Record<string, string>)['--z-index'],
+                    '--animation-duration': (style as Record<string, string>)['--animation-duration'],
                 } as React.CSSProperties}
             ></Mask>
 
@@ -189,6 +177,7 @@ const RCDialog: React.FC<DialogProps> = (props) => {
                     footer={footer}
 
                     mousePosition={customizeMousePosition ?? mousePosition}
+                    diableMousePosition={diableMousePosition}
                     motionName={motionName}
                     width={width}
                     className={className}
@@ -200,4 +189,4 @@ const RCDialog: React.FC<DialogProps> = (props) => {
     )
 }
 
-export default RCDialog
+export default Dialog

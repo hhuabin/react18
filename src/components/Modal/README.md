@@ -81,29 +81,29 @@ modalRef.destroy()
 | 参数 | 说明 | 类型 | 默认值 |
 | :--- | :--- | :--- | :--- |
 | `open` | 是否打开弹窗 | `boolean` | `false` |
-| `zIndex` | 设置弹窗层级 | `number` | `1000+`（函数式）/ 继承底层默认值 |
-| `closable` | 是否显示右上角关闭按钮 | `boolean` | `false` |
-| `mask` | 是否显示遮罩 | `boolean` | `true` |
-| `maskClosable` | 点击遮罩是否关闭 | `boolean` | `false` |
-| `destroyOnHidden` | 关闭后是否销毁内容 | `boolean` | `false` |
-| `forceRender` | 是否强制预渲染 | `boolean` | `false` |
-| `title` | 弹窗标题 | `ReactNode` | - |
-| `children` | 弹窗内容 | `ReactNode` | - |
-| `footer` | 自定义底部内容；传 `null` 可隐藏底部 | `ReactNode | ((handleConfirm, handleCancel) => ReactNode)` | 默认页脚 |
-| `confirmText` | 确认按钮文案 | `string` | `'确定'` |
-| `confirmType` | 确认按钮风格类型 | `'default' \| 'primary'` | `'primary'` |
-| `cancelText` | 取消按钮文案 | `string` | `'取消'` |
-| `cancelColor` | 取消按钮文字颜色 | `string` | `''` |
-| `onConfirm` | 点击确认按钮回调 | `(e) => void` | - |
-| `onCancel` | 点击取消、右上角关闭、遮罩关闭时触发 | `(e) => void` | - |
-| `afterClose` | 关闭动画完成后的回调 | `() => void` | - |
-| `mousePosition` | 自定义展开动画原点 | `{ x: number, y: number } \| null` | 自动记录最近一次点击位置 |
-| `motionName` | 内容区动画名前缀 | `string` | `'bin-dialog-zoom'` |
-| `width` | 弹窗宽度 | `string \| number` | `520` |
-| `height` | 弹窗高度 | `string \| number` | - |
+| `closable`        | 是否显示右上角关闭按钮                          | `boolean`                                                  | `false`                  |
+| `mask`            | 是否显示遮罩                                    | `boolean`                                                  | `true`                   |
+| `maskClosable`    | 点击遮罩是否关闭                                | `boolean`                                                  | `false`                  |
+| `destroyOnHidden` | 关闭后是否销毁内容                              | `boolean`                                                  | `false`                  |
+| `forceRender`     | 是否强制预渲染                                  | `boolean`                                                  | `false`                  |
+| `title`           | 弹窗标题                                        | `ReactNode`                                                | -                        |
+| `children`        | 弹窗内容                                        | `ReactNode`                                                | -                        |
+| `footer`          | 自定义底部内容；传 `null` 可隐藏底部            | `ReactNode | ((handleConfirm, handleCancel) => ReactNode)` | 默认页脚                 |
+| `confirmText`     | 确认按钮文案                                    | `string`                                                   | `'确定'`                 |
+| `confirmType`     | 确认按钮风格类型                                | `'default' | 'primary'`                                    | `'primary'`              |
+| `cancelText`      | 取消按钮文案                                    | `string`                                                   | `'取消'`                 |
+| `cancelColor`     | 取消按钮文字颜色                                | `string`                                                   | `''`                     |
+| `onConfirm`       | 点击确认按钮回调                                | `(e) => void`                                              | -                        |
+| `onCancel`        | 点击取消、右上角关闭、遮罩关闭时触发            | `(e) => void`                                              | -                        |
+| `afterClose`      | 关闭动画完成后的回调                            | `() => void`                                               | -                        |
+| `mousePosition`   | 自定义展开动画原点                              | `{ x: number, y: number } | null`                          | 自动记录最近一次点击位置 |
+| `motionName`      | 内容区动画名前缀                                | `string`                                                   | `'bin-dialog-zoom'`      |
+| `width`           | 弹窗宽度                                        | `string | number`                                          | `520`                    |
+| `duration`        | 动画时长，单位为 ms                             | `number`                                                   | `300ms`                  |
+| `zIndex`          | 设置弹窗层级，`1000+`（函数式）/ 继承底层默认值 | `number`                                                   | -                        |
 | `className` | 自定义类名 | `string` | `''` |
 | `style` | 自定义样式 | `React.CSSProperties` | `{}` |
-| `getContainer` | 指定挂载容器 | `HTMLElement \| (() => HTMLElement) \| null` | `document.body` |
+| `getContainer` | 指定挂载容器 | `HTMLElement | (() => HTMLElement) | null` | `document.body` |
 
 ### 静态方法
 

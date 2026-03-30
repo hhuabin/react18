@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-10 10:13:42
  * @LastEditors: bin
- * @LastEditTime: 2026-03-27 10:55:20
+ * @LastEditTime: 2026-03-30 15:11:39
  */
 import { useRef, useEffect, useState } from 'react'
 
@@ -31,8 +31,6 @@ const RCDialog: React.FC<DialogProps> = (props) => {
         maskClosable = false,
         destroyOnHidden = false,
         forceRender = false,
-        duration,
-        zIndex,
         onClose,
         afterClose,
 
@@ -43,7 +41,8 @@ const RCDialog: React.FC<DialogProps> = (props) => {
         mousePosition,
         motionName = 'bin-dialog-zoom',
         width,
-        height,
+        duration,
+        zIndex,
         className,
         style = {},
         getContainer,
@@ -90,6 +89,7 @@ const RCDialog: React.FC<DialogProps> = (props) => {
                 onMaskClick={onMaskClick}
                 style={{
                     '--z-index': zIndex ? zIndex : (style as Record<string, string>)['--z-index'],
+                    '--animation-duration': (style as Record<string, string>)['--animation-duration'],
                 } as React.CSSProperties}
             ></Mask>
 
@@ -115,7 +115,6 @@ const RCDialog: React.FC<DialogProps> = (props) => {
                     mousePosition={mousePosition}
                     motionName={motionName}
                     width={width}
-                    height={height}
                     className={className}
                     style={style}
                 ></Content>

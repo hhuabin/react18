@@ -27,7 +27,7 @@ const Message: React.FC = () => {
 
     return (
         <>
-            <div className='w-full mb-10'>
+            <div className='w-full mb-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>基础用法</div>
                 <div className='w-full px-4'>
                     <button

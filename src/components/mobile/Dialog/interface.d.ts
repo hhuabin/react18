@@ -2,11 +2,18 @@
  * @Author: bin
  * @Date: 2026-03-26 10:23:11
  * @LastEditors: bin
- * @LastEditTime: 2026-03-27 16:19:34
+ * @LastEditTime: 2026-03-30 15:56:36
  */
 
 // 记忆鼠标点击的位置
 export type MousePosition = { x: number; y: number } | null
+
+export type DialogFooter =
+    | React.ReactNode
+    | ((
+        onConfirm: NonNullable<DialogProps['onConfirm']>,
+        onCancel: NonNullable<DialogProps['onCancel']>,
+    ) => React.ReactNode)
 
 export interface DialogProps {
     visible?: boolean;                         // 是否显示 Dialog，默认为 false
@@ -32,9 +39,10 @@ export interface DialogProps {
     // 弹窗内容
     title?: React.ReactNode;                   // Dialog title
     children?: React.ReactNode;                // Dialog content
-    footer?: React.ReactNode;                  // Dialog footer
+    footer?: DialogFooter;                     // Dialog footer
 
     mousePosition?: {x: number, y: number} | null;              // 设置当前鼠标的pageX和pageY
+    diableMousePosition?: boolean;             // 是否禁用鼠标位置，默认值为 false
     motionName?: string;                       // 动画名称
     width?: string | number;                   // 宽度
     className?: string;                        // 自定义类名
@@ -42,3 +50,22 @@ export interface DialogProps {
 
     getContainer?: HTMLElement | (() => HTMLElement) | null;     // 指定挂载的节点
 }
+
+export interface DialogOptions extends Omit<
+    DialogProps,
+    'children'
+> {
+    content?: React.ReactNode;
+    type?: 'alert' | 'show' | 'confirm';
+}
+
+export interface DialogType {
+    destroy: () => void;
+    update: (config: DialogOptions) => void;
+}
+
+// alert 等方法的函数
+export type DialogFunc = (props: DialogOptions) => DialogType
+
+// 定义 alert 等方法
+export type DialogStaticFunctions = Record<NonNullable<DialogOptions['type']>, DialogFunc>
