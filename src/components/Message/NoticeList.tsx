@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-07-11 18:23:24
  * @LastEditors: bin
- * @LastEditTime: 2026-02-10 14:40:06
+ * @LastEditTime: 2026-03-31 16:16:36
  */
 /**
  * 参考源码：notification/src/NoticeList.tsx
@@ -13,6 +13,8 @@ import { ConfigContext } from '@/components/ConfigProvider/context'
 import type { MessageConfig } from './Message.d'
 import renderIcon from './utils/renderIcon'
 import './style/message.less'
+
+import { diffKeys } from './utils/oldDiff'
 
 type NoticeConfig = MessageConfig & {
     isClose?: boolean;
@@ -138,93 +140,11 @@ const RCNoticeList: React.FC<NoticeListProps> = (props) => {
              * 当两个列表都有值时，精细对比
              * 该方案为核心 diff 函数
              */
-            const resultList = compareConfigListAndNoticeList(messageConfigList, noticeList)
+            const resultList = diffKeys(noticeList, messageConfigList)
             setNoticeList(resultList)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.messageConfigList])
-
-    /**
-     * @description 对比合并提示消息列表
-     * @param { MessageConfig[] } messageConfigList 新消息列表
-     * @param { MessageConfig[] } noticeList 旧消息列表
-     * @returns { MessageConfig[] } 新的消息列表
-     * bug: 优化对比函数，该函数太慢了
-     */
-    const compareConfigListAndNoticeList = (
-        messageConfigList: MessageConfig[],
-        noticeList: NoticeConfig[],
-    ): NoticeConfig[] => {
-        const resultList: NoticeConfig[] = []              // 存放返回结果
-        const usedKeys = new Set()         // 存储已经被添加到 resultList 的 key
-
-        const configMap = new Map(messageConfigList.map(item => [item.key, item]))
-        const noticeMap = new Map(noticeList.map(item => [item.key, item]))
-        const configKeys = messageConfigList.map(item => item.key)
-        const noticeKeys = noticeList.map(item => item.key)
-        const configListLengtgh = configKeys.length
-        const noticeListLength = noticeKeys.length
-
-        /**
-         * @description 添加 noticeList 到 resultList 中
-         * 新的数组中必须保留全部 noticeKeys
-         * 遍历 noticeKeys ，将 resultList 中不存在的元素加上 isClose: true
-         */
-        const configKeySet = new Set(configKeys)
-        for (let i = 0; i < noticeListLength; i++) {
-            if (configKeySet.has(noticeKeys[i])) {
-                // 新的数组中存在，取新数组的值
-                resultList.push(configMap.get(noticeKeys[i])!)
-            } else {
-                // 新数组中不存在，关闭
-                resultList.push({ ...noticeMap.get(noticeKeys[i])!, isClose: true })
-            }
-            usedKeys.add(noticeKeys[i])
-        }
-
-        /**
-         * @description 遍历 configList，将新出现的 config 添加进 resultList 对应位置
-         */
-        let configListHead = 0        // messageConfigList 的头指针
-        let insertStartIndex = 0      // 记录在 resultList 中查找 config 的开始索引，加速 resultList 的查找速度
-        for (let configIndex = 0; configIndex <= configListLengtgh; configIndex++) {
-            /**
-             * @description 将处于中间的新的 config 添加到 resultList 的对应位置
-             * 具体规则：将新出现的 config 添加到 下一个 存在的 config 对应的索引位置前
-             */
-            if (usedKeys.has(configKeys[configIndex])) {
-                // 若头指针与检查元素下表不相等，则存在新元素需要添加
-                if (configListHead < configIndex) {
-                    // 获取新元素
-                    const newConfig = messageConfigList.slice(configListHead, configIndex)
-                    // 从开始查找下标开始查找，将 newConfig 插入到 resultList 中
-                    for (let j = insertStartIndex; j <= resultList.length; j++) {
-                        // eslint-disable-next-line max-depth
-                        if (resultList[j]!.key === configKeys[configIndex]) {
-                            resultList.splice(j, 0, ...newConfig)
-                            insertStartIndex = j + 1
-                            break
-                        }
-                        // eslint-disable-next-line max-depth
-                        if (j === resultList.length) {
-                            resultList.push(...newConfig)
-                            insertStartIndex = j
-                        }
-                    }
-                    configListHead = configIndex + 1
-                } else {
-                    // 没有新元素需要添加，移动 messageConfigList 头指针
-                    configListHead++
-                }
-            }
-            // 将处于 messageConfigList 末尾的新元素全部添加到 resultList 中
-            if (configIndex === configListLengtgh && configListHead < configIndex) {
-                resultList.push(...messageConfigList.slice(configListHead))
-            }
-        }
-
-        return resultList
-    }
 
     // 直接删除messageConfigList的消息，触发noticeList的关闭函数
     const onNoticeClose = (key: React.Key) => {

@@ -20,6 +20,7 @@
             --dialog-background: #fff;
             --animation-duration: 0.3s;
             --dialog-font-size: 16px;
+            --dialog-dividing-line-color: #ebedf0;
 
             position: relative;
             width: var(--dialog-width);
@@ -86,7 +87,7 @@
                         left: 0;
                         width: 100%;
                         height: 1px;
-                        background-color: #ebedf0;
+                        background-color: var(--dialog-dividing-line-color);
                         transform: scaleY(0.5);
                         pointer-events: none;
                     }
@@ -127,7 +128,7 @@
                             right: 0;
                             width: 1px;
                             height: 100%;
-                            background-color: #ebedf0;
+                            background-color: var(--dialog-dividing-line-color);
                             transform: scaleX(0.5);
                             pointer-events: none;
                         }

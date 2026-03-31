@@ -1,42 +1,29 @@
 /**
  * @Author: bin
- * @Date: 2025-07-15 10:50:13
+ * @Date: 2026-03-31 15:46:48
  * @LastEditors: bin
- * @LastEditTime: 2026-03-31 16:18:38
+ * @LastEditTime: 2026-03-31 16:16:10
  */
-/**
- * 测试 diffKeys 方法
- */
-const prevNoticeList = [
-    { key: '1', value: 'b.1' },
-    { key: '2', value: 'b.2' },
-    { key: '3', value: 'b.3' },
-    { key: '4', value: 'b.4' },
-    { key: '5', value: 'b.5' },
-]
+import type { MessageConfig } from '../Message.d'
 
-const newMessageConfigList = [
-    { key: '1', value: 'a.1' },
-    { key: '3', value: 'a.3' },
-    { key: '5', value: 'a.5' },
-    { key: '6', value: 'a.6' },
-    { key: '7', value: 'a.7' },
-]
+type NoticeConfig = MessageConfig & {
+    isClose?: boolean;
+}
 
-// 与 utils/oldDiff 一样的，只是换成了 js
 /**
+ * @deprecated
  * @description 对比合并提示消息列表
  * @param { NoticeConfig[] } prevNoticeList 旧消息列表
  * @param { MessageConfig[] } newMessageConfigList 新消息列表
  * @returns { MessageConfig[] } 新的消息列表
  * bug: 优化对比函数，该函数太慢了
  */
-const diffKeys = (
-    prevNoticeList,
-    newMessageConfigList,
-) => {
-    const resultList = []            // 存放返回结果
-    const usedKeys = new Set()       // 存储已经被添加到 resultList 的 key
+export const diffKeys = (
+    prevNoticeList: NoticeConfig[],
+    newMessageConfigList: MessageConfig[],
+): NoticeConfig[] => {
+    const resultList: NoticeConfig[] = []      // 存放返回结果
+    const usedKeys = new Set()                 // 存储已经被添加到 resultList 的 key
 
     const newConfigMap = new Map(newMessageConfigList.map(item => [item.key, item]))
     const prevNoticeMap = new Map(prevNoticeList.map(item => [item.key, item]))
@@ -54,10 +41,10 @@ const diffKeys = (
     for (let i = 0; i < prevNoticeListLength; i++) {
         if (newConfigKeySet.has(prevNoticeKeys[i])) {
             // 新的数组中存在，取新数组的值
-            resultList.push(newConfigMap.get(prevNoticeKeys[i]))
+            resultList.push(newConfigMap.get(prevNoticeKeys[i])!)
         } else {
             // 新数组中不存在，关闭
-            resultList.push({ ...prevNoticeMap.get(prevNoticeKeys[i]), isClose: true })
+            resultList.push({ ...prevNoticeMap.get(prevNoticeKeys[i])!, isClose: true })
         }
         usedKeys.add(prevNoticeKeys[i])
     }
@@ -80,7 +67,7 @@ const diffKeys = (
                 // 从开始查找下标开始查找，将 newConfig 插入到 resultList 中
                 for (let j = insertStartIndex; j <= resultList.length; j++) {
                     // eslint-disable-next-line max-depth
-                    if (resultList[j].key === newConfigKeys[configIndex]) {
+                    if (resultList[j]!.key === newConfigKeys[configIndex]) {
                         resultList.splice(j, 0, ...newConfig)
                         insertStartIndex = j + 1
                         break
@@ -105,5 +92,3 @@ const diffKeys = (
 
     return resultList
 }
-
-console.log(diffKeys(prevNoticeList, newMessageConfigList))
