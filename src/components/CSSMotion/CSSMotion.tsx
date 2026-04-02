@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-28 09:33:53
  * @LastEditors: bin
- * @LastEditTime: 2026-04-02 10:05:22
+ * @LastEditTime: 2026-04-02 10:53:26
  */
 /**
  * Portions of this file are derived from rc-motion:
@@ -37,6 +37,24 @@ export interface CSSMotionRef {
 // 检测是否支持 transition
 const isSupportTransition = (props: CSSMotionProps) => (!!props.motionName && supportTransition)
 
+/**
+ * @description CSSMotion 状态机，给组件显示/隐藏提供动画效果
+ * @example
+ *  <CSSMotion
+ *      visible={enterVisible}
+ *      motionName="fade"
+ *      motionAppear={false}
+ *      removeOnLeave={false}
+ *  >
+ *      {({ className: motionClassName, style: motionStyle }, motionRef) => (
+ *          <div
+ *              ref={motionRef}
+ *              className={'motion-children' + (motionClassName ? ' ' + motionClassName : '')}
+ *              style={motionStyle}
+ *          ></div>
+ *      )}
+ *  </CSSMotion>
+ */
 // eslint-disable-next-line prefer-arrow-callback
 export default forwardRef(function CSSMotion(props: CSSMotionProps, ref: ForwardedRef<CSSMotionRef>) {
     const {

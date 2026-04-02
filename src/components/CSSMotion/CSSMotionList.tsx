@@ -2,7 +2,16 @@
  * @Author: bin
  * @Date: 2026-03-30 16:27:00
  * @LastEditors: bin
- * @LastEditTime: 2026-04-02 10:36:00
+ * @LastEditTime: 2026-04-02 10:55:30
+ */
+/**
+ * Portions of this file are derived from rc-motion:
+ * https://github.com/react-component/motion
+ *
+ * The original work is licensed under the MIT License.
+ * Copyright (c) 2019-present afc163
+ *
+ * This file has been modified for this project.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useReducer, useEffect, Fragment } from 'react'
