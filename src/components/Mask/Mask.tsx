@@ -1,3 +1,9 @@
+/**
+ * @Author: bin
+ * @Date: 2026-02-10 10:36:14
+ * @LastEditors: bin
+ * @LastEditTime: 2026-04-02 10:11:44
+ */
 import { useEffect, useRef } from 'react'
 
 import useMergedState from '@/hooks/reactHooks/useMergedState'

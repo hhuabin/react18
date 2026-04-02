@@ -1,3 +1,9 @@
+/**
+ * @Author: bin
+ * @Date: 2026-03-26 10:15:40
+ * @LastEditors: bin
+ * @LastEditTime: 2026-04-02 10:10:57
+ */
 // 默认所有浏览器的 animationEndName = 'animationend'
 export const animationEndName = 'animationend'
 // 默认所有浏览器的 transitionEndName = 'transitionend'

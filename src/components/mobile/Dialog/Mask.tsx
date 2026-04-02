@@ -1,3 +1,9 @@
+/**
+ * @Author: bin
+ * @Date: 2026-03-27 17:02:42
+ * @LastEditors: bin
+ * @LastEditTime: 2026-04-02 10:12:30
+ */
 import { useRef, useEffect } from 'react'
 
 import CSSMotion from '@/components/CSSMotion'

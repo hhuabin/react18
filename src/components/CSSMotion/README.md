@@ -319,6 +319,8 @@ const MemoComponent = memo(ForwardedComponent)
 
 # className 规则
 
+组件会按照`motionName-status-step`（类名-状态-步骤）的给子元素添加类名
+
 当 `motionName="fade"` 时，组件会按阶段生成如下类名：
 
 - `fade-appear`

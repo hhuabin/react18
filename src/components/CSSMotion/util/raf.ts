@@ -1,3 +1,9 @@
+/**
+ * @Author: bin
+ * @Date: 2026-03-26 10:15:41
+ * @LastEditors: bin
+ * @LastEditTime: 2026-04-02 10:10:50
+ */
 // SSR 兼容
 let raf = (callback: FrameRequestCallback) => +setTimeout(callback, 16)
 let caf = (num: number) => clearTimeout(num)

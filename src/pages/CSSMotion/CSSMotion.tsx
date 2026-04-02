@@ -1,6 +1,6 @@
 import { useState, memo, forwardRef, useRef } from 'react'
 
-import CSSMotion, { type CSSMotionRef } from '@/components/CSSMotion'
+import CSSMotion, { CSSMotionList, type CSSMotionRef } from '@/components/CSSMotion'
 
 import './CSSMotion.less'
 import { getRect } from '@/hooks/domHooks/useRect'
@@ -10,6 +10,8 @@ type MemoProps = {
     className?: string;
     style?: React.CSSProperties;
 }
+
+let key = 0
 
 // eslint-disable-next-line prefer-arrow-callback
 const ForwardedComponent = forwardRef(function ForwardedComponent(
@@ -36,7 +38,10 @@ const CSSMotionComponents: React.FC = () => {
     const [enterVisible, setEnterVisible] = useState(true)
     const [memoVisible, setMemoVisible] = useState(true)
 
+    const [keys, seyKeys] = useState(['0'])
+
     const [prepareVisible, setPrepareVisible] = useState(true)
+    const [elementSize, setElementSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 })
     const dialogRef = useRef<CSSMotionRef>(null)
 
     const changeShowAppear = () => {
@@ -57,12 +62,73 @@ const CSSMotionComponents: React.FC = () => {
         // 获取元素尺寸
         const dialogRect = getRect(dialogRef.current.nativeElement)
 
-        console.log('dialogRect', dialogRect)
+        setElementSize({
+            width: dialogRect.width,
+            height: dialogRect.height,
+        })
+    }
 
+    // CSSMotionList
+    const addKeys = () => {
+        seyKeys(keys => [...keys, (++key).toString()])
+    }
+    const removeKeys = () => {
+        seyKeys(keys => keys.slice(1))
+    }
+    const clearKeys = () => {
+        seyKeys(() => [])
     }
 
     return (
         <div className={'css-motion' + ' w-full min-h-full'}>
+            <div className='w-full p-3' key={5}>
+                <div className='w-full text-[2rem]'>CSSMotionList</div>
+                <div className='flex items-center full'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => { addKeys() }}
+                    >
+                        <span>add keys</span>
+                    </button>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => { removeKeys() }}
+                    >
+                        <span>remove keys</span>
+                    </button>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => { clearKeys() }}
+                    >
+                        <span>clear keys</span>
+                    </button>
+                </div>
+                <div className='w-full mt-2'>
+                    <CSSMotionList
+                        component={false}
+                        keys={keys}
+                        motionName='fade'
+                        motionAppear={true}
+                    >
+                        {({ className: motionClassName, style: motionStyle, key }, motionRef) => (
+                            <div
+                                ref={motionRef}
+                                key={key}
+                                className={'css-motion-list' + (motionClassName ? ' ' + motionClassName : '')}
+                                style={motionStyle}
+                            />
+                        )}
+                    </CSSMotionList>
+                </div>
+            </div>
+
+            <div className='w-full p-3 text-[2rem] mt-8'>CSSMotion</div>
             <div className='w-full p-3' key={1}>
                 <div className='flex items-center full'>
                     <div className=''>appear（首次进入）</div>
@@ -163,6 +229,9 @@ const CSSMotionComponents: React.FC = () => {
                     >
                         <span>appear</span>
                     </button>
+                </div>
+                <div className='w-full'>
+                    元素宽度：{elementSize.width}，元素高度：{elementSize.height}
                 </div>
                 <div className='w-full h-[150px] mt-2'>
                     <CSSMotion
