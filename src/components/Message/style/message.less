@@ -22,6 +22,8 @@
         padding: 8px;
         box-sizing: border-box;
         text-align: center;
+        transition-property: transform, opacity;
+        transition-duration: 300ms;
         animation: message-move-in 300ms;
 
         @keyframes message-move-in {
@@ -110,5 +112,21 @@
                 opacity: 0;
             }
         }
+    }
+    .bin-message-move-up-appear {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    .bin-message-move-up-appear-active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    .bin-message-move-up-leave {
+        height: 56px;
+        opacity: 1;
+    }
+    .bin-message-move-up-leave-active {
+        height: 0;
+        opacity: 0;
     }
 }

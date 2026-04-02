@@ -7,3 +7,4 @@
 export { default } from './CSSMotion'
 export { default as CSSMotionList } from './CSSMotionList'
 export * from './CSSMotion'
+export * from './interface'

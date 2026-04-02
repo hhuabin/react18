@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-03-30 16:27:00
  * @LastEditors: bin
- * @LastEditTime: 2026-04-02 10:55:30
+ * @LastEditTime: 2026-04-02 16:12:05
  */
 /**
  * Portions of this file are derived from rc-motion:
@@ -181,8 +181,7 @@ const CSSMotionList: React.FC<CSSMotionListProps> = (props) => {
         dispatch({ type: 'remove', key: removeKey })
     }
 
-    // 渲染需要的参数
-
+    // ======================== Render 渲染 ========================
     const Component = component || Fragment
 
     const motionProps: CSSMotionProps = {}
@@ -198,7 +197,10 @@ const CSSMotionList: React.FC<CSSMotionListProps> = (props) => {
         motionProps[prop] = restProps[prop]
         delete restProps[prop]
     })
-    // 修复 component === false 但是传了 className、style 等标签属性的 bug（Fragment只支持 children 和 key）
+    /**
+     * 修复 component === false 但是传了 className、style 等标签属性的 bug
+     * PS: Fragment只支持 children 和 key；children 被占了，key 不能作为 props 传参
+     */
     const mergedProps = Component === Fragment ? {} : restProps
     return (
         <Component {...mergedProps}>
@@ -208,8 +210,8 @@ const CSSMotionList: React.FC<CSSMotionListProps> = (props) => {
                     <CSSMotion
                         {...motionProps}
                         key={eventProps.key}       // key 是 React 的保留字段，不会作为 props 传给组件
-                        visible={visible}          // 把 keyEntities 中 status 以外的参数透传给 CSSMotion
-                        eventProps={eventProps}
+                        visible={visible}
+                        eventProps={eventProps}    // 当 keyEntity 是对象时，将 status 外的参数透传给 children 的 props
                         onVisibleChanged={changedVisible => {
                             onVisibleChanged?.(changedVisible, { key: eventProps.key })
                             // 动画执行完成，删除该项

@@ -57,6 +57,7 @@ const isSupportTransition = (props: CSSMotionProps) => (!!props.motionName && su
  */
 // eslint-disable-next-line prefer-arrow-callback
 export default forwardRef(function CSSMotion(props: CSSMotionProps, ref: ForwardedRef<CSSMotionRef>) {
+    // 与外界交互的 onVisibleChanged 在 useStatus 中处理
     const {
         motionName,
         visible = true,
