@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-03-30 16:27:00
  * @LastEditors: bin
- * @LastEditTime: 2026-04-02 16:12:05
+ * @LastEditTime: 2026-04-03 09:53:23
  */
 /**
  * Portions of this file are derived from rc-motion:
@@ -96,7 +96,7 @@ type Action =
   | { type: 'remove'; key: React.Key }
 
 // 使用 reducer 代替 getDerivedStateFromProps 做状态合并
-const reducer = (state: KeyObject[], action: Action): KeyObject[] => {
+/* const reducer = (state: KeyObject[], action: Action): KeyObject[] => {
     switch (action.type) {
         case 'diff': {
             const parsedKeyObjects = parseKeys(action.keys as KeyObject[])
@@ -130,7 +130,7 @@ const reducer = (state: KeyObject[], action: Action): KeyObject[] => {
         default:
             return state
     }
-}
+} */
 
 /**
  * @description CSSMotionList 状态机列表组件
@@ -163,22 +163,55 @@ const CSSMotionList: React.FC<CSSMotionListProps> = (props) => {
         ...restProps
     } = props
 
-    const [keyEntities, dispatch] = useReducer(reducer, [])
+    const [keyEntities, setKeyEntities] = useState<KeyObject[]>([])
 
+    // keys 变化，同步修改 keyEntities
     useEffect(() => {
-        dispatch({ type: 'diff', keys: keys as KeyObject[] })
+        setKeyEntities((prevKeyEntities) => {
+            const parsedKeyObjects = parseKeys(keys as KeyObject[])
+            const mixedKeyEntities = diffKeys(prevKeyEntities, parsedKeyObjects)
+
+            // 过滤掉“已 removed 还继续 remove”的项
+            return mixedKeyEntities.filter(entity => {
+                const prevEntity = prevKeyEntities.find(({ key }) => entity.key === key)
+
+                // 删除已经被标记为 removed 的项
+                if (
+                    prevEntity &&
+                    prevEntity.status === STATUS_REMOVED &&
+                    entity.status === STATUS_REMOVE
+                ) {
+                    return false
+                }
+                return true
+            })
+        })
     }, [keys])
 
-    useEffect(() => {
+    // 应该在removeKey之后再判断
+    /* useEffect(() => {
         // 检测是否所有项目都已经被移除，无项目触发 onAllRemoved
         const restKeysCount = keyEntities.filter(({ status }) => status !== STATUS_REMOVED).length
         if (restKeysCount === 0) {
             onAllRemoved?.()
         }
-    }, [keyEntities, onAllRemoved])
+    }, [keyEntities, onAllRemoved]) */
 
     const removeKey = (removeKey: React.Key) => {
-        dispatch({ type: 'remove', key: removeKey })
+        setKeyEntities((prevKeyEntities) => {
+            const nextKeyEntities = prevKeyEntities.map(entity => (
+                entity.key === removeKey
+                    ? { ...entity, status: STATUS_REMOVED }
+                    : entity
+            ))
+            // 如果 keys 被删干净，触发 onAllRemoved
+            const restKeysCount = nextKeyEntities.filter(({ status }) => status !== STATUS_REMOVED).length
+            if (restKeysCount === 0) {
+                onAllRemoved?.()
+            }
+
+            return nextKeyEntities
+        })
     }
 
     // ======================== Render 渲染 ========================
@@ -211,7 +244,7 @@ const CSSMotionList: React.FC<CSSMotionListProps> = (props) => {
                         {...motionProps}
                         key={eventProps.key}       // key 是 React 的保留字段，不会作为 props 传给组件
                         visible={visible}
-                        eventProps={eventProps}    // 当 keyEntity 是对象时，将 status 外的参数透传给 children 的 props
+                        eventProps={eventProps}    // 当 keyEntity 是对象时，将 status 外的参数（包含 key）透传给 children 的 props
                         onVisibleChanged={changedVisible => {
                             onVisibleChanged?.(changedVisible, { key: eventProps.key })
                             // 动画执行完成，删除该项
