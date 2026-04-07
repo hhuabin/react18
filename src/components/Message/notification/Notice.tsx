@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-02 15:15:48
  * @LastEditors: bin
- * @LastEditTime: 2026-04-02 20:13:33
+ * @LastEditTime: 2026-04-07 16:37:17
  */
 import { useState, useEffect } from 'react'
 
@@ -14,6 +14,8 @@ export interface NoticeProps extends Omit<NoticeConfig, 'onClose'> {
     eventKey: React.Key;                         // 唯一 key
 
     onNoticeClose?: (key: React.Key) => void;    // 手动关闭 / 倒计时结束触发
+
+    hovering?: boolean;                          // 列表的鼠标悬停状态；有需要鼠标悬停在列表任意一元素，就停止所有提示的计时，可以开为 true
 }
 
 /**
@@ -43,6 +45,7 @@ const Notice: React.FC<NoticeProps & { times?: number }> = (props) => {
         onNoticeClose,
 
         times,
+        hovering: forcedHovering = false,
     } = props
 
     // 标记鼠标是否悬停在 notice 提示上
@@ -50,6 +53,11 @@ const Notice: React.FC<NoticeProps & { times?: number }> = (props) => {
     // 记录 提示显示 已经“消耗掉”的时间（毫秒）
     const [spentTime, setSpentTime] = useState(0)
 
+    // 进度条百分比
+    const [percent, setPercent] = useState(0)
+
+    // 鼠标悬停时，是否暂停倒计时
+    const mergedHovering = forcedHovering || hovering
     // 进度条有没有被开启
     const mergedShowProgress = duration > 0 && showProgress
 
@@ -63,7 +71,7 @@ const Notice: React.FC<NoticeProps & { times?: number }> = (props) => {
     // 控制自动关闭
     useEffect(() => {
         // 只有 duration > 0 才会启动自动关闭
-        if (!hovering && duration > 0) {
+        if (!mergedHovering && duration > 0) {
             const start = Date.now() - spentTime
 
             const timeout = setTimeout(() => {
@@ -78,14 +86,39 @@ const Notice: React.FC<NoticeProps & { times?: number }> = (props) => {
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [duration, hovering, times])
+    }, [duration, mergedHovering, times])
 
     // 控制进度条动画
     useEffect(() => {
-        if (!hovering && mergedShowProgress && (pauseOnHover || spentTime === 0)) {
-            
+        if (!mergedHovering && mergedShowProgress && (pauseOnHover || spentTime === 0)) {
+            const start = performance.now()
+            let animationFrame: number
+
+            const calculate = () => {
+                cancelAnimationFrame(animationFrame)
+                animationFrame = requestAnimationFrame((timestamp) => {
+                    const runtime = timestamp + spentTime - start
+                    const progress = Math.min(runtime / duration, 1)
+                    setPercent(progress * 100)
+                    if (progress < 1) {
+                        calculate()
+                    }
+                })
+            }
+
+            calculate()
+
+            return () => {
+                if (pauseOnHover) {
+                    cancelAnimationFrame(animationFrame)
+                }
+            }
         }
-    }, [duration, spentTime, hovering, mergedShowProgress, times])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [duration, spentTime, mergedHovering, mergedShowProgress, times])
+
+    // ======================== Progress ========================
+    const validPercent = 100 - (!percent || percent < 0 ? 0 : percent > 100 ? 100 : percent)
 
     return (
         <div
@@ -131,6 +164,13 @@ const Notice: React.FC<NoticeProps & { times?: number }> = (props) => {
                                 )
                     }
                 </button>
+            )}
+
+            {/* 进度条 */}
+            {mergedShowProgress && (
+                <progress className={`${prefixCls}-notice-progress`} max="100" value={validPercent}>
+                    {validPercent + '%'}
+                </progress>
             )}
         </div>
     )

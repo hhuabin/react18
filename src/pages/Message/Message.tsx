@@ -1,12 +1,20 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import message, { type MessageType } from '@/components/Message'
+import { useNotification } from '@/components/Message/notification'
 
 const MessageComponent: React.FC = () => {
 
     const [messageApi, contextHolder] = message.useMessage()
 
     const messageRef = useRef<MessageType | null>(null)
+    const [notificationApi, notificatioHolder] = useNotification({
+        prefixCls: 'bin-message',
+        motion: {
+            motionName: 'bin-message-move-up',
+        },
+        onAllRemoved: () => console.log('all removed'),
+    })
 
     const getCloseFunc = () => {
         if (messageRef.current) return
@@ -48,7 +56,45 @@ const MessageComponent: React.FC = () => {
 
     return (
         <>
+            { notificatioHolder }
+
             <div className='w-full mb-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>基础组件 notification 的 hooks 调用</div>
+                <div className='w-full px-4'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => {
+                            notificationApi.open({
+                                content: 'This is a notification',
+                            })
+                        }}
+                    >
+                        <span>notificationApi.open</span>
+                    </button>
+
+                    {/* <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => notificationApi.close('key')}
+                    >
+                        <span>notificationApi.close</span>
+                    </button> */}
+
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => notificationApi.destroy()}
+                    >
+                        <span>notificationApi.destroy</span>
+                    </button>
+                </div>
+            </div>
+
+            <div className='w-full my-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>基础用法</div>
                 <div className='w-full px-4'>
                     <button
@@ -112,7 +158,7 @@ const MessageComponent: React.FC = () => {
                 </div>
             </div>
 
-            <div className='w-full mb-5'>
+            <div className='w-full my-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>关闭函数</div>
                 <div className='w-full px-4'>
                     <button
@@ -145,7 +191,7 @@ const MessageComponent: React.FC = () => {
                 </div>
             </div>
 
-            <div className='w-full mb-5'>
+            <div className='w-full my-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>实例化 Hooks</div>
                 <div className='w-full px-4'>
                     <button
@@ -170,7 +216,7 @@ const MessageComponent: React.FC = () => {
 
             { contextHolder }
 
-            <div className='w-full mb-5'>
+            <div className='w-full my-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>手动关闭</div>
                 <div className='w-full px-4'>
                     <button
@@ -188,7 +234,7 @@ const MessageComponent: React.FC = () => {
                 </div>
             </div>
 
-            <div className='w-full mb-5'>
+            <div className='w-full my-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>通过唯一 key 更新消息内容</div>
                 <div className='w-full px-4'>
                     <button

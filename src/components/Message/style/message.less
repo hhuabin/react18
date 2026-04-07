@@ -9,11 +9,10 @@
     // --content-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), 0 0 8px rgba(255, 255, 255, 0.08);
 
     position: fixed;
-    top: 0;
+    top: 8px;
     left: 0;
     width: 100%;
-    margin-top: 8px;
-    z-index: 9999;
+    z-index: 2049;
     pointer-events: none;
 
     .bin-message-notice-wrapper {
@@ -38,6 +37,7 @@
         }
         
         .bin-message-notice {
+            position: relative;
             box-sizing: border-box;
 
             .bin-message-notice-content {
@@ -49,13 +49,13 @@
                 background: var(--bg-color);
                 box-shadow: var(--content-shadow);
                 pointer-events: all;
+                font-size: 14px;
+                line-height: 22px;
+                color: var(--color-text);
 
                 .bin-message-custom-content {
                     display: flex;
                     align-items: center;
-                    font-size: 14px;
-                    line-height: 22px;
-                    color: var(--color-text);
 
                     .bin-message-icon {
                         flex: none;
@@ -94,6 +94,57 @@
                     }
                 }
             }
+
+            .bin-message-notice-close {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+
+                flex: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: calc(1em + 8px);
+                height: calc(1em + 8px);
+                padding: 4px;
+                margin-left: 4px;
+                transition: background-color 0.2s, color 0.2s;
+                color: rgba(0, 0, 0, 0.45);
+                cursor: pointer;
+                pointer-events: all;
+                &:hover {
+                    color: rgba(0, 0, 0, 0.88);
+                    background-color: rgba(0, 0, 0, 0.06);
+                }
+            }
+            .bin-message-notice-progress {
+                position: absolute;
+                left: 8px;
+                right: 8px;
+                bottom: 0;
+                display: block;
+                appearance: none;
+                width: calc(100% - 8px * 2);
+                height: 2px;
+                pointer-events: all;
+                &::-webkit-progress-bar {
+                    border-radius: 1px;
+                    background-color: rgba(0, 0, 0, 0.04);
+                }
+                &::-webkit-progress-value {
+                    border-radius: 1px;
+                    background: linear-gradient(90deg, #69b1ff, #1677ff);
+                }
+            }
+        }
+        .bin-message-notice-closable {
+            position: relative;
+
+            /*
+                message 不需要原生的 close，没位置放
+                可以自定义 close 然后放到 content 中
+                这里只是随便写写
+            */
         }
     }
 
@@ -113,20 +164,23 @@
             }
         }
     }
-    .bin-message-move-up-appear {
+    .bin-message-move-up-appear,
+    .bin-message-move-up-anter {
         transform: translateY(-100%);
         opacity: 0;
     }
+    .bin-message-move-up-enter-active,
     .bin-message-move-up-appear-active {
         transform: translateY(0);
         opacity: 1;
     }
     .bin-message-move-up-leave {
-        height: 56px;
+        transform: translateY(0);
         opacity: 1;
     }
     .bin-message-move-up-leave-active {
-        height: 0;
+        transform: translateY(-100%);
         opacity: 0;
+        transition: all 0.3s ease-in;
     }
 }
