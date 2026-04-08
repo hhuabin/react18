@@ -2,127 +2,95 @@
  * @Author: bin
  * @Date: 2025-06-30 15:24:14
  * @LastEditors: bin
- * @LastEditTime: 2026-02-10 14:37:27
+ * @LastEditTime: 2026-04-08 15:18:38
  */
 /**
  * 参考源码：ant-design/components/message/useMessage.tsx
- * notification/src/Notifications.tsx
  */
 import {
-    useState, useRef, forwardRef, useImperativeHandle,
-    type ForwardedRef,
+    useRef,
+    forwardRef, useImperativeHandle, type ForwardedRef,
 } from 'react'
-import { createPortal } from 'react-dom'
 
-import { wrapPromiseFn } from './utils/utils'
+import { useNotification, type NotificationAPI } from './notification'
+
+import { wrapPromiseFn } from './utils/wrapPromiseFn'
 import type {
-    NoticeType, ConfigOptions, ArgsProps, MessageConfig,
+    NoticeType, ConfigOptions, ArgsProps,
     OpenTask, MessageType, MessageInstance,
 } from './Message.d'
+import PureContent from './PureContent'
 
-import NoticeList from './NoticeList'
-
-type NotificationsRef = {
-    open: (config: ArgsProps) => void;
-    close: (key: React.Key) => void;
-    destroy: () => void;
+type HolderProps = ConfigOptions & {
+    onAllRemoved?: VoidFunction;
+}
+interface HolderRef extends NotificationAPI {
+    prefixCls: string;
+    className?: string;
+    style?: React.CSSProperties;
 }
 
-// const DEFAULT_DURATION = 3000
+const DEFAULT_DURATION = 3000
 
 let keyIndex = 0      // message key
 
-// 合并对象
-const mergeConfig = <T extends object>(...objList: Partial<T>[]): T => {
-    const clone: T = {} as T
-
-    objList.forEach((obj) => {
-        if (obj) {
-            (Object.keys(obj) as Array<keyof T>).forEach((key) => {
-                const val = obj[key]
-
-                if (val !== undefined) {
-                    clone[key] = val as T[keyof T]
-                }
-            })
-        }
-    })
-
-    return clone
-}
-
 /**
- * @description 作用
- * 1. 维护消息列表 configList
- * 2. 渲染消息列表
- * 3. 消息列表 configList 将会被 <NoticeList /> 监控
+ * @description 代理 notification 组件
+ * 使用 useNotification 注册 notification
  */
 // eslint-disable-next-line react-refresh/only-export-components, prefer-arrow-callback
-const RCNotifications = forwardRef(function RCNotifications(props: ConfigOptions, ref: ForwardedRef<NotificationsRef>) {
+const NotificationHolder = forwardRef(function NotificationHolder(props: HolderProps, ref: ForwardedRef<HolderRef>) {
 
     const {
+        prefixCls = 'bin-message',
         getContainer = () => document.body,
-        ...shareConfig
-    } = props        // 获取 message.config() 的参数
+        maxCount,
+        className,         // useInternalMessage 截走，不用传给 useNotification 使用
+        style,             // useInternalMessage 截走，不用传给 useNotification 使用
+        transitionName = 'move-up',
+        onAllRemoved,
 
-    const [messageConfigList, setMessageConfigList] = useState<MessageConfig[]>([])
+        duration = DEFAULT_DURATION,
+        pauseOnHover,
+    } = props
 
-    const onNoticeClose = (key: React.Key) => {
-        const config = messageConfigList.find((item) => item.key === key)
-        config?.onClose?.()
-        setMessageConfigList((list) => list.filter((item) => item.key !== key))
-    }
+    const [api, holder] = useNotification({
+        prefixCls,
+        getContainer,
+        motion: {
+            motionName: `${prefixCls}-${transitionName}`,
+        },
+        maxCount,
+        onAllRemoved,
+
+        duration,
+        pauseOnHover,
+        // showProgress: false,
+        // closable: false,
+    })
 
     useImperativeHandle(ref, () => ({
-        open: (config: ArgsProps) => {
-            // 合并全局 defaultGlobalConfig 与传入的 config
-            const mergedConfig = mergeConfig<MessageConfig>(shareConfig, config)
-
-            // 添加 config 进入队列
-            setMessageConfigList((messageConfigList) => {
-                const clone = [...messageConfigList]
-
-                // Replace if exist
-                const configIndex = clone.findIndex((item) => item.key === mergedConfig.key)
-                if (configIndex >= 0) {
-                    // configList 存在 config.key
-                    clone[configIndex] = mergedConfig
-                } else {
-                    // 添加进入队列
-                    clone.push(mergedConfig)
-                }
-
-                return clone
-            })
-        },
-        close: (key: React.Key) => {
-            onNoticeClose(key)
-        },
-        destroy: () => {
-            setMessageConfigList([])
-        },
+        ...api,
+        // 以下属性倒传给 useInternalMessage 使用
+        // 因为 useInternalMessage 的 messageConfig 可能是 undefined，倒传可以避免 messageConfig 解构
+        // 但是也可以使用 messageConfig?.className 表示，prefixCls 这里赋了默认值，所以一定要倒传
+        prefixCls,
+        className,
+        style,
     }))
 
-    if (!getContainer()) return null
-
-    return createPortal(
-        <NoticeList
-            messageConfigList={messageConfigList}
-            onNoticeClose={onNoticeClose}
-        ></NoticeList>,
-        getContainer(),
-    )
+    return holder
 })
 
 /**
- * @description 创建 Message 实例，受理 Message 转发过来的方法，将非 open 的打开方法转发给 open 方法
- * @param { HolderProps } messageConfig message 全局配置；默认值：来自 Message.tsx 的 getGlobalContext()
+ * @description 创建 Message 实例，将非 open 的打开方法转发给 open 方法
+ * @param { HolderProps } messageConfig message 注册配置
  * @attention message.open() / message.info()... 方法不会给 messageConfig 传值，而是直接调用 useInternalMessage().open()
  * @returns { readonly [MessageInstance, React.ReactElement] }
  */
-export const useInternalMessage = (messageConfig?: ConfigOptions): readonly [MessageInstance, React.ReactElement] => {
+export const useInternalMessage = (messageConfig?: HolderProps): readonly [MessageInstance, React.ReactElement] => {
 
-    const notificationsRef = useRef<NotificationsRef>(null)
+    const notificationsRef = useRef<HolderRef | null>(null)
 
     /**
      * Hooks 闭包函数（IIFE）
@@ -149,24 +117,57 @@ export const useInternalMessage = (messageConfig?: ConfigOptions): readonly [Mes
                 return fakeResult
             }
 
-            // 赋上默认的 key 值
-            const { key, onClose, ...restConfig } = config
+            const { open: originOpen, prefixCls, className, style } = notificationsRef.current!
+
+            // 把需要改造的属性结构出来
+            const {
+                content,
+                type,
+                icon,
+                showCloseBtn,
+
+                key,
+                onClose,
+                ...restConfig
+            } = config
+
             let mergedKey: React.Key = key!
             if (mergedKey === undefined || mergedKey === null) {
                 keyIndex += 1
                 mergedKey = `message-${keyIndex}`
             }
 
+            // resolve() 将会调用 wrapPromiseFn 的 .then() 方法
             return wrapPromiseFn((resolve: VoidFunction) => {
-                notificationsRef.current!.open({
+                originOpen({
                     ...restConfig,
                     key: mergedKey,
+                    // 自定义内容
+                    content: (
+                        <PureContent
+                            prefixCls={prefixCls}
+                            className={className}
+                            style={style}
+
+                            type={type}
+                            icon={icon}
+                            showCloseBtn={showCloseBtn}
+                            onClose={() => {
+                                // 调用关闭函数
+                                close(mergedKey)
+                            }}
+                        >
+                            { content }
+                        </PureContent>
+                    ),
+                    placement: 'top',
+                    closable: false,       // 使用自定义关闭按钮
                     onClose: () => {
                         onClose?.()
-                        resolve()
+                        resolve()    // wrapPromiseFn.then
                     },
                 })
-
+                // 返回关闭函数
                 return () => {
                     close(mergedKey)
                 }
@@ -200,7 +201,7 @@ export const useInternalMessage = (messageConfig?: ConfigOptions): readonly [Mes
                 } else {
                     config = { content: jointContent }
                 }
-                // 合并配置
+                // 合并 显示时长 和 关闭后执行的函数
                 let mergedDuration: number | undefined
                 let mergedOnClose: VoidFunction | undefined
                 if (typeof duration === 'function') {
@@ -224,7 +225,7 @@ export const useInternalMessage = (messageConfig?: ConfigOptions): readonly [Mes
 
     return [
         wrapAPI,
-        <RCNotifications ref={notificationsRef} {...messageConfig} />,
+        <NotificationHolder ref={notificationsRef} {...messageConfig} />,
     ] as const
 }
 

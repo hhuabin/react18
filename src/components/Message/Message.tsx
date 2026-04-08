@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-06-10 11:22:20
  * @LastEditors: bin
- * @LastEditTime: 2026-01-14 16:44:22
+ * @LastEditTime: 2026-04-08 15:00:35
  */
 /**
  * 参考源码：ant-design/components/message/index.tsx
@@ -28,7 +28,7 @@ import type {
 } from './Message.d'
 import useMessage, { useInternalMessage } from './useMessage'
 import { unstableSetRender } from './utils/reactRender'
-import { wrapPromiseFn } from './utils/utils'
+import { wrapPromiseFn } from './utils/wrapPromiseFn'
 
 interface GlobalHolderRef {
     instance: MessageInstance;
@@ -45,7 +45,7 @@ let defaultGlobalConfig: ConfigOptions = {}       // 全局配置
 // 获取全局配置
 const getGlobalContext = (): ConfigOptions => {
     // const { getContainer, duration = DEFAULT_DURATION, rtl, maxCount, top } = defaultGlobalConfig
-    const { getContainer, duration = DEFAULT_DURATION, prefixCls = 'bin' } = defaultGlobalConfig
+    const { getContainer, duration = DEFAULT_DURATION, prefixCls = 'bin-message' } = defaultGlobalConfig
     const mergedContainer = getContainer?.() || document.body   // 设置默认挂载点是 body
     return { getContainer: () => mergedContainer, duration, prefixCls }
 }
@@ -231,7 +231,7 @@ const typeOpen = (type: NoticeType, args: Parameters<TypeOpen>): MessageType => 
     /**
      * @description 将需要执行的代码，放入 Promise 中，同时提供 Promise 的 Fulfilled（成功）状态出口方法 resolve()
      *  1. 只需要调用 resolve() 即可触发 Promise 的 Fulfilled 状态
-     *  2. 将 result 的 then() 方法改写为 Promise 的 then() 方法
+     *  2. 将 result 的 .then() 方法改写为 Promise 的 .then() 方法
      *  3. 返回的可执行函数中需要包含 resolve() 方法，作为 wrapPromiseFn 的出口函数
      */
     const result: MessageType = wrapPromiseFn((resolve: VoidFunction) => {

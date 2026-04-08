@@ -74,14 +74,14 @@ const MessageComponent: React.FC = () => {
                         <span>notificationApi.open</span>
                     </button>
 
-                    {/* <button
+                    <button
                         type='button'
                         className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
                             text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
-                        onClick={() => notificationApi.close('key')}
+                        onClick={() => notificationApi.close('notification')}
                     >
                         <span>notificationApi.close</span>
-                    </button> */}
+                    </button>
 
                     <button
                         type='button'

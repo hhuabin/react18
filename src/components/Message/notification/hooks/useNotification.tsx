@@ -11,7 +11,7 @@ const defaultGetContainer = () => document.body
 type OptionalConfig = Partial<OpenConfig>
 
 export interface NotificationConfig {
-    prefixCls?: string;                                  // 前缀类名
+    prefixCls?: string;                        // 前缀类名
     // 自定义容器。它会重复调用，这意味着你应该返回相同的容器元素
     getContainer?: () => HTMLElement | ShadowRoot;       // 容器元素
     motion?: CSSMotionProps;                   // CSSMotion 动画配置，相较于 rc-notification 有改动
@@ -20,10 +20,10 @@ export interface NotificationConfig {
     style?: React.CSSProperties;               // 样式，相较于 rc-notification 有改动
     onAllRemoved?: VoidFunction;               // 所有通知全部移除时触发
 
-    // useNotification 的默认配置，统一消息提示的默认配置
+    // useNotification 给单个消息的默认配置。下面四个属性将会作为 open 方法的默认参数
     duration?: number;
-    showProgress?: boolean;
     pauseOnHover?: boolean;
+    showProgress?: boolean;
     closable?: boolean | ({ closeIcon?: React.ReactNode } & React.AriaAttributes);
 }
 
@@ -70,6 +70,11 @@ const mergeConfig = <T extends object>(...objList: Partial<T>[]): T => {
     return clone
 }
 
+/**
+ * @description 创建一个通知组件
+ * @param rootConfig 注册配置
+ * @returns [NotificationAPI, React.ReactElement]
+ */
 export default function useNotification(
     rootConfig: NotificationConfig = {},
 ): [NotificationAPI, React.ReactElement] {

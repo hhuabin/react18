@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-02 15:15:48
  * @LastEditors: bin
- * @LastEditTime: 2026-04-07 16:37:17
+ * @LastEditTime: 2026-04-08 15:30:52
  */
 import { useState, useEffect } from 'react'
 
@@ -22,9 +22,10 @@ export interface NoticeProps extends Omit<NoticeConfig, 'onClose'> {
  * @description Notice 提示框
  * 功能点：
  *  1. 手动关闭消息
- *  2. 倒计时关闭消息
+ *  2. 倒计时结束关闭消息
  *  3. 鼠标移入消息，暂停倒计时
  *  4. 鼠标移出消息，恢复倒计时
+ *  5. 管理倒计时 progress
  * @returns  Notice
  */
 const Notice: React.FC<NoticeProps & { times?: number }> = (props) => {
@@ -33,13 +34,13 @@ const Notice: React.FC<NoticeProps & { times?: number }> = (props) => {
         prefixCls,
         className,
         style,
-        duration = 4500,             // 自动关闭的延时，单位秒。设为 0 时不自动关闭
+        duration = 4500,             // 自动关闭的延时，单位毫秒。设为 0 时不自动关闭
+        pauseOnHover = true,         // 悬停时是否暂停计时器，默认值为 true
         showProgress = false,        // 是否展示进度条
-        pauseOnHover = true,         // 悬停时是否暂停计时器，默认值为 true；
 
         eventKey,
         content,
-        closable,
+        closable = false,
 
         onClick,                     // 点击提示时触发
         onNoticeClose,

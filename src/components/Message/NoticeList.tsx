@@ -2,18 +2,21 @@
  * @Author: bin
  * @Date: 2025-07-11 18:23:24
  * @LastEditors: bin
- * @LastEditTime: 2026-03-31 16:16:36
+ * @LastEditTime: 2026-04-08 10:17:49
  */
 /**
  * 参考源码：notification/src/NoticeList.tsx
  */
-import { useState, useEffect, useContext } from 'react'
+import {
+    useState, useEffect, useContext,
+    forwardRef, useImperativeHandle, type ForwardedRef,
+} from 'react'
+import { createPortal } from 'react-dom'
 
 import { ConfigContext } from '@/components/ConfigProvider/context'
-import type { MessageConfig } from './Message.d'
+import type { ConfigOptions, ArgsProps, MessageConfig } from './Message.d'
 import renderIcon from './utils/renderIcon'
 import './style/message.less'
-
 import { diffKeys } from './utils/oldDiff'
 
 type NoticeConfig = MessageConfig & {
@@ -21,14 +24,19 @@ type NoticeConfig = MessageConfig & {
 }
 
 type NoticeListProps = {
-    messageConfigList: MessageConfig[];           // 被监控的消息列表
-    onNoticeClose?: (key: React.Key) => void;     // 删除消息函数
+    messageConfigList: MessageConfig[];            // 被监控的消息列表
+    onNoticeClose?: (key: React.Key) => void;      // 删除消息函数
 }
-
 type NoticeProps = {
     notice: NoticeConfig;
-    onNoticeClose?: (key: React.Key) => void;       // 隐藏该通知，触发关闭动画
-    onNoticeDelete?: (key: React.Key) => void;      // 删除该通知
+    onNoticeClose?: (key: React.Key) => void;      // 隐藏该通知，触发关闭动画
+    onNoticeDelete?: (key: React.Key) => void;     // 删除该通知
+}
+
+export type NotificationsRef = {
+    open: (config: ArgsProps) => void;
+    close: (key: React.Key) => void;
+    destroy: () => void;
 }
 
 const DEFAULT_DURATION = 3000
@@ -119,10 +127,9 @@ const RCNotice: React.FC<NoticeProps> = (props) => {
  * 当 messageConfigList 原来的消息被删除时，noticeList 的对应元素添加 { isClose: true }
  * 当 visible = false 时，<Notice /> 执行关闭动画，动画完成时，删除 noticeList 的对应元素
  */
-const RCNoticeList: React.FC<NoticeListProps> = (props) => {
+export const RCNoticeList: React.FC<NoticeListProps> = (props) => {
 
     const { messageConfigList } = props
-
     const [noticeList, setNoticeList] = useState<NoticeConfig[]>([])
 
     // 获取全局配置，修改主题等
@@ -210,4 +217,83 @@ const RCNoticeList: React.FC<NoticeListProps> = (props) => {
     }
 }
 
-export default RCNoticeList
+// 合并对象
+const mergeConfig = <T extends object>(...objList: Partial<T>[]): T => {
+    const clone: T = {} as T
+
+    objList.forEach((obj) => {
+        if (obj) {
+            (Object.keys(obj) as Array<keyof T>).forEach((key) => {
+                const val = obj[key]
+
+                if (val !== undefined) {
+                    clone[key] = val as T[keyof T]
+                }
+            })
+        }
+    })
+    return clone
+}
+
+/**
+ * @description 作用
+ * 1. 维护消息列表 configList
+ * 2. 渲染消息列表
+ * 3. 消息列表 configList 将会被 <NoticeList /> 监控
+ */
+// eslint-disable-next-line react-refresh/only-export-components, prefer-arrow-callback
+export const RCNotifications = forwardRef(function RCNotifications(props: ConfigOptions, ref: ForwardedRef<NotificationsRef>) {
+
+    const {
+        getContainer = () => document.body,
+        ...shareConfig
+    } = props        // 获取 message.config() 的参数
+
+    const [messageConfigList, setMessageConfigList] = useState<MessageConfig[]>([])
+
+    const onNoticeClose = (key: React.Key) => {
+        const config = messageConfigList.find((item) => item.key === key)
+        config?.onClose?.()
+        setMessageConfigList((list) => list.filter((item) => item.key !== key))
+    }
+
+    useImperativeHandle(ref, () => ({
+        open: (config: ArgsProps) => {
+            // 合并全局 defaultGlobalConfig 与传入的 config
+            const mergedConfig = mergeConfig<MessageConfig>(shareConfig, config)
+
+            // 添加 config 进入队列
+            setMessageConfigList((messageConfigList) => {
+                const clone = [...messageConfigList]
+
+                // Replace if exist
+                const configIndex = clone.findIndex((item) => item.key === mergedConfig.key)
+                if (configIndex >= 0) {
+                    // configList 存在 config.key
+                    clone[configIndex] = mergedConfig
+                } else {
+                    // 添加进入队列
+                    clone.push(mergedConfig)
+                }
+
+                return clone
+            })
+        },
+        close: (key: React.Key) => {
+            onNoticeClose(key)
+        },
+        destroy: () => {
+            setMessageConfigList([])
+        },
+    }))
+
+    if (!getContainer()) return null
+
+    return createPortal(
+        <RCNoticeList
+            messageConfigList={messageConfigList}
+            onNoticeClose={onNoticeClose}
+        ></RCNoticeList>,
+        getContainer(),
+    )
+})

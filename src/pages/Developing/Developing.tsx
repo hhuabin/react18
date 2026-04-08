@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-06-09 10:10:06
  * @LastEditors: bin
- * @LastEditTime: 2026-02-11 16:31:53
+ * @LastEditTime: 2026-04-08 17:47:09
  */
 import { useEffect } from 'react'
 
@@ -15,7 +15,7 @@ const Developing: React.FC = () => {
     }, [])
 
     return (
-        <Button onClick={() => message.info('Developing')}>
+        <Button onClick={() => message.info('Developing', 0)}>
             Developing
         </Button>
     )

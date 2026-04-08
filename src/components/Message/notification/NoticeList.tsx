@@ -15,7 +15,7 @@
  */
 import { CSSMotionList, type CSSMotionProps } from '@/components/CSSMotion'
 import Notice from './Notice'
-import type { Placement, NoticeConfig, OpenConfig, InnerOpenConfig } from './interface.d'
+import type { Placement, OpenConfig, InnerOpenConfig } from './interface.d'
 import { clsx } from './utils/clsx'
 
 export interface NoticeListProps {
@@ -35,8 +35,8 @@ export interface NoticeListProps {
 
 /**
  * @description NoticeList 调度 / 动画
- * 1. 渲染通知列表
- * 2. 控制动画
+ * 1. 接收 configList，渲染通知列表
+ * 2. 将 configList 传给 CSSMotionList 控制动画
  * 3. 管理“删除完成”事件
  */
 const NoticeList: React.FC<NoticeListProps> = (props) => {
@@ -72,8 +72,9 @@ const NoticeList: React.FC<NoticeListProps> = (props) => {
                 motionRef,
             ) => {
                 /**
-                 * 1. config 在 keys 中，一定会作为 eventProps 传给 CSSMotion 的 children
-                 * 2. 解构出 config 之后，在 config 中继续解构 key
+                 * 1. config 来自于 open 方法的参数
+                 * 2. config 在 keys 中，一定会作为 eventProps 传给 CSSMotion 的 children
+                 * 3. 解构出 config 之后，在 config 中继续解构 key
                  */
                 const {
                     key,
@@ -89,10 +90,10 @@ const NoticeList: React.FC<NoticeListProps> = (props) => {
                         ref={motionRef}
                     >
                         <Notice
-                            {...restConfig}
-                            prefixCls={prefixCls}
                             className={className}
                             style={style}
+                            {...restConfig}
+                            prefixCls={prefixCls}
                             times={times}
                             key={key}
                             eventKey={key}
