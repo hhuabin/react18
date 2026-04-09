@@ -11,7 +11,7 @@ import { createPortal } from 'react-dom'
 
 import type { ConfigOptions, ArgsProps } from '../Message.d'
 
-import NoticeList from '../NoticeList'
+import { RCNoticeList } from '../NoticeList'
 
 interface OpenTask {
     type: 'open';
@@ -110,10 +110,10 @@ const Notifications = forwardRef((props: NotificationsProps, ref: ForwardedRef<N
     if (!container) return null
 
     return createPortal(
-        <NoticeList
+        <RCNoticeList
             messageConfigList={configList as any}
             onNoticeClose={onNoticeClose}
-        ></NoticeList>,
+        ></RCNoticeList>,
         container,
     )
 })

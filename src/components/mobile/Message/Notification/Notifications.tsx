@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-02 11:17:09
  * @LastEditors: bin
- * @LastEditTime: 2026-04-09 12:48:09
+ * @LastEditTime: 2026-04-09 15:00:55
  */
 import {
     useState, useRef, useEffect,
@@ -122,10 +122,11 @@ const Notifications = forwardRef(function Notifications(props: NotificationsProp
             if (placement) {
                 if (!nextPlacements[placement]) nextPlacements[placement] = []
                 // nextPlacements[placement] = nextPlacements[placement] || []
-                nextPlacements[placement].push(config)
+                nextPlacements[placement]!.push(config)
             }
         })
 
+        // 避免动画没执行结束就清理了 NoticeList
         Object.keys(placements).forEach((placement) => {
             nextPlacements[placement as keyof Placements] ??= []
             // nextPlacements[placement] = nextPlacements[placement] || []

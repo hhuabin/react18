@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-07 16:40:37
  * @LastEditors: bin
- * @LastEditTime: 2026-04-08 20:36:05
+ * @LastEditTime: 2026-04-09 14:55:41
  */
 import { useState, useRef, useEffect, useMemo } from 'react'
 
@@ -67,7 +67,7 @@ const mergeConfig = <T extends object>(...objList: Partial<T>[]): T => {
                 const val = obj[key]
 
                 if (val !== undefined) {
-                    clone[key] = val
+                    clone[key] = val as T[keyof T]
                 }
             })
         }
