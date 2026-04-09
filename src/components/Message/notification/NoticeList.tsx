@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-02 11:25:45
  * @LastEditors: bin
- * @LastEditTime: 2026-04-07 16:38:21
+ * @LastEditTime: 2026-04-09 11:34:24
  */
 /**
  * Portions of this file are derived from rc-notification:
@@ -25,7 +25,7 @@ export interface NoticeListProps {
     motion?: CSSMotionProps;                   // 动画配置
 
     // Events
-    onAllNoticeRemoved?: () => void;
+    onAllNoticeRemoved?: (placement: Placement) => void;
     onNoticeClose?: (key: React.Key) => void;  // 关闭通知
 
     // Common
@@ -65,7 +65,7 @@ const NoticeList: React.FC<NoticeListProps> = (props) => {
             keys={keys}
             motionAppear={true}
             {...motion}
-            onAllRemoved={() => onAllNoticeRemoved?.()}
+            onAllRemoved={() => onAllNoticeRemoved?.(placement)}
         >
             {(
                 { className: motionClassName, style: motionStyle, index: motionIndex, config },

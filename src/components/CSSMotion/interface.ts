@@ -98,7 +98,7 @@ export interface CSSMotionProps {
     onLeaveActive?: MotionEventHandler;
     onLeaveEnd?: MotionEndEventHandler;
 
-    onVisibleChanged?: (visible: boolean) => void;
+    onVisibleChanged?: (visible: boolean) => void;       // 动画完成后触发
 
     // 这就意味着，CSSMotion 的子元素只能是 render props
     children?: (

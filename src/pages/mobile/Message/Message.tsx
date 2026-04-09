@@ -27,6 +27,8 @@ const Message: React.FC = () => {
 
     return (
         <>
+            {contextHolder}
+
             <div className='w-full mb-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>基础用法</div>
                 <div className='w-full px-4'>
@@ -82,6 +84,29 @@ const Message: React.FC = () => {
             </div>
 
             <div className='w-full my-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>Hooks 调用（跟随组件一起销毁）</div>
+                <div className='w-full px-4'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => messageApi.info('This is an info message')}
+                    >
+                        <span>messageApi.info</span>
+                    </button>
+
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => messageApi.destroy()}
+                    >
+                        <span>messageApi.destroy</span>
+                    </button>
+                </div>
+            </div>
+
+            <div className='w-full my-5'>
                 <div className='w-full p-4 text-[16px] leading-[24px]'>可以通过唯一的 key 来更新内容</div>
                 <div className='w-full px-4'>
                     <button
@@ -123,6 +148,24 @@ const Message: React.FC = () => {
                         onClick={() => openCustomMessage()}
                     >
                         <span>openCustomMessage</span>
+                    </button>
+                </div>
+            </div>
+
+            <div className='w-full my-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>禁止背景点击（移动端独有）</div>
+                <div className='w-full px-4'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => message.info({
+                            content: 'This is a message',
+                            forbidClick: true,
+                            duration: 5000,
+                        })}
+                    >
+                        <span>forbidClick</span>
                     </button>
                 </div>
             </div>

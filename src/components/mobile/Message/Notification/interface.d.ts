@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-02 15:00:57
  * @LastEditors: bin
- * @LastEditTime: 2026-04-09 10:37:50
+ * @LastEditTime: 2026-04-09 14:16:16
  */
 // 消息的显示位置；如 message 为 'top'、notification 为 'topRight'，当前只考虑 message 的情况，其他情况有需要再开发
 export type Placement = 'top' | 'topLeft' | 'topRight' | 'bottom' | 'bottomLeft' | 'bottomRight';
@@ -11,6 +11,7 @@ export type Placement = 'top' | 'topLeft' | 'topRight' | 'bottom' | 'bottomLeft'
 export interface NoticeConfig {
     content?: React.ReactNode;                 // 消息内容
     duration?: number;                         // 显示时长
+    forbidClick?: boolean;                     // 是否禁止背景点击（移动端独有）
     pauseOnHover?: boolean;                    // 悬停时是否暂停计时器，默认值为 true
     showProgress?: boolean;                    // 倒计时进度条，仅作用在 Notice
     closable?: boolean | ({ closeIcon?: React.ReactNode } & React.AriaAttributes);     // 是否显示关闭按钮，提供 closeIcon 会覆盖关闭按钮元素

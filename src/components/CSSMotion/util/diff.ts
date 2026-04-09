@@ -2,12 +2,12 @@
  * @Author: bin
  * @Date: 2026-03-19 10:05:16
  * @LastEditors: bin
- * @LastEditTime: 2026-03-31 17:10:39
+ * @LastEditTime: 2026-04-09 10:09:49
  */
-export const STATUS_ADD = 'add' as const
-export const STATUS_KEEP = 'keep' as const
-export const STATUS_REMOVE = 'remove' as const
-export const STATUS_REMOVED = 'removed' as const
+export const STATUS_ADD = 'add' as const                 // 新增元素，应以 visible = true 进入动画
+export const STATUS_KEEP = 'keep' as const               // 列表中存在的元素，继续保留显示
+export const STATUS_REMOVE = 'remove' as const           // diff 中将删除的节点状态设置为 STATUS_REMOVE，执行离场动画
+export const STATUS_REMOVED = 'removed' as const         // 删除动画已经结束，元素可以从列表中彻底清理
 
 export type DiffStatus =
     | typeof STATUS_ADD              // 新增元素，应以 visible = true 进入动画

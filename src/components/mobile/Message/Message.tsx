@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-09-12 15:28:38
  * @LastEditors: bin
- * @LastEditTime: 2026-01-14 16:45:36
+ * @LastEditTime: 2026-04-08 21:13:41
  */
 /**
  * 参考源码：ant-design/components/message/index.tsx
@@ -26,7 +26,7 @@ import type {
 } from './Message.d'
 import useMessage, { useInternalMessage } from './useMessage'
 import { unstableSetRender } from './utils/reactRender'
-import { wrapPromiseFn } from './utils/utils'
+import { wrapPromiseFn } from './utils/wrapPromiseFn'
 
 interface GlobalHolderRef {
     instance: MessageInstance;
@@ -43,7 +43,7 @@ let defaultGlobalConfig: ConfigOptions = {}       // 全局配置
 // 获取全局配置
 const getGlobalContext = (): ConfigOptions => {
     // const { getContainer, duration = DEFAULT_DURATION, rtl, maxCount, top } = defaultGlobalConfig
-    const { getContainer, duration = DEFAULT_DURATION, prefixCls = 'bin' } = defaultGlobalConfig
+    const { getContainer, duration = DEFAULT_DURATION, prefixCls = 'bin-message' } = defaultGlobalConfig
     const mergedContainer = getContainer?.() || document.body   // 设置默认挂载点是 body
     return { getContainer: () => mergedContainer, duration, prefixCls }
 }

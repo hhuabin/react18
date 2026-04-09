@@ -2,43 +2,43 @@
  * @Author: bin
  * @Date: 2025-09-12 15:28:38
  * @LastEditors: bin
- * @LastEditTime: 2025-10-29 09:47:56
+ * @LastEditTime: 2026-04-08 20:44:56
  */
 export type NoticeType = 'info' | 'success' | 'error' | 'warning' | 'loading'
 
-// message.config() 的参数类型
+// useMessage() / message.config() 的参数类型
 export interface ConfigOptions {
-    // top?: string | number;                // 消息距离顶部的位置
-    duration?: number;                       // 默认自动关闭延时，单位秒，默认值 3
-    prefixCls?: string;                      // 消息节点的 className 前缀
-    style?: React.CSSProperties;             // 自定义提示内联样式
-    getContainer?: () => HTMLElement;        // 配置渲染节点的输出位置，默认为 () => document.body
-    // transitionName?: string;              //
-    // maxCount?: number;                    // 最大显示数，超过限制时，最早的消息会被自动关闭
-    // rtl?: boolean;                        // 是否开启 RTL 模式，文字从左边开始读
+    // top?: string | number;                  // 消息距离顶部的位置
+    duration?: number;                         // 默认自动关闭延时，单位毫秒，默认值 3000
+    prefixCls?: string;                        // 样式 className 前缀
+    pauseOnHover?: boolean;                    // 鼠标悬停时，是否暂停计时器
+    className?: string;                        // 自定义 CSS class。将会传给 content 容器
+    style?: React.CSSProperties;               // 自定义提示内联样式。将会传给 content 容器
+    getContainer?: () => HTMLElement;          // 配置渲染节点的输出位置，默认为 () => document.body
+    transitionName?: string;                   // 配置动画名称，最终动画名称为 prefixCls + transitionName
+    maxCount?: number;                         // 最大显示数，超过限制时，最早的消息会被自动关闭
+    // rtl?: boolean;                          // 是否开启 RTL 模式，文字从左边开始读
 }
 
 // message.open() 的参数类型
 export interface ArgsProps {
-    content: React.ReactNode;                // 消息内容
-    duration?: number;                       // 自动关闭的延时，单位秒。设为 0 时不自动关闭，默认值 3
-    type?: NoticeType;                       // 消息类型
-    icon?: React.ReactNode;                  // 自定义图标
-    key?: React.Key;                         // 当前提示的唯一标志
-    forbidClick?: boolean;                   // 是否禁止背景点击
-    showCloseBtn?: boolean;                  // 是否展示关闭按钮
-    style?: React.CSSProperties;             // 自定义内联样式
-    // className?: string;                      // 自定义 CSS class
-    onClose?: () => void;                    // 消息通知关闭时进行调用的回调函数
-    /**
-     * 消息通知点击时的回调函数
-     */
-    // onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+    content: React.ReactNode;                  // 消息内容
+    duration?: number;                         // 自动关闭的延时，单位毫秒秒。设为 0 时不自动关闭，默认值 3000
+    type?: NoticeType;                         // 消息类型
+    icon?: React.ReactNode;                    // 自定义图标
+    key?: React.Key;                           // 当前提示的唯一标志
+    forbidClick?: boolean;                     // 是否禁止背景点击（移动端独有）
+    pauseOnHover?: boolean;                    // 鼠标悬停时，是否暂停计时器
+    showCloseBtn?: boolean;                    // 是否展示关闭按钮
+    className?: string;                        // 自定义 CSS class
+    style?: React.CSSProperties;               // 自定义该提示内联样式
+    onClose?: () => void;                      // 消息关闭时的回调函数
+    onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;     // 点击消息时触发
 }
 
 // 用于显示用的单个消息类型
 export interface MessageConfig extends ConfigOptions, ArgsProps {
-    key: React.Key;                       // 这里的key已经被默认赋值过了，不再是可选值
+    key: React.Key;                            // 这里的key已经被默认赋值过了，不再是可选值
 }
 
 // message.info()... 的参数类型

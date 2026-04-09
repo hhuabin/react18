@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-07-11 18:23:24
  * @LastEditors: bin
- * @LastEditTime: 2026-04-08 10:17:49
+ * @LastEditTime: 2026-04-09 14:44:15
  */
 /**
  * 参考源码：notification/src/NoticeList.tsx
@@ -236,12 +236,13 @@ const mergeConfig = <T extends object>(...objList: Partial<T>[]): T => {
 }
 
 /**
+ * @deprecated
  * @description 作用
  * 1. 维护消息列表 configList
  * 2. 渲染消息列表
  * 3. 消息列表 configList 将会被 <NoticeList /> 监控
  */
-// eslint-disable-next-line react-refresh/only-export-components, prefer-arrow-callback
+// eslint-disable-next-line prefer-arrow-callback
 export const RCNotifications = forwardRef(function RCNotifications(props: ConfigOptions, ref: ForwardedRef<NotificationsRef>) {
 
     const {

@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-06-30 15:24:14
  * @LastEditors: bin
- * @LastEditTime: 2026-04-08 15:18:38
+ * @LastEditTime: 2026-04-09 09:16:22
  */
 /**
  * 参考源码：ant-design/components/message/useMessage.tsx
@@ -131,6 +131,7 @@ export const useInternalMessage = (messageConfig?: HolderProps): readonly [Messa
                 ...restConfig
             } = config
 
+            // 赋上默认的 key 值
             let mergedKey: React.Key = key!
             if (mergedKey === undefined || mergedKey === null) {
                 keyIndex += 1

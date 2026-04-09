@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-03-30 16:27:00
  * @LastEditors: bin
- * @LastEditTime: 2026-04-03 09:53:23
+ * @LastEditTime: 2026-04-09 10:10:47
  */
 /**
  * Portions of this file are derived from rc-motion:
@@ -181,33 +181,33 @@ const CSSMotionList: React.FC<CSSMotionListProps> = (props) => {
                     prevEntity.status === STATUS_REMOVED &&
                     entity.status === STATUS_REMOVE
                 ) {
-                    return false
+                    return false     // 真正删除
                 }
                 return true
             })
         })
     }, [keys])
 
-    // 应该在removeKey之后再判断
-    /* useEffect(() => {
-        // 检测是否所有项目都已经被移除，无项目触发 onAllRemoved
-        const restKeysCount = keyEntities.filter(({ status }) => status !== STATUS_REMOVED).length
-        if (restKeysCount === 0) {
-            onAllRemoved?.()
-        }
-    }, [keyEntities, onAllRemoved]) */
-
     const removeKey = (removeKey: React.Key) => {
         setKeyEntities((prevKeyEntities) => {
-            const nextKeyEntities = prevKeyEntities.map(entity => (
+            /**
+             * 这里只是把 key 状态改为 removed，没有删除 keyEntities 的项，将会在下一次 render 中删除
+             * 我感觉这并不是一个很好的点
+             * 在类式组件中，state 的变化立刻会触发 getDerivedStateFromProps 的执行，所以删除的项会立即消失
+             * 可以使用 const nextKeyEntities = prevKeyEntities.filter(entity => entity.key !== removeKey) 修改，但是我决定保留这个问题
+             */
+            let nextKeyEntities = prevKeyEntities.map(entity => (
                 entity.key === removeKey
                     ? { ...entity, status: STATUS_REMOVED }
                     : entity
             ))
+            // const nextKeyEntities = prevKeyEntities.filter(entity => entity.key !== removeKey)
             // 如果 keys 被删干净，触发 onAllRemoved
             const restKeysCount = nextKeyEntities.filter(({ status }) => status !== STATUS_REMOVED).length
             if (restKeysCount === 0) {
                 onAllRemoved?.()
+                // 所有项都删除完毕，清空 keyEntities，对没有及时删除的补救措施之一
+                nextKeyEntities = []
             }
 
             return nextKeyEntities
@@ -221,7 +221,7 @@ const CSSMotionList: React.FC<CSSMotionListProps> = (props) => {
 
     /**
      * @description 分离参数
-     * 1. motionProps 拷贝给 CSSMotion
+     * 1. 拷贝后的 motionProps 给 CSSMotion
      * 2. restProps 留下 HTMLAttributes 属性，这些参数会传给 Component。（CSSMotionList 允许使用 HTMLAttributes）
      */
     MOTION_PROP_NAMES.forEach(prop => {
