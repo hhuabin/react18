@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-04-16 14:12:24
  * @LastEditors: bin
- * @LastEditTime: 2025-12-25 15:43:13
+ * @LastEditTime: 2026-04-10 14:03:35
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
@@ -16,9 +16,9 @@ import {
     type LoaderFunctionArgs,
 } from 'react-router-dom'
 
+import RootRouteLayout from './RootRouteLayout'
 import authStore from '@/store/slice/auth.store'
 import { routes } from './mainRoutes'
-import { type RouteConfig } from './types'
 
 import Loading from '@/components/Loading/Loading'
 
@@ -34,21 +34,21 @@ const isEmptyObject = (obj: any) =>
  * @param route 路由配置对象
  * @returns { LoaderFunction }
  */
-const createPublicLoader = (route: RouteConfig): LoaderFunction => (loaderFunctionArgs: LoaderFunctionArgs<any>) => {
+const createPublicLoader = (route: RouteObject): LoaderFunction => (loaderFunctionArgs: LoaderFunctionArgs<any>) => {
     // 登录路由守卫
     const { isLogin } = authStore.getAuthState()
-    if (!isLogin && route.meta?.auth) {
+    if (!isLogin && route.handle?.auth) {
         const url = new URL(loaderFunctionArgs.request.url)
         const redirectTo = url.pathname + url.search
         // 跳转到登录页面，并携带当前页面链接
         throw redirect(`/login?redirect=${encodeURIComponent(redirectTo)}`)
     }
-    document.title = (route.meta?.title as string) || 'react'
+    document.title = (route.handle?.title as string) || 'react'
     // 功能正常返回 null
     return null
 }
 
-const createPublicLazy = (route: RouteConfig): LazyRouteFunction<RouteObject> => async () => {
+const createPublicLazy = (route: RouteObject): LazyRouteFunction<RouteObject> => async () => {
     const lazy: RouteObject = await route.lazy?.() ?? {}
     const lazyOrRouteLoader = lazy.loader ?? route.loader    // lazy.loader 优先级更高
     // 获取公共loader
@@ -78,19 +78,30 @@ const createPublicLazy = (route: RouteConfig): LazyRouteFunction<RouteObject> =>
     }
 }
 
-const createRoutes = (routes: RouteConfig[]): RouteObject[] => routes.map((route): RouteObject => ({
+const createRoutes = (routes: RouteObject[]): RouteObject[] => routes.map((route): RouteObject => ({
     path: route.path ?? undefined,
     id: route.id ?? undefined,
     index: (route.index as NonIndexRouteObject['index']) ?? undefined,
     element: route.element ?? undefined,
     loader: route.loader ?? undefined,
     lazy: createPublicLazy(route),
+    handle: route.handle ?? undefined,
     errorElement: route.errorElement ?? undefined,
     children: route.children ? createRoutes(route.children) : undefined,
 }))
 
 // 一定要这个赋值步骤，避免重复创建 Router 实例
 const router = createHashRouter(createRoutes(routes))
+
+/* const router = createHashRouter([
+    {
+        id: 'root',
+        element: <RootRouteLayout />,
+        children: [
+            ...createRoutes(routes),
+        ],
+    },
+]) */
 
 /**
  * 禁止使用<RouterProvider router={createHashRouter(createRoutes(routes))}></RouterProvider>写法

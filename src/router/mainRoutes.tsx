@@ -4,13 +4,11 @@
  * @LastEditors: bin
  * @LastEditTime: 2026-02-10 10:18:27
  */
-import { redirect, Navigate } from 'react-router-dom'
+import { redirect, Navigate, type RouteObject } from 'react-router-dom'
 
 import { mobileRoute } from './mobileRoute'
 
-import type { RouteConfig } from './types'
-
-export const routes: RouteConfig[] = [
+export const routes: RouteObject[] = [
     {
         path: '/',
         lazy: async () => {
@@ -18,8 +16,9 @@ export const routes: RouteConfig[] = [
             // const RedirectCom = () => (<><Home/><Navigate to='/login' replace /></>)   // 重定向(不可重定向至子路由，子路由使用 index)
             return { Component: Home }
         },
-        meta: {
+        handle: {
             auth: false,
+            name: '/',
         },
         children: [
             {
@@ -32,7 +31,7 @@ export const routes: RouteConfig[] = [
                     const { default: Login } = await import('@/pages/Introduce/Introduce')
                     return { Component: Login }
                 },
-                meta: {
+                handle: {
                     auth: false,
                 },
             },
@@ -45,7 +44,7 @@ export const routes: RouteConfig[] = [
             const { default: Login } = await import('@/pages/Login/Login')
             return { Component: Login }
         },
-        meta: {
+        handle: {
             title: 'login',
             auth: false,
         },
@@ -56,7 +55,7 @@ export const routes: RouteConfig[] = [
             const { default: CSSMotion } = await import('@/pages/CSSMotion/CSSMotion')
             return { Component: CSSMotion }
         },
-        meta: {
+        handle: {
             title: 'cssmotion',
             auth: false,
         },
@@ -67,7 +66,7 @@ export const routes: RouteConfig[] = [
             const { default: Message } = await import('@/pages/Message/Message')
             return { Component: Message }
         },
-        meta: {
+        handle: {
             title: 'Message',
             auth: false,
         },
@@ -78,7 +77,7 @@ export const routes: RouteConfig[] = [
             const { default: Modal } = await import('@/pages/Modal/Modal')
             return { Component: Modal }
         },
-        meta: {
+        handle: {
             title: 'Modal',
             auth: false,
         },
@@ -89,7 +88,7 @@ export const routes: RouteConfig[] = [
             const { default: FileUpload } = await import('@/pages/FileUpload/FileUpload')
             return { Component: FileUpload }
         },
-        meta: {
+        handle: {
             title: 'fileupload',
             auth: false,
         },
@@ -100,7 +99,7 @@ export const routes: RouteConfig[] = [
             const { default: FetchStreamResponse } = await import('@/pages/FetchStreamResponse/FetchStreamResponse')
             return { Component: FetchStreamResponse }
         },
-        meta: {
+        handle: {
             title: 'fetchStream',
             auth: false,
         },
@@ -111,7 +110,7 @@ export const routes: RouteConfig[] = [
             const { default: TimezoneTime } = await import('@/pages/TimezoneTime/TimezoneTime')
             return { Component: TimezoneTime }
         },
-        meta: {
+        handle: {
             title: 'timezone',
             auth: false,
         },
@@ -122,7 +121,7 @@ export const routes: RouteConfig[] = [
             const { default: Skeleton } = await import('@/pages/Skeleton/Skeleton')
             return { Component: Skeleton }
         },
-        meta: {
+        handle: {
             title: 'skeleton',
             auth: false,
         },
@@ -133,7 +132,7 @@ export const routes: RouteConfig[] = [
             const { default: SvgIcon } = await import('@/pages/SvgIcon/SvgIcon')
             return { Component: SvgIcon }
         },
-        meta: {
+        handle: {
             title: 'svgicon',
             auth: false,
         },
@@ -144,7 +143,7 @@ export const routes: RouteConfig[] = [
             const { default: Developing } = await import('@/pages/Developing/Developing')
             return { Component: Developing }
         },
-        meta: {
+        handle: {
             title: 'developing',
             auth: false,
         },
@@ -155,7 +154,7 @@ export const routes: RouteConfig[] = [
             const { default: Test } = await import('@/pages/Test/Test')
             return { Component: Test }
         },
-        meta: {
+        handle: {
             title: 'test',
             auth: false,
         },
@@ -166,7 +165,7 @@ export const routes: RouteConfig[] = [
             const { default: NotFound } = await import('@/pages/NotFound/NotFound')
             return { Component: NotFound }
         },
-        meta: {
+        handle: {
             title: 'notfound',
             auth: false,
         },
