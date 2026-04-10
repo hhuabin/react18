@@ -45,7 +45,6 @@ export const runTasksWithLimitFailFast = <T extends (() => Promise<any>)[]>(
             throw lastError
         }
 
-        // TODO 失败重发
         const run = () => {
             if (finished === tasks.length) {
                 resolve(results)
