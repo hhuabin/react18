@@ -2,18 +2,18 @@
  * @Author: bin
  * @Date: 2025-06-05 15:41:52
  * @LastEditors: bin
- * @LastEditTime: 2026-01-19 16:02:07
+ * @LastEditTime: 2026-04-10 18:50:25
  */
-import { Navigate, type RouteObject } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
+import type { RouteConfig } from './types'
 
-export const mobileRoute: RouteObject[] = [
+export const mobileRoute: RouteConfig[] = [
     {
         path: '/mobile',
         lazy: async () => {
             const { default: MobileLayout } = await import('@/pages/mobile/MobileLayout')
             return { Component: MobileLayout }
         },
-        handle: { auth: false },
         children: [
             {
                 index: true,
@@ -26,7 +26,6 @@ export const mobileRoute: RouteObject[] = [
                     return { Component: Guide }
                 },
                 handle: {
-                    auth: false,
                     title: 'guide',
                 },
             },
@@ -37,7 +36,6 @@ export const mobileRoute: RouteObject[] = [
                     return { Component: Message }
                 },
                 handle: {
-                    auth: false,
                     title: 'message',
                 },
             },
@@ -48,7 +46,6 @@ export const mobileRoute: RouteObject[] = [
                     return { Component: Dialog }
                 },
                 handle: {
-                    auth: false,
                     title: 'dialog',
                 },
             },
@@ -59,7 +56,6 @@ export const mobileRoute: RouteObject[] = [
                     return { Component: Mask }
                 },
                 handle: {
-                    auth: false,
                     title: 'Mask',
                 },
             },
@@ -70,7 +66,6 @@ export const mobileRoute: RouteObject[] = [
                     return { Component: Picker }
                 },
                 handle: {
-                    auth: false,
                     title: 'picker',
                 },
             },
@@ -81,7 +76,6 @@ export const mobileRoute: RouteObject[] = [
                     return { Component: Swiper }
                 },
                 handle: {
-                    auth: false,
                     title: 'swiper',
                 },
             },
@@ -92,7 +86,6 @@ export const mobileRoute: RouteObject[] = [
                     return { Component: Image }
                 },
                 handle: {
-                    auth: false,
                     title: 'ImagePreview',
                 },
             },
@@ -103,7 +96,6 @@ export const mobileRoute: RouteObject[] = [
                     return { Component: ImagePreview }
                 },
                 handle: {
-                    auth: false,
                     title: 'ImagePreview',
                 },
             },
@@ -114,7 +106,6 @@ export const mobileRoute: RouteObject[] = [
                     return { Component: Upload }
                 },
                 handle: {
-                    auth: false,
                     title: 'Upload',
                 },
             },

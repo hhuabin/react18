@@ -1,24 +1,41 @@
+/**
+ * @Author: bin
+ * @Date: 2025-12-25 15:43:01
+ * @LastEditors: bin
+ * @LastEditTime: 2026-04-10 17:04:09
+ */
 import { useRef, useEffect } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useSearchParams, useLocation, useNavigate } from 'react-router-dom'
 
 import axios from 'axios'
 
 import message from '@/components/Message'
 import useAuth from '@/hooks/authHooks/useAuth'
 
+/**
+ * @description 登录页面
+ *  需要传入来源路由，方便跳转回去
+ */
 const Login: React.FC = () => {
 
+    // 可以使用 search 或者 state 接收来源路由路径，这里使用 state
     const [search] = useSearchParams()
+    const { state } = useLocation() as { state: { from?: string } }
     const navigate = useNavigate()
+
+    // console.log('Login location', location)
 
     const { isLogin, login } = useAuth()
 
     const loading = useRef(false)
 
     useEffect(() => {
-        /* if (isLogin) {
+        // 已经登录，直接跳走，但是要注意 token 过期的情况
+        // 如果是 token 过期要立马删除才不会导致进不来 login 的 bug
+        if (isLogin) {
             goBackOrGoRoot()
-        } */
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const goToLogin = () => {
@@ -40,7 +57,7 @@ const Login: React.FC = () => {
     }
 
     const goBackOrGoRoot = () => {
-        let redirectUrl = search.get('redirect') || ''
+        let redirectUrl = state?.from || ''
         // 需要等待 axios.get 返回，所以使用 promise。
         return new Promise((resolve) => {
             if (redirectUrl) {
