@@ -4,12 +4,6 @@
  * @LastEditors: bin
  * @LastEditTime: 2026-04-10 18:43:58
  */
-/**
- * @Author: bin
- * @Date: 2026-04-09 15:24:42
- * @LastEditors: bin
- * @LastEditTime: 2026-04-10 16:59:30
- */
 import { Outlet, useMatches, ScrollRestoration, type UIMatch } from 'react-router-dom'
 import { useEffect } from 'react'
 
