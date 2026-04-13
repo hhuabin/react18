@@ -2,13 +2,15 @@
  * @Author: bin
  * @Date: 2025-04-16 14:12:24
  * @LastEditors: bin
- * @LastEditTime: 2026-04-10 17:17:58
+ * @LastEditTime: 2026-04-13 16:51:53
  */
 import { redirect, Navigate } from 'react-router-dom'
 import type { RouteConfig } from './types'
 
-// 根组件，无需懒加载，
+// 根组件，无需懒加载
 import RootRouteLayout from '../layout/RootRouteLayout'
+// 错误组件，无需懒加载
+import ErrorElement from '@/components/ErrorElement/ErrorElement'
 
 import { mobileRoute } from './mobileRoute'
 
@@ -16,6 +18,7 @@ export const routes: RouteConfig[] = [
     {
         path: '/',
         Component: RootRouteLayout,
+        errorElement: <ErrorElement />,        // 统一错误处理
         children: [
             {
                 lazy: async () => {

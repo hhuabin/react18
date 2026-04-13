@@ -4,7 +4,7 @@
  * @LastEditors: bin
  * @LastEditTime: 2026-04-10 18:54:32
  */
-import type { IndexRouteObject, NonIndexRouteObject } from 'react-router-dom'
+import type { IndexRouteObject, NonIndexRouteObject, RouteObject } from 'react-router-dom'
 
 export type RouteHandle = {
     title?: string;
