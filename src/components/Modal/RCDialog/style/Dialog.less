@@ -11,6 +11,7 @@
         pointer-events: none;
 
         .bin-dialog {
+            --color-text: rgba(0, 0, 0, 0.88);
             --animation-duration: 0.3s;
 
             position: relative;
@@ -30,8 +31,9 @@
                 border: 0;
                 border-radius: 8px;
                 box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-                background-color: #ffffff;
-                
+                background-color: #fff;
+                color: var(--color-text);
+
                 .bin-dialog-header {
                     margin-bottom: 12px;
                     font-size: 16px;
@@ -71,9 +73,10 @@
 
         .bin-dialog-zoom-appear,
         .bin-dialog-zoom-enter {
-            transform: scale(0);
+            transform: scale(0.2);
             opacity: 0;
             user-select: none;
+            transition-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1)
         }
 
         .bin-dialog-zoom-appear-prepare,
@@ -93,15 +96,13 @@
         .bin-dialog-zoom-leave {
             transform: scale(1);
             opacity: 1;
+            transition-timing-function: cubic-bezier(0.78, 0.14, 0.15, 0.86);
         }
 
         .bin-dialog-zoom-leave-active {
-            transform: scale(0);
+            transform: scale(0.2);
             opacity: 0;
-        }
-
-        .bin-dialog-hidden {
-            opacity: 0;
+            pointer-events: none;
         }
     }
 }

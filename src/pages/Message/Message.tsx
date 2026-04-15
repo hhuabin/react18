@@ -1,7 +1,11 @@
 import { useEffect, useRef } from 'react'
 
+import { message as AntdMessage } from 'antd'
+
 import message, { type MessageType } from '@/components/Message'
 import { useNotification } from '@/components/Message/notification'
+
+import './Message.less'
 
 const MessageComponent: React.FC = () => {
 
@@ -244,6 +248,23 @@ const MessageComponent: React.FC = () => {
                         onClick={() => updateMessage()}
                     >
                         <span>update by key</span>
+                    </button>
+                </div>
+            </div>
+
+            <div className='w-full my-5'>
+                <div className='w-full p-4 text-[16px] leading-[24px]'>Antd Message</div>
+                <div className='w-full px-4'>
+                    <button
+                        type='button'
+                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        onClick={() => AntdMessage.info({
+                            content: 'This is an info message',
+                            // duration: 0,
+                        })}
+                    >
+                        <span>Antd Message Info</span>
                     </button>
                 </div>
             </div>

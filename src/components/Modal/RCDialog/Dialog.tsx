@@ -2,9 +2,9 @@
  * @Author: bin
  * @Date: 2026-02-10 10:13:42
  * @LastEditors: bin
- * @LastEditTime: 2026-03-30 15:11:39
+ * @LastEditTime: 2026-04-15 19:14:20
  */
-import { useRef, useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { renderToContainer } from './utils/renderToContainer'
 import Mask from './Mask'
@@ -48,7 +48,7 @@ const RCDialog: React.FC<DialogProps> = (props) => {
         getContainer,
     } = props
 
-    // 动画状态锁，防止开发环境下的热更新持续触发 afterClose
+    // 动画状态锁，防止开发环境下的热更新持续触发 afterClose，要使用 useState，状态更新才能同步更新样式
     const [animatedVisible, setAnimatedVisible] = useState(visible)
 
     useEffect(() => {

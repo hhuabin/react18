@@ -6,6 +6,7 @@ import Modal from '@/components/Modal'
 import { Modal as AntdModal } from 'antd'
 
 import Dialog from '@/components/Modal/RCDialog'
+import './Modal.less'
 
 const ModalComponents: React.FC = () => {
 

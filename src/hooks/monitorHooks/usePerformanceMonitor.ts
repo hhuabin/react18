@@ -2,18 +2,22 @@
  * @Author: bin
  * @Date: 2024-12-11 17:27:34
  * @LastEditors: bin
- * @LastEditTime: 2026-03-13 17:57:18
+ * @LastEditTime: 2026-04-15 17:22:48
  */
-import { useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 
 /**
  * @description 性能监控面板，生产环境不生效
  */
 export default function usePerformanceMonitor() {
 
+    const isMounted = useRef(false)
+
     useEffect(() => {
-        // 性能监控
+        // 禁止在生产环境中运行，没有意义
         if (import.meta.env.MODE === 'production') return
+        if (isMounted.current) return
+        isMounted.current = true
 
         // LCP监听
         const observer = new PerformanceObserver((entryList) => {

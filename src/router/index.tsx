@@ -2,12 +2,9 @@
  * @Author: bin
  * @Date: 2025-04-16 14:12:24
  * @LastEditors: bin
- * @LastEditTime: 2026-04-10 17:12:41
+ * @LastEditTime: 2026-04-15 17:54:33
  */
-import {
-    createHashRouter,
-    RouterProvider,
-} from 'react-router-dom'
+import { createHashRouter, RouterProvider } from 'react-router-dom'
 
 import { routes } from './mainRoutes'
 
@@ -26,6 +23,8 @@ const router = createHashRouter(
  * AppRouter渲染时都会调用 createHashRouter(routes)，创建一个新的 Router 实例
  * 导致 React Router 的内部状态（如导航历史、加载状态等）被重置，进而引发页面闪烁、导航失败等问题
  */
-const AppRouter: React.FC = () => (<RouterProvider router={router} fallbackElement={<Loading />} />)
+const AppRouter: React.FC = () => (
+    <RouterProvider router={router} fallbackElement={<Loading />}></RouterProvider>
+)
 
 export default AppRouter

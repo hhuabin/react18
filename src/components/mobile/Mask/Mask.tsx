@@ -2,9 +2,9 @@
  * @Author: bin
  * @Date: 2026-01-15 10:07:43
  * @LastEditors: bin
- * @LastEditTime: 2026-04-02 10:11:58
+ * @LastEditTime: 2026-04-15 19:19:31
  */
-import { useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 import useMergedState from '@/hooks/reactHooks/useMergedState'
 import { renderToContainer } from './utils/renderToContainer'
@@ -63,12 +63,12 @@ const Mask: React.FC<MaskProps> = (props) => {
         },
     })
 
-    // 动画状态锁，防止开发环境下的热更新持续触发 afterClose
-    const animatedVisibleRef = useRef(mergeVisible)
+    // 动画状态锁，防止开发环境下的热更新持续触发 afterClose，要使用 useState，状态更新才能同步更新样式
+    const [animatedVisible, setAnimatedVisible] = useState(visible)
 
     useEffect(() => {
         if (mergeVisible) {
-            animatedVisibleRef.current = true
+            setAnimatedVisible(true)
         }
     }, [mergeVisible])
 
@@ -77,14 +77,14 @@ const Mask: React.FC<MaskProps> = (props) => {
      */
     useEffect(() => {
         const origin = document.body.style.overflow
-        if (disableBodyScroll && mergeVisible) {
+        if (disableBodyScroll && animatedVisible) {
             // 禁止 body 滚动
             document.body.style.overflow = 'hidden'
         }
         return () => {
             document.body.style.overflow = origin
         }
-    }, [disableBodyScroll, mergeVisible])
+    }, [disableBodyScroll, animatedVisible])
 
     /**
      * @description 监听 popstate 事件，返回时关闭弹窗
@@ -111,10 +111,10 @@ const Mask: React.FC<MaskProps> = (props) => {
     const onVisibleChanged = (visible: boolean) => {
         if (!visible) {
             // 保证显示是从 true -> false 才会触发 afterClose
-            if (animatedVisibleRef.current) {
+            if (animatedVisible) {
                 afterClose?.()
             }
-            animatedVisibleRef.current = false
+            setAnimatedVisible(false)
         }
     }
 

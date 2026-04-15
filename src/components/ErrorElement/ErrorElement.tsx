@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-13 16:05:14
  * @LastEditors: bin
- * @LastEditTime: 2026-04-13 17:00:46
+ * @LastEditTime: 2026-04-15 10:52:30
  */
 import React from 'react'
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom'
@@ -49,8 +49,8 @@ const ErrorElement: React.FC = () => {
                     <div className='mt-[30px] text-[14px]'>
                         <button
                             type='button'
-                            className='px-4 border border-[var(--color-border)] rounded-md mx-4 text-[1em] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-8 hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                            className='px-[16px] border border-[var(--color-border)] rounded-md mx-4 text-[1em] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                             onClick={() => window.location.reload()}
                         >
                             <span>刷新</span>
@@ -58,8 +58,8 @@ const ErrorElement: React.FC = () => {
 
                         <button
                             type='button'
-                            className='px-4 border border-[var(--color-border)] rounded-md mx-4 text-[1em] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-8 hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                            className='px-[16px] border border-[var(--color-border)] rounded-md mx-4 text-[1em] bg-[var(--bg-color)] select-none
+                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                             onClick={() => (window.location.href = '/')}
                         >
                             <span>返回首页</span>

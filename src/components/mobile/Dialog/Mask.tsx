@@ -1,10 +1,10 @@
 /**
  * @Author: bin
- * @Date: 2026-03-27 17:02:42
+ * @Date: 2026-02-10 10:36:41
  * @LastEditors: bin
- * @LastEditTime: 2026-04-02 10:12:30
+ * @LastEditTime: 2026-04-15 19:21:38
  */
-import { useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 import CSSMotion from '@/components/CSSMotion'
 import { clsx } from './utils/clsx'
@@ -13,6 +13,7 @@ import './style/Mask.less'
 /**
  * @description 主要实现功能：
  * 1. 蒙层进入、退场动画
+ * 2. 默认禁止 body 滑动
  */
 
 type MaskProps = {
@@ -46,12 +47,12 @@ const Mask: React.FC<MaskProps> = (props) => {
         children = null,
     } = props
 
-    // 动画状态锁，防止开发环境下的热更新持续触发 afterClose
-    const animatedVisibleRef = useRef(visible)
+    // 动画状态锁，防止开发环境下的热更新持续触发 afterClose，要使用 useState，状态更新才能同步更新样式
+    const [animatedVisible, setAnimatedVisible] = useState(visible)
 
     useEffect(() => {
         if (visible) {
-            animatedVisibleRef.current = true
+            setAnimatedVisible(true)
         }
     }, [visible])
 
@@ -60,14 +61,14 @@ const Mask: React.FC<MaskProps> = (props) => {
      */
     useEffect(() => {
         const origin = document.body.style.overflow
-        if (disableBodyScroll && visible) {
+        if (disableBodyScroll && animatedVisible) {
             // 禁止 body 滚动
             document.body.style.overflow = 'hidden'
         }
         return () => {
             document.body.style.overflow = origin
         }
-    }, [disableBodyScroll, visible])
+    }, [disableBodyScroll, animatedVisible])
 
     const handleMaskClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (event.target === event.currentTarget) {
@@ -83,10 +84,10 @@ const Mask: React.FC<MaskProps> = (props) => {
     const onVisibleChanged = (visible: boolean) => {
         if (!visible) {
             // 保证显示是从 true -> false 才会触发 afterClose
-            if (animatedVisibleRef.current) {
+            if (animatedVisible) {
                 afterClose?.()
             }
-            animatedVisibleRef.current = false
+            setAnimatedVisible(false)
         }
     }
 

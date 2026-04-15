@@ -3,7 +3,7 @@
  * @Author: bin
  * @Date: 2026-03-13 16:06:36
  * @LastEditors: bin
- * @LastEditTime: 2026-03-13 18:20:38
+ * @LastEditTime: 2026-04-15 17:00:05
  */
 // 初始化判断
 let initialized = false
@@ -66,13 +66,36 @@ export default function useGlobalErrorMonitor() {
 
     /**
      * @description JS Error / 资源加载错误
+     * @test
+     *  1. <img src="404" />
+     *  2. 生产环境请求 chunk 失败
+     *  3. throw new Error('JS_ERROR 测试')
      */
     const errorHandler = (event: ErrorEvent) => {
-        // console.log('event', event)
+
         const resource = isResourceError(event)
 
+        if (resource) {
+            // 1. 资源加载错误
+            report('RESOURCE_ERROR', {
+                tagName: resource.tagName,
+                src: resource.src,
+            })
+            return
+        }
+
         if (isChunkLoadError(event.error || event)) {
-            // JS 运行时错误
+            // 2. chunk加载错误
+            report('CHUNK_LOAD_ERROR', {
+                message: event.message,
+                stack: event.error?.stack,
+            })
+
+            if (window.confirm('加载失败，是否重新加载？')) {
+                window.location.reload()
+            }
+        } else {
+            // 3. JS 运行时错误
             report('JS_ERROR', {
                 message: event.message,
                 filename: event.filename,
@@ -80,22 +103,20 @@ export default function useGlobalErrorMonitor() {
                 colno: event.colno,
                 error: event.error,
             })
-
-            if (window.confirm('加载失败，是否重新加载？')) {
-                window.location.reload()
-            }
-        } else if (resource) {
-            // 资源加载错误
-            report('RESOURCE_ERROR', resource)
         }
     }
 
     /**
      * @description Promise 未捕获异常（Promise没有catch）
+     * @test
+     *  Promise.resolve().then(() => {
+            throw new Error('Promise error')
+        })
      */
     const rejectionHandler = (event: PromiseRejectionEvent) => {
         report('PROMISE_ERROR', {
             reason: event.reason,
+            stack: event.reason?.stack,
         })
 
         if (isChunkLoadError(event.reason)) {
@@ -104,6 +125,9 @@ export default function useGlobalErrorMonitor() {
                 window.location.reload()
             }
         }
+
+        // 防止控制台重复报错
+        // event.preventDefault()
     }
 
     window.addEventListener('error', errorHandler, true)

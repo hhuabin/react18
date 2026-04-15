@@ -102,7 +102,7 @@ const DialogComponent: React.FC = () => {
                             text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Dialog.confirm({
                             content: (
-                                <div className='w-full text-[#f00] text-center'>
+                                <div className='w-full text-[#646566] text-[14px] leading-[20px] text-center pt-[8px] px-[24px] pb-[26px]'>
                                     我是一个弹窗
                                 </div>
                             ),

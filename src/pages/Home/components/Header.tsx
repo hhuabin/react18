@@ -121,7 +121,7 @@ const Header: React.FC = () => {
                 </button>
 
                 <Popover content='Github'>
-                    <a href='https://github.com/hhuabin' target='_blank' rel='noreferrer'>
+                    <a href='https://github.com/hhuabin/react18' target='_blank' rel='noreferrer'>
                         <button className='inline-flex justify-center items-center w-8 h-8 rounded-md bg-[transparent] hover:bg-[var(--item-bg-hover)]'>
                             <div className='flex justify-center items-center w-4 h-4'>
                                 <svg width='100%' height='100%' viewBox='0 0 1024 1024' fill='var(--color-text)' xmlns='http://www.w3.org/2000/svg'>
