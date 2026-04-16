@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-03-30 16:27:00
  * @LastEditors: bin
- * @LastEditTime: 2026-04-09 10:10:47
+ * @LastEditTime: 2026-04-16 14:39:43
  */
 /**
  * Portions of this file are derived from rc-motion:
@@ -205,7 +205,10 @@ const CSSMotionList: React.FC<CSSMotionListProps> = (props) => {
             // 如果 keys 被删干净，触发 onAllRemoved
             const restKeysCount = nextKeyEntities.filter(({ status }) => status !== STATUS_REMOVED).length
             if (restKeysCount === 0) {
-                onAllRemoved?.()
+                // 注意：这里使用 Promise 是修复在 render 过程中触发 setState 的 bug（该bug出现过）
+                Promise.resolve().then(() => {
+                    onAllRemoved?.()
+                })
                 // 所有项都删除完毕，清空 keyEntities，对没有及时删除的补救措施之一
                 nextKeyEntities = []
             }

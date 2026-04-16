@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-09 15:24:42
  * @LastEditors: bin
- * @LastEditTime: 2026-04-15 17:56:18
+ * @LastEditTime: 2026-04-16 01:10:59
  */
 import { Outlet, useMatches, ScrollRestoration, type UIMatch } from 'react-router-dom'
 import { useEffect } from 'react'
@@ -26,7 +26,7 @@ const RootRouteLayout: React.FC = () => {
 
     useEffect(() => {
         // ✅ title
-        // document.title = title
+        document.title = title
     }, [title])
 
     return (
