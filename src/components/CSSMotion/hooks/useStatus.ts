@@ -17,8 +17,8 @@ import {
 import useStepQueue, { DoStep, isActive, SkipStep } from './useStepQueue'
 import useDomMotionEvents from './useDomMotionEvents'
 
-import { useSyncState, useEvent } from '@/hooks/reactHooks'
-import { useInternalLayoutEffect } from '@/hooks/reactHooks/useLayoutUpdateEffect'
+import { useSyncState, useEvent } from '@/hooks/core'
+import { useInternalLayoutEffect } from '@/hooks/core/useLayoutUpdateEffect'
 
 // `useStatus` 负责“现在动画进行到哪一步了”
 

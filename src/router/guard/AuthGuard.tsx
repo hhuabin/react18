@@ -10,7 +10,7 @@ import {
     Outlet,
 } from 'react-router-dom'
 
-import { useAuth } from '@/hooks/authHooks'
+import { useAuth } from '@/hooks/auth'
 
 /**
  * @description 登录鉴权路由组件，需要登录的路由组件，必须放在 AuthGuard 子路由下

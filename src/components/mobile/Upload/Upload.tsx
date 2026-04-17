@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-08-13 11:52:25
  * @LastEditors: bin
- * @LastEditTime: 2026-02-26 15:02:04
+ * @LastEditTime: 2026-04-17 11:12:35
  */
 /* eslint-disable max-lines */
 import {
@@ -13,7 +13,7 @@ import { flushSync } from 'react-dom'
 
 import Image from '@/components/mobile/Image'
 import { showImagePreview } from '@/components/mobile/ImagePreview'
-import useMergedState from '@/hooks/reactHooks/useMergedState'
+import { useMergedState } from '@/hooks/core'
 import { isImageFile, readFileContent, updateFileList } from './utils'
 import { xhrRequest } from './xhrRequest'
 import { runTasksWithLimitSettled } from '@/utils/functionUtils/runTasksWithLimit'

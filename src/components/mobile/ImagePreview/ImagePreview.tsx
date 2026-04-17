@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-09-15 17:36:13
  * @LastEditors: bin
- * @LastEditTime: 2026-01-21 15:55:51
+ * @LastEditTime: 2026-04-17 11:09:22
  */
 import {
     useState, useRef, useEffect,
@@ -13,8 +13,8 @@ import Mask from '@/components/mobile/Mask'
 import Swiper, { SwiperItem, type SwiperRef } from '@/components/mobile/Swiper'
 import ImagePreviewItem from './ImagePreviewItem'
 
-import useMergedState from '@/hooks/reactHooks/useMergedState'
-import useWindowSize from '@/hooks/deviceHooks/useWindowSize'
+import { useMergedState } from '@/hooks/core'
+import { useWindowSize } from '@/hooks/device'
 import { type ImagePreviewProps, type ImagePreviewRef } from './ImagePreview.d'
 
 import './ImagePreview.less'

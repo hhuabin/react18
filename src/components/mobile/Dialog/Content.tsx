@@ -8,7 +8,7 @@ import { useState, useRef } from 'react'
 
 import CSSMotion, { type CSSMotionRef } from '@/components/CSSMotion'
 import { clsx } from './utils/clsx'
-import { getRect } from '@/hooks/domHooks/useRect'
+import { getRect } from '@/hooks/dom/useRect'
 
 import type { DialogProps } from './interface.d'
 

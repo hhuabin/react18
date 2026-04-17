@@ -10,7 +10,7 @@ import { useSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import message from '@/components/Message'
-import useAuth from '@/hooks/authHooks/useAuth'
+import { useAuth } from '@/hooks/auth'
 
 /**
  * @description 登录页面

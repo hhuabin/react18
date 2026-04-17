@@ -6,7 +6,7 @@
  */
 import { useState, useEffect } from 'react'
 
-import useMergedState from '@/hooks/reactHooks/useMergedState'
+import { useMergedState } from '@/hooks/core'
 import { renderToContainer } from './utils/renderToContainer'
 
 import CSSMotion from '@/components/CSSMotion'

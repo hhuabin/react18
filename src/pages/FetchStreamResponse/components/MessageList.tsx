@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, memo } from 'react'
 
-import { useDebounce } from '@/hooks/utilsHooks/useDebounceThrottle'
+import { useDebounce } from '@/hooks/utils/useDebounceThrottle'
 
 type MessageItem = {
     id: string;

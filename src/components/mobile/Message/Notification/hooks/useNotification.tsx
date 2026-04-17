@@ -10,7 +10,7 @@ import { type CSSMotionProps } from '@/components/CSSMotion'
 import Notifications, { type NotificationsRef } from '../Notifications'
 import type { OpenConfig } from '../interface'
 
-import { useEvent } from '@/hooks/reactHooks'
+import { useEvent } from '@/hooks/core'
 
 const defaultGetContainer = () => document.body
 

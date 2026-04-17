@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-09-16 14:40:22
  * @LastEditors: bin
- * @LastEditTime: 2026-03-12 10:38:39
+ * @LastEditTime: 2026-04-17 11:12:00
  */
 /* eslint-disable max-lines */
 import React, {
@@ -10,11 +10,11 @@ import React, {
     type ForwardedRef,
 } from 'react'
 import { flushSync } from 'react-dom'
-import { useInternalLayoutEffect } from '@/hooks/reactHooks/useLayoutUpdateEffect'
+import { useInternalLayoutEffect } from '@/hooks/core/useLayoutUpdateEffect'
 
-import useSyncState from '@/hooks/reactHooks/useSyncState'
+import { useSyncState } from '@/hooks/core'
 import SwiperItem, { type SwiperItemProps } from './SwiperItem'
-import useTouch from '@/hooks/domHooks/useTouch'
+import { useTouch } from '@/hooks/dom'
 import { getEnv } from './utils'
 
 import './Swiper.less'

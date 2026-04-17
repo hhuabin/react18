@@ -6,7 +6,7 @@ import message from '@/components/Message'
 import Upload, { type UploadFile } from '@/components/Upload'
 import BigFileUpload from './components/BigFileUpload'
 
-import useSyncState from '@/hooks/reactHooks/useSyncState'
+import { useSyncState } from '@/hooks/core'
 
 const FileUpload: React.FC = () => {
 

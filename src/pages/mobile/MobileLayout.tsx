@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 
-import { useInternalLayoutEffect } from '@/hooks/reactHooks/useLayoutUpdateEffect'
+import { useInternalLayoutEffect } from '@/hooks/core/useLayoutUpdateEffect'
 
 const MobileLayout: React.FC = () => {
 

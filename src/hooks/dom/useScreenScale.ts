@@ -6,7 +6,7 @@
  */
 import { useCallback, useEffect, useLayoutEffect } from 'react'
 
-import { useDebounce } from '@/hooks/utilsHooks/useDebounceThrottle'
+import { useDebounce } from '@/hooks/utils/useDebounceThrottle'
 
 /**
  * 监听浏览器窗口变化，实现自适应（大屏使用）

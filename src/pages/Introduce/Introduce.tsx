@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { Modal } from '@/components'
 
-import useDeviceType from '@/hooks/deviceHooks/useDeviceType'
+import { useDeviceType } from '@/hooks/device'
 
 const routeList = [
     {

@@ -3,7 +3,7 @@ import { useState, memo, forwardRef, useRef } from 'react'
 import CSSMotion, { CSSMotionList, type CSSMotionRef } from '@/components/CSSMotion'
 
 import './CSSMotion.less'
-import { getRect } from '@/hooks/domHooks/useRect'
+import { getRect } from '@/hooks/dom/useRect'
 
 type MemoProps = {
     visible?: boolean;

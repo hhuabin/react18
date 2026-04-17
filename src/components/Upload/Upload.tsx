@@ -11,7 +11,7 @@ import {
 } from 'react'
 import { flushSync } from 'react-dom'
 
-import useMergedState from '@/hooks/reactHooks/useMergedState'
+import { useMergedState } from '@/hooks/core'
 import { isImageFile, readFileContent, updateFileList } from './utils'
 import { xhrRequest } from './xhrRequest'
 import { runTasksWithLimitSettled } from '@/utils/functionUtils/runTasksWithLimit'

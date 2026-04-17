@@ -8,7 +8,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
-import useMergedState from '@/hooks/reactHooks/useMergedState'
+import { useMergedState } from '@/hooks/core'
 import useTouch from './useTouch'
 import styles from './SinglePicker.module.less'
 

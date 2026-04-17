@@ -13,8 +13,8 @@ import {
 
 import Image from '@/components/mobile/Image'
 
-import useSyncState from '@/hooks/reactHooks/useSyncState'
-import useTouch from '@/hooks/domHooks/useTouch'
+import { useSyncState } from '@/hooks/core'
+import { useTouch } from '@/hooks/dom'
 import { isBrowser, clamp } from './utils/utils'
 
 type ImagePreviewItemProps = {

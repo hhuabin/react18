@@ -7,8 +7,8 @@
 /* eslint-disable max-lines */
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import useMergedState from '@/hooks/reactHooks/useMergedState'
-import useTouch from '@/hooks/domHooks/useTouch'
+import { useMergedState } from '@/hooks/core'
+import { useTouch } from '@/hooks/dom'
 import { renderToContainer, clamp, isMultiColumn, getPickerColumnDepth } from './utils'
 import './Picker.less'
 

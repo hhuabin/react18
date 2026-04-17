@@ -6,7 +6,7 @@
  */
 import { useEffect, useRef } from 'react'
 
-import useMergedState from '@/hooks/reactHooks/useMergedState'
+import { useMergedState } from '@/hooks/core'
 import { renderToContainer } from './utils/renderToContainer'
 import './Mask.less'
 

@@ -13,7 +13,7 @@ import {
 
 import useNextFrame from './useNextFrame'
 // 使用安全的 useLayoutEffect
-import { useInternalLayoutEffect } from '@/hooks/reactHooks/useLayoutUpdateEffect'
+import { useInternalLayoutEffect } from '@/hooks/core/useLayoutUpdateEffect'
 
 // 完整流程（有动画）
 const FULL_STEP_QUEUE: StepStatus[] = [STEP_PREPARE, STEP_START, STEP_ACTIVE, STEP_ACTIVATED]
