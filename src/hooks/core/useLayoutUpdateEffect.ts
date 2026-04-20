@@ -15,7 +15,7 @@ const canUseDom = () => !!(
 )
 
 // 统一环境变量获取
-const getEnv = () => {
+export const getEnv = () => {
     // Vite 环境
     if (typeof import.meta !== 'undefined' && import.meta.env) {
         return import.meta.env.MODE

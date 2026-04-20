@@ -2,10 +2,11 @@
  * @Author: bin
  * @Date: 2026-04-17 15:20:02
  * @LastEditors: bin
- * @LastEditTime: 2026-04-20 14:35:21
+ * @LastEditTime: 2026-04-20 15:06:08
  */
 import { useState, useEffect } from 'react'
 
+import { getEnv } from '@/hooks/core/useLayoutUpdateEffect'
 import type { WxError, WxConfigOptions, Wx, WxWindow } from './types/jweixin'
 
 type UseWxChatOptions = {
@@ -111,6 +112,7 @@ export default function useWxChat(options?: UseWxChatOptions) {
             }
         })
         .catch((error) => {
+            // 此处为 loadScript 失败，会被全局错误捕获到 资源加载错误
             if (!alive) return
             console.error('wx sdk load error:', error)
             options?.onError?.(error)
@@ -127,8 +129,21 @@ export default function useWxChat(options?: UseWxChatOptions) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [config])
 
+    const safeCallWx = (callback: (wx: Wx) => void) => {
+        if (!ready || !wx) {
+            if (getEnv() === 'development') {
+                console.warn('[WechatSDK] wx not ready')
+            }
+
+            return
+        }
+
+        callback(wx)
+    }
+
     return {
         wx,
         ready,
+        safeCallWx,
     }
 }

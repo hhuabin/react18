@@ -2,12 +2,14 @@
  * @Author: bin
  * @Date: 2026-04-17 11:22:55
  * @LastEditors: bin
- * @LastEditTime: 2026-04-20 14:35:00
+ * @LastEditTime: 2026-04-20 15:12:58
  */
 import { useState, useEffect } from 'react'
 
+import { getEnv } from '@/hooks/core/useLayoutUpdateEffect'
 import type { MyApi, AlipayWindow } from './types/alimy'
 
+// 该链接只有在支付宝小程序中才能加载成功；在收集全局资源加载错误时，需要注意该资源错误的报告
 const AlI_SCRIPT_SRC = 'https://appx/web-view.min.js'
 
 let scriptLoading: Promise<void> | null = null
@@ -61,6 +63,7 @@ export default function useAlipayJSAPI() {
             })
         })
         .catch((error) => {
+            // 此处为 loadScript 失败，会被全局错误捕获到 资源加载错误
             if (!mounted) return
             setIsReady(false)
             console.error('Alipay Js load error:', error)
@@ -72,9 +75,22 @@ export default function useAlipayJSAPI() {
         }
     }, [])
 
+    const safeCallMy = (callback: (my: MyApi) => void) => {
+        if (!isReady || !my) {
+            if (getEnv() === 'development') {
+                console.warn('[AlipaySDK] wx not ready')
+            }
+
+            return
+        }
+
+        callback(my)
+    }
+
     return {
         my,
         isReady,
         isAlipayMiniProgram,
+        safeCallMy,
     }
 }
