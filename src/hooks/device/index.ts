@@ -6,5 +6,6 @@
  */
 export { default as useDeviceType } from './useDeviceType'
 export { default as useIsWechatMiniProgram } from './useIsWechatMiniProgram'
+export { default as useRuntimeEnv } from './useRuntimeEnv'
 export { default as useOSInfo } from './useOSInfo'
 export { default as useWindowSize } from './useWindowSize'
