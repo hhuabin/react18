@@ -39,7 +39,7 @@ const ErrorElement: React.FC = () => {
 
     return (
         <>
-            <div className='flex justify-center items-center w-full h-full p-[12px] box-border text-[var(--color-text)] text-[24px]'>
+            <div className='flex justify-center items-center w-full h-full p-[12px] box-border text-[var(--text-primary)] text-[24px]'>
                 <div className='absolute top-[35%] flex flex-col justify-center items-center p-[12px] box-border translate-y-[-50%]'>
                     <div className='font-semibold'>{ title }</div>
                     <div className='mt-[10px] text-[#999] text-[12px]'>
@@ -49,8 +49,8 @@ const ErrorElement: React.FC = () => {
                     <div className='mt-[30px] text-[14px]'>
                         <button
                             type='button'
-                            className='px-[16px] border border-[var(--color-border)] rounded-md mx-4 text-[1em] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                            className='px-[16px] border border-[var(--border-default)] rounded-md mx-4 text-[1em] bg-[var(--bg-color)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                             onClick={() => window.location.reload()}
                         >
                             <span>刷新</span>
@@ -58,8 +58,8 @@ const ErrorElement: React.FC = () => {
 
                         <button
                             type='button'
-                            className='px-[16px] border border-[var(--color-border)] rounded-md mx-4 text-[1em] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                            className='px-[16px] border border-[var(--border-default)] rounded-md mx-4 text-[1em] bg-[var(--bg-color)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                             onClick={() => (window.location.href = '/')}
                         >
                             <span>返回首页</span>

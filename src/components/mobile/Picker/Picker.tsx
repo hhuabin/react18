@@ -471,7 +471,7 @@ const Picker: React.FC<PickerProps> = (props) => {
         <>
             <div
                 className={`bin-picker-popup${className ? ' ' + className : ''}` + (mergeVisible ? '' : ' bin-picker-popup-hidden')}
-                style={{ ...style, '--primary-color': primaryColor || (style as Record<string, string>)['--primary-color'] } as React.CSSProperties }
+                style={{ ...style, '--color-primary': primaryColor || (style as Record<string, string>)['--color-primary'] } as React.CSSProperties }
             >
                 <div role='button' className={'bin-picker-overlay' + (mergeVisible ? '' : ' bin-picker-overlay-hidden')}
                     onClick={() => onClickMask()}
@@ -520,7 +520,7 @@ const Picker: React.FC<PickerProps> = (props) => {
                                                 className='bin-picker-column-item'
                                                 key={index}
                                                 onClick={() => onClickOption(columnIndex, index)}
-                                                style={{ color: ((index === getCurrentIndexByColumnIndex(columnIndex) && !isInertialScrollings[columnIndex]) ? 'var(--primary-color)' : '') }}
+                                                style={{ color: ((index === getCurrentIndexByColumnIndex(columnIndex) && !isInertialScrollings[columnIndex]) ? 'var(--color-primary)' : '') }}
                                             >
                                                 <div className='bin-picker-line-ellipsis'>
                                                     {item[columnsFieldNames.label || 'label']}

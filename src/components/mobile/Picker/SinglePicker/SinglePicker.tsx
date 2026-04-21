@@ -286,7 +286,7 @@ const SinglePicker: React.FC<PickerProps> = (props) => {
         <>
             <div
                 className={styles['picker-popup'] + `${className ? ' ' + className : ''}` + ' ' + (mergeVisible ? '' : styles['picker-popup-hidden'])}
-                style={{ ...style, '--primary-color': primaryColor || (style as Record<string, string>)['--primary-color'] } as React.CSSProperties }
+                style={{ ...style, '--color-primary': primaryColor || (style as Record<string, string>)['--color-primary'] } as React.CSSProperties }
             >
                 <div role='button' className={styles['overlay'] + ' ' + (mergeVisible ? '' : styles['overlay-hidden'])}
                     onClick={() => onClickMask()}
@@ -332,7 +332,7 @@ const SinglePicker: React.FC<PickerProps> = (props) => {
                                         className={styles['picker-column-item']}
                                         key={index}
                                         onClick={() => onClickOption(index)}
-                                        style={{ color: ((index === getCurrentIndex() && !isInertialScrolling) ? 'var(--primary-color)' : '') }}
+                                        style={{ color: ((index === getCurrentIndex() && !isInertialScrolling) ? 'var(--color-primary)' : '') }}
                                     >
                                         <div className={styles['line-ellipsis']}>
                                             { ['string', 'number'].includes(typeof item) ? item.toString() : (item as PickerOption).label }

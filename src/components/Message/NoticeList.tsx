@@ -196,7 +196,7 @@ export const RCNoticeList: React.FC<NoticeListProps> = (props) => {
                 className='bin-message'
                 style={{
                     '--bg-color': globalConfig.theme === 'dark' ? '#1f1f1f' : '',
-                    '--color-text': globalConfig.theme === 'dark' ? 'rgba(255, 255, 255, 0.85)' : '',
+                    '--text-primary': globalConfig.theme === 'dark' ? 'rgba(255, 255, 255, 0.85)' : '',
                     '--content-shadow': globalConfig.theme === 'dark' ? '0 2px 6px rgba(0, 0, 0, 0.6), 0 0 8px rgba(255, 255, 255, 0.08)' : '',
                 } as React.CSSProperties}
             >
