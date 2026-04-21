@@ -2,10 +2,11 @@
  * @Author: bin
  * @Date: 2026-04-17 15:20:02
  * @LastEditors: bin
- * @LastEditTime: 2026-04-20 15:06:08
+ * @LastEditTime: 2026-04-21 10:54:05
  */
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
+import { useSyncState } from '@/hooks/core'
 import { getEnv } from '@/hooks/core/useLayoutUpdateEffect'
 import type { WxError, WxConfigOptions, Wx, WxWindow } from './types/jweixin'
 
@@ -21,7 +22,7 @@ const WX_SDK = 'https://res.wx.qq.com/open/js/jweixin-1.6.0.js'
 
 let scriptLoading: Promise<void> | null = null
 
-const loadScript = (src: string): Promise<void> => {
+export const loadScript = (src = WX_SDK): Promise<void> => {
     if (typeof window === 'undefined') return Promise.reject(new Error('window is undefined'))
 
     if ((window as WxWindow).wx || (window as WxWindow).jWeixin) return Promise.resolve()
@@ -46,9 +47,10 @@ const loadScript = (src: string): Promise<void> => {
 }
 
 /**
- * @description 微信公众号 SDK
+ * @description 异步加载微信公众号 SDK
  * 该 hooks 是异步加载，异步有异步的好处，可以捕捉加载错误
  * 而 vite alias + import 是同步加载，在组件执行前就已经准备好
+ * 在组件的 useEffect 中无法同步获取，如果想同步加载，开发者只能自己引入 loadScript.then 获取了
  * @example
  *  const { wx, ready } = useWxChat()
  * @example
@@ -57,8 +59,11 @@ const loadScript = (src: string): Promise<void> => {
         if (!ready) return
     }, [ready])
  */
-export default function useWxChat(options?: UseWxChatOptions) {
-
+export default function useWxChat(options?: UseWxChatOptions): {
+    wx: Wx | null;
+    ready: boolean;
+    safeCallWx: (callback: (wx: Wx) => void) => void;
+} {
     const {
         mode = 'miniProgram',
         debug,
@@ -67,8 +72,8 @@ export default function useWxChat(options?: UseWxChatOptions) {
         onError,
     } = options || {}
 
-    const [wx, setWx] = useState<Wx | null>(null)
-    const [ready, setReady] = useState(false)
+    const [wx, setWx] = useSyncState<Wx | null>(null)
+    const [ready, setReady] = useSyncState(false)
 
     useEffect(() => {
         let alive = true
@@ -130,7 +135,10 @@ export default function useWxChat(options?: UseWxChatOptions) {
     }, [config])
 
     const safeCallWx = (callback: (wx: Wx) => void) => {
-        if (!ready || !wx) {
+        const syncWx = wx()
+        const syncReady = ready()
+
+        if (!syncReady || !syncWx) {
             if (getEnv() === 'development') {
                 console.warn('[WechatSDK] wx not ready')
             }
@@ -138,12 +146,12 @@ export default function useWxChat(options?: UseWxChatOptions) {
             return
         }
 
-        callback(wx)
+        callback(syncWx)
     }
 
     return {
-        wx,
-        ready,
+        wx: wx(),
+        ready: ready(),
         safeCallWx,
     }
 }

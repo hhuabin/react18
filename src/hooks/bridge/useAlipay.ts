@@ -2,10 +2,11 @@
  * @Author: bin
  * @Date: 2026-04-17 11:22:55
  * @LastEditors: bin
- * @LastEditTime: 2026-04-20 15:12:58
+ * @LastEditTime: 2026-04-21 11:07:12
  */
 import { useState, useEffect } from 'react'
 
+import { useSyncState } from '@/hooks/core'
 import { getEnv } from '@/hooks/core/useLayoutUpdateEffect'
 import type { MyApi, AlipayWindow } from './types/alimy'
 
@@ -14,7 +15,7 @@ const AlI_SCRIPT_SRC = 'https://appx/web-view.min.js'
 
 let scriptLoading: Promise<void> | null = null
 
-const loadScript = (src: string): Promise<void> => {
+export const loadScript = (src = AlI_SCRIPT_SRC): Promise<void> => {
     if (typeof window === 'undefined') return Promise.reject(new Error('window is undefined'))
 
     if ((window as AlipayWindow).my) return Promise.resolve()
@@ -38,45 +39,57 @@ const loadScript = (src: string): Promise<void> => {
     return scriptLoading
 }
 
-export default function useAlipayJSAPI() {
-    const [my, setMy] = useState<MyApi | null>(null)
-    const [isReady, setIsReady] = useState(false)
+/**
+ * @description 异步加载支付宝小程序的API
+ */
+export default function useAlipayJSAPI(): {
+my: MyApi | null;
+ready: boolean;
+isAlipayMiniProgram: boolean;
+safeCallMy: (callback: (my: MyApi) => void) => void;
+} {
+    const [my, setMy] = useSyncState<MyApi | null>(null)
+    const [ready, setReady] = useSyncState(false)
     const [isAlipayMiniProgram, setIsAlipayMiniProgram] = useState(false)
 
     useEffect(() => {
-        let mounted = true
+        let alive = true
 
         loadScript(AlI_SCRIPT_SRC)
         .then(() => {
             // 组件被卸载，不用继续执行逻辑
-            if (!mounted) return
+            if (!alive) return
 
             const { my } = window as AlipayWindow
             if (!my) return
 
             setMy(my)
             my.getEnv(({ miniprogram }) => {
-                if (!mounted) return
+                if (!alive) return
 
                 setIsAlipayMiniProgram(miniprogram)
-                setIsReady(true)
+                setReady(true)
             })
         })
         .catch((error) => {
             // 此处为 loadScript 失败，会被全局错误捕获到 资源加载错误
-            if (!mounted) return
-            setIsReady(false)
+            if (!alive) return
+            setReady(false)
             console.error('Alipay Js load error:', error)
         })
 
         // 组件卸载
         return () => {
-            mounted = false
+            alive = false
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const safeCallMy = (callback: (my: MyApi) => void) => {
-        if (!isReady || !my) {
+        const syncMy = my()
+        const syncReady = ready()
+
+        if (!syncReady || !syncMy) {
             if (getEnv() === 'development') {
                 console.warn('[AlipaySDK] wx not ready')
             }
@@ -84,12 +97,12 @@ export default function useAlipayJSAPI() {
             return
         }
 
-        callback(my)
+        callback(syncMy)
     }
 
     return {
-        my,
-        isReady,
+        my: my(),
+        ready: ready(),
         isAlipayMiniProgram,
         safeCallMy,
     }
