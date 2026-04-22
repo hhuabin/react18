@@ -4,8 +4,8 @@ const LoadingIcon: React.FC = () => {
         <>
             <div className='grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-x-[8px] gap-y-[16px] p-[8px]'>
                 <div className='flex flex-col items-center w-full'>
-                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--color-border)] box-content
-                        bg-[var(--bg-color)] [box-shadow:var(--box-bottom-shadow)] hover:bg-[var(--item-bg-hover)]'
+                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--border-default)] box-content
+                        bg-[var(--bg-container)] [box-shadow:var(--shadow-sm)] hover:bg-[var(--item-hover)]'
                     >
                         <svg width='100%' height='100%' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
                             {/* <!-- 第一个圆点 --> */}
@@ -26,8 +26,8 @@ const LoadingIcon: React.FC = () => {
                 </div>
 
                 <div className='flex flex-col items-center w-full'>
-                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--color-border)] box-content
-                        bg-[var(--bg-color)] [box-shadow:var(--box-bottom-shadow)] hover:bg-[var(--item-bg-hover)]'
+                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--border-default)] box-content
+                        bg-[var(--bg-container)] [box-shadow:var(--shadow-sm)] hover:bg-[var(--item-hover)]'
                     >
                         <svg width='100%' height='100%' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
                             {/* <!-- 第一个圆点 --> */}
@@ -51,12 +51,12 @@ const LoadingIcon: React.FC = () => {
                 </div>
 
                 <div className='flex flex-col items-center w-full'>
-                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--color-border)] box-content
-                        bg-[var(--bg-color)] [box-shadow:var(--box-bottom-shadow)] hover:bg-[var(--item-bg-hover)]'
+                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--border-default)] box-content
+                        bg-[var(--bg-container)] [box-shadow:var(--shadow-sm)] hover:bg-[var(--item-hover)]'
                     >
                         <svg width='100%' height='100%' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
                             {/* <!-- 白色色背景圆圈 --> */}
-                            <circle cx='50' cy='50' r='36' stroke='var(--bg-color)' strokeWidth='10' fill='none' strokeLinecap='round' />
+                            <circle cx='50' cy='50' r='36' stroke='var(--bg-container)' strokeWidth='10' fill='none' strokeLinecap='round' />
                             {/* <!-- 黑色动态圆圈，半径是36，周长为226.2 弧度是 5/16(88.5) 圆 --> */}
                             <circle cx='50' cy='50' r='36' stroke='currentColor' strokeWidth='10' fill='none' strokeDasharray='70.5 155.7' strokeLinecap='round'>
                                 {/* <!-- 旋转动画 --> */}
@@ -68,8 +68,8 @@ const LoadingIcon: React.FC = () => {
                 </div>
 
                 <div className='flex flex-col items-center w-full'>
-                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--color-border)] box-content
-                        bg-[var(--bg-color)] [box-shadow:var(--box-bottom-shadow)] hover:bg-[var(--item-bg-hover)]'
+                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--border-default)] box-content
+                        bg-[var(--bg-container)] [box-shadow:var(--shadow-sm)] hover:bg-[var(--item-hover)]'
                     >
                         <svg width='100%' height='100%' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
                             <defs>
@@ -97,3 +97,4 @@ const LoadingIcon: React.FC = () => {
 }
 
 export default LoadingIcon
+

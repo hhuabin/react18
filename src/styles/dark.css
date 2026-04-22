@@ -1,20 +1,29 @@
+/* Dark Theme Tokens */
 html[data-theme='dark'] {
-    --primary-color: #1677ff;                    /* 主题色 */
-    --color-primary-hover: #4096ff;              /* 鼠标滑过主题色 */
-    --bg-color: #141414;                         /* 背景色 */
-    
-    --color-border: #d9d9d9;                     /* 边框色 */
-    --color-border-bg: #424242;                  /* 边框背景色 */
-    --color-bg-layout: #141414;                  /* 背景色 */
-    --color-bg-container: #1c1c1c;               /* 容器背景色 */
-    --color-container-hover: rgba(255, 255, 255, 0.08);   /* 鼠标滑过容器背景色 */
-    --color-fill: rgba(255, 255, 255, 0.18);     /* 填充色 */
-    --color-text: rgba(255, 255, 255, 0.85);     /* 默认字体颜色 */
+    color-scheme: dark;
 
-    --item-bg-hover: rgba(255, 255, 255, 0.08);  /* 鼠标滑过背景色 */
-    --item-bg-active: #15325b;                   /* 激活背景色 */
-    --item-bg-active-hover: #15417e;             /* 激活背景色 */
+    --bg-image: url('@/assets/images/dark_bg.webp');        /* 背景图片 */
 
-    --box-shadow: 0 6px 16px 0 rgba(255, 255, 255, 0.08), 0 3px 6px -4px rgba(255, 255, 255, 0.12), 0 9px 28px 8px rgba(255, 255, 255, 0.05);     /* 阴影 */
-    --box-bottom-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.03), 0 1px 6px -1px rgba(255, 255, 255, 0.02), 0 2px 4px 0 rgba(255, 255, 255, 0.02);  /* 阴影 */
+    --color-primary: #177ddc;                            /* 主题色 */
+    --color-primary-hover: #3c9ae8;                      /* 鼠标滑过主题色 */
+    --text-primary: rgba(255, 255, 255, 0.85);           /* 主题色文字颜色 */
+    --text-inverse: rgba(0, 0, 0, 0.88);                 /* 反色文字颜色 */
+
+    --bg-html: rgba(18, 18, 18, 0.96);                   /* html 背景色 */
+    --bg-layout: rgba(18, 18, 18, 0.45);                 /* 页面布局背景色 */
+    --bg-container: rgba(0, 0, 0, 0.65);                 /* 容器背景色 */
+
+    --item-hover: rgba(0, 0, 0, 0.3);                    /* 列表项 hover 背景色 */
+    --item-container-hover: rgba(255, 255, 255, 0.2);    /* 容器背景色下的 hover 背景色 */
+    --item-active: rgba(23, 125, 220, 0.16);             /* 列表项 active 背景色 */
+
+    --border-default: rgba(255, 255, 255, 0.15);         /* 边框颜色 */
+    --border-light: rgba(255, 255, 255, 0.04);           /* 边框颜色（浅色） */
+
+    --fill-default: rgba(255, 255, 255, 0.12);           /* 填充色 */
+
+    --shadow-sm: 0 1px 2px 0 rgba(255, 255, 255, 0.12);
+    --shadow-md: 0 4px 6px -1px rgba(255, 255, 255, 0.08), 0 2px 4px -1px rgba(255, 255, 255, 0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(255, 255, 255, 0.1), 0 4px 6px -2px rgba(255, 255, 255, 0.05);
+    --shadow-glass: 0 8px 32px 0 rgba(255, 255, 255, 0.1);
 }

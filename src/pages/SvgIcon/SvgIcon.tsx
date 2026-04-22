@@ -6,7 +6,7 @@ const SvgIcon: React.FC = () => {
 
     return (
         // {/* 所有svg默认viewBox='0 0 100 100' */}
-        <div className='w-full min-h-screen py-8 text-[var(--color-text)] text-[14px] leading-[24px]'>
+        <div className='w-full min-h-screen py-8 text-[var(--text-primary)] text-[14px] leading-[24px]'>
             <BaseIcon></BaseIcon>
 
             <LoadingIcon></LoadingIcon>

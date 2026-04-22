@@ -13,7 +13,7 @@ const SwiperComponent: React.FC = () => {
     return (
         <div className='py-4 text-[#fff]'>
             <div className='w-[45rem] mx-auto'>
-                <div className='w-full text-[#697b8c] text-[16px]'>基础用法</div>
+                <div className='w-full text-[var(--text-primary)] text-[16px]'>基础用法</div>
                 <div className='w-full h-[160px] mt-4'>
                     <Swiper>
                         <SwiperItem>
@@ -37,7 +37,7 @@ const SwiperComponent: React.FC = () => {
             </div>
 
             <div className='w-[45rem] mx-auto my-8'>
-                <div className='w-full text-[#697b8c] text-[16px]'>默认位置索引值</div>
+                <div className='w-full text-[var(--text-primary)] text-[16px]'>默认位置索引值</div>
                 <div className='w-full h-[160px] mt-4'>
                     <Swiper defaultIndex={100}>
                         <SwiperItem>
@@ -54,7 +54,7 @@ const SwiperComponent: React.FC = () => {
             </div>
 
             <div className='w-[45rem] mx-auto my-8'>
-                <div className='w-full text-[#697b8c] text-[16px]'>自动播放</div>
+                <div className='w-full text-[var(--text-primary)] text-[16px]'>自动播放</div>
                 <div className='w-full h-[160px] mt-4'>
                     <Swiper autoplay={true}>
                         <SwiperItem>
@@ -84,7 +84,7 @@ const SwiperComponent: React.FC = () => {
             </div>
 
             <div className='w-[45rem] mx-auto my-8'>
-                <div className='w-full text-[#697b8c] text-[16px]'>循环播放</div>
+                <div className='w-full text-[var(--text-primary)] text-[16px]'>循环播放</div>
                 <div className='w-full h-[160px] mt-4'>
                     <Swiper loop={true}>
                         <SwiperItem>
@@ -114,7 +114,7 @@ const SwiperComponent: React.FC = () => {
             </div>
 
             <div className='w-[45rem] mx-auto my-8'>
-                <div className='w-full text-[#697b8c] text-[16px]'>自定义轮播项宽 / 高度</div>
+                <div className='w-full text-[var(--text-primary)] text-[16px]'>自定义轮播项宽 / 高度</div>
                 <div className='w-full h-[160px] mt-4'>
                     <Swiper loop={true} slideItemSize={300}>
                         <SwiperItem>
@@ -144,7 +144,7 @@ const SwiperComponent: React.FC = () => {
             </div>
 
             <div className='w-[45rem] mx-auto my-8'>
-                <div className='w-full text-[#697b8c] text-[16px]'>循环居中播放</div>
+                <div className='w-full text-[var(--text-primary)] text-[16px]'>循环居中播放</div>
                 <div className='w-full h-[160px] mt-4'>
                     <Swiper loop={true} basicOffset={30} slideItemSize={300}>
                         <SwiperItem>
@@ -174,7 +174,7 @@ const SwiperComponent: React.FC = () => {
             </div>
 
             <div className='w-[45rem] mx-auto my-8'>
-                <div className='w-full text-[#697b8c] text-[16px]'>自定义指示器</div>
+                <div className='w-full text-[var(--text-primary)] text-[16px]'>自定义指示器</div>
                 <div className='w-full h-[160px] mt-4'>
                     <Swiper loop={true} indicator={indicator}>
                         <SwiperItem>

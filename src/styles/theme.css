@@ -1,27 +1,31 @@
-/* 公共变量样式 */
+/* Light Theme Tokens */
 :root {
-    --font-family: Source Han Sans CN, Source Han Sans CN;
-    --font-size: 16px;                             /* PC端字体大小 */
-    --theme-duration: 0.2s;                        /* 主题切换动画时长 */
-}
+    color-scheme: light;
 
-:root {
-    --primary-color: #1677ff;                    /* 主题色 */
-    --color-primary-hover: #4096ff;              /* 鼠标滑过主题色 */
-    --bg-color: #fff;                            /* 背景色 */
+    --font-size-base: 16px;                                /* PC端字体大小 */
+    --theme-transition-duration: 0.2s;                     /* 主题动画切换过渡时长 */
+    --bg-image: url('@/assets/images/bg.webp');            /* 背景图片 */
 
-    --color-border: #d9d9d9;                     /* 边框色 */
-    --color-border-bg: #e5e5e5;                  /* 边框背景色 */
-    --color-bg-layout: #f5f5f5;                  /* 背景色 */
-    --color-bg-container: #fff;                  /* 容器背景色 */
-    --color-container-hover: rgba(0, 0, 0, 0.02);       /* 鼠标滑过容器背景色 */
-    --color-fill: rgba(0, 0, 0, 0.15);           /* 填充色 */
-    --color-text: rgba(0, 0, 0, 0.88);           /* 默认字体颜色 */
+    --color-primary: #1677ff;                            /* 主题色 */
+    --color-primary-hover: #4096ff;                      /* 鼠标滑过主题色 */
+    --text-primary: rgba(0, 0, 0, 0.88);                 /* 主题色文字颜色 */
+    --text-inverse: rgba(255, 255, 255, 0.96);           /* 反色文字颜色 */
 
-    --item-bg-hover: rgba(0, 0, 0, 0.04);        /* 鼠标滑过背景色 */
-    --item-bg-active: #e6f4ff;                   /* 激活背景色 */
-    --item-bg-active-hover: #bae0ff;             /* 激活背景色 */
+    --bg-html: rgba(255, 255, 255, 0.96);                /* html 背景色 */
+    --bg-layout: rgba(245, 245, 245, 0.45);              /* 页面布局背景色 */
+    --bg-container: rgba(255, 255, 255, 0.65);           /* 容器背景色 */
 
-    --box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);     /* 阴影 */
-    --box-bottom-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);  /* 阴影 */
+    --item-hover: rgba(255, 255, 255, 0.3);              /* 列表项 hover 背景色 */
+    --item-container-hover: rgba(0, 0, 0, 0.08);         /* 容器背景色下的 hover 背景色 */
+    --item-active: rgba(22, 119, 255, 0.1);              /* 列表项 active 背景色 */
+
+    --border-default: rgba(0, 0, 0, 0.15);               /* 边框颜色 */
+    --border-light: rgba(0, 0, 0, 0.04);                 /* 边框颜色（浅色） */
+
+    --fill-default: rgba(0, 0, 0, 0.06);                 /* 填充色 */
+
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(126, 107, 107, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
 }

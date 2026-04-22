@@ -9,7 +9,7 @@ const Home: React.FC = () => {
 
     return (
         <>
-            <div className='w-full h-full pt-[64px] box-border'>
+            <div className='w-full min-h-full pt-[64px] box-border'>
                 <Header></Header>
 
                 <div className='w-full h-full'>

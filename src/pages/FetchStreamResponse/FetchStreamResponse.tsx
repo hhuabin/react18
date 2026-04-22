@@ -72,17 +72,19 @@ const FetchStreamResponse: React.FC = () => {
 
     return (
         <div className='flex w-full h-full'>
-            {/* <div className='flex-none w-[260px] bg-[transparent] hidden lg:block'>
-                <div className='w-full h-full bg-[var(--item-bg-hover)]'></div>
-            </div> */}
+            <div className='flex-none w-[260px] bg-[transparent] hidden lg:block'>
+                <div className='w-full h-full bg-[var(--bg-container)]'></div>
+            </div>
+
             <div className='flex justify-center flex-col w-full h-full p-4 box-border'>
                 <MessageList messageItem={answer}></MessageList>
 
-                <div className='relative flex flex-col w-full border border-[var(--color-border)] rounded-3xl bg-[transparent] overflow-hidden'>
-                    <div className='relative flex min-h-14 flex-auto pb-3 mx-5 mt-4 items-start'>
+                <div className='relative flex flex-col w-full border border-[var(--border-default)] rounded-3xl bg-[var(--bg-container)] overflow-hidden'>
+                    <div className='relative flex min-h-14 flex-auto pb-3 px-5 pt-4 items-start'>
                         <textarea
-                            className='block w-full min-h-8 h-auto outline-0 resize-none text-[var(--color-text)] bg-[transparent]'
-                            rows={3}
+                            name='search'
+                            className='block w-full min-h-8 h-auto outline-none resize-none text-[var(--text-primary)] bg-[transparent]'
+                            rows={2}
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
                             placeholder="询问任何问题"
@@ -95,8 +97,8 @@ const FetchStreamResponse: React.FC = () => {
                         <div className='flex justify-end mx-5 flex-auto'>
                             <button
                                 type='button'
-                                className='block w-9 h-9 rounded-full text-[1em] bg-[var(--primary-color)] select-none
-                            text-[var(--bg-color)] leading-8 hover:border-[var(--item-bg-hover)]'
+                                className='block w-9 h-9 rounded-full text-[1em] bg-[var(--color-primary)] select-none
+                                    text-[var(--text-inverse)] leading-8 hover:border-[var(--item-hover)]'
                                 onClick={() => sendRequest()}
                             >
                                 <svg width='100%' height='100%' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>

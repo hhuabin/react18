@@ -62,11 +62,11 @@ const TimezoneTime: React.FC = () => {
     }
 
     return (
-        <div className='relative w-full min-h-screen p-2 box-border text-[var(--color-text)] text-[18px] leading-[32px]'>
-            <ul className='absolute top-1/2 left-1/2 px-32 py-16 rounded-lg translate-y-[-50%] translate-x-[-50%] [box-shadow:var(--box-shadow)]'>
+        <div className='relative w-full min-h-screen p-2 box-border text-[var(--text-primary)] text-[18px] leading-[32px]'>
+            <ul className='absolute top-1/2 left-1/2 px-32 py-16 rounded-lg bg-[var(--bg-container)] translate-y-[-50%] translate-x-[-50%] [box-shadow:var(--shadow-glass)]'>
                 {
                     Object.keys(timezone).map((key) => (
-                        <li className='flex even:text-[var(--primary-color)]' key={key}>
+                        <li className='flex even:text-[var(--color-primary)]' key={key}>
                             <div className='w-[150px] text-right'>{ key + '：' }</div>
                             <div className=''>{ timezone[key as keyof typeof timezone] }</div>
                         </li>

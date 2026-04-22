@@ -22,8 +22,8 @@ const ModalComponents: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => setDialogVisiable(!dialogVisiable)}
                     >
                         <span>open dialog</span>
@@ -36,16 +36,16 @@ const ModalComponents: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => setVisible(!visible)}
                     >
                         <span>open modal</span>
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => setAntdVisiable(!antdVisiable)}
                     >
                         <span>open antd modal</span>
@@ -58,8 +58,8 @@ const ModalComponents: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.info({
                             closable: true,
                             title: '提示',
@@ -70,8 +70,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.success({
                             content: 'This is an success message',
                         })}
@@ -80,8 +80,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.error({
                             content: 'This is an error message',
                         })}
@@ -90,8 +90,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.warning({
                             content: 'This is an warning message',
                         })}
@@ -100,8 +100,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.confirm({
                             content: 'This is an confirm message',
                         })}
@@ -110,8 +110,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.destroyAll()}
                     >
                         <span>Modal.destroyAll</span>
@@ -124,22 +124,22 @@ const ModalComponents: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.confirm({
                             content: '自定义页脚',
                             footer: (handleConfirm, handleCancel) => (
                                 <>
                                     <button
                                         type='button'
-                                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                                         onClick={handleConfirm}
                                     >确定</button>
                                     <button
                                         type='button'
-                                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                                         onClick={handleCancel}
                                     >取消</button>
                                 </>
@@ -156,8 +156,8 @@ const ModalComponents: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.info({
                             mask: false,
                             content: '我是一个弹窗',
@@ -167,8 +167,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.info({
                             content: '我是一个弹窗',
                             maskClosable: true,
@@ -184,8 +184,8 @@ const ModalComponents: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.info({
                             width: 400,
                             content: '我是一个弹窗',
@@ -195,8 +195,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => Modal.info({
                             content: '我是一个弹窗',
                             duration: 3000,
@@ -215,8 +215,8 @@ const ModalComponents: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => AntdModal.info({
                             title: '提示',
                             content: 'This is an info message',
@@ -227,8 +227,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => AntdModal.success({
                             content: 'This is an success message',
                         })}
@@ -237,8 +237,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => AntdModal.error({
                             content: 'This is an error message',
                         })}
@@ -247,8 +247,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => AntdModal.warn({
                             content: 'This is an warn message',
                         })}
@@ -257,8 +257,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => AntdModal.warning({
                             content: 'This is an warning message',
                         })}
@@ -267,8 +267,8 @@ const ModalComponents: React.FC = () => {
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => AntdModal.confirm({
                             content: 'This is an confirm message',
                         })}
@@ -313,3 +313,4 @@ const ModalComponents: React.FC = () => {
 }
 
 export default ModalComponents
+

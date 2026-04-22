@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-06-04 11:42:38
  * @LastEditors: bin
- * @LastEditTime: 2026-03-27 10:18:13
+ * @LastEditTime: 2026-04-21 22:42:44
  */
 import { useNavigate } from 'react-router-dom'
 
@@ -76,13 +76,16 @@ const Introduce: React.FC = () => {
 
             <div className='flex justify-center w-full'>
                 <ul role='list' className='grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-10 max-w-full px-10 py-6 text-[2rem] text-center'>
-                    <li className='h-[200px] p-4 rounded-[8px] [box-shadow:var(--box-shadow)] hover:bg-[var(--item-bg-hover)] break-all cursor-pointer'>
+                    <li className='h-[200px] p-4 rounded-[8px] [box-shadow:var(--shadow-glass)] bg-[var(--bg-container)] hover:bg-[var(--item-hover)]
+                        transition-all duration-[var(--theme-transition-duration)] break-all cursor-pointer'
+                    >
                         <button type='button' className='w-full h-full' onClick={() => goToMobileGuide()}>移动端工具</button>
                     </li>
                     {
                         routeList.map((item, index) => (
                             <li
-                                className='h-[200px] p-4 rounded-[8px] [box-shadow:var(--box-shadow)] hover:bg-[var(--item-bg-hover)] break-all cursor-pointer'
+                                className='h-[200px] p-4 rounded-[8px] [box-shadow:var(--shadow-glass)] bg-[var(--bg-container)] hover:bg-[var(--item-hover)]
+                                    transition-all duration-[var(--theme-transition-duration)] break-all cursor-pointer'
                                 key={index}
                             >
                                 <button type='button' className='w-full h-full' onClick={() => navigate(item.path)}>{ item.label }</button>

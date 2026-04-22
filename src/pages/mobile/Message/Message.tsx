@@ -34,48 +34,48 @@ const Message: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => message.info('This is an info message')}
                     >
                         <span>Info</span>
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => message.success('This is a success message')}
                     >
                         <span>Success</span>
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => message.error('This is an error message')}
                     >
                         <span>Error</span>
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => message.warning('This is a warning message')}
                     >
                         <span>Warning</span>
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => message.loading('This is a loading message')}
                     >
                         <span>Loading</span>
                     </button>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => message.destroy()}
                     >
                         <span>Destroy</span>
@@ -88,8 +88,8 @@ const Message: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => messageApi.info('This is an info message')}
                     >
                         <span>messageApi.info</span>
@@ -97,8 +97,8 @@ const Message: React.FC = () => {
 
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => messageApi.destroy()}
                     >
                         <span>messageApi.destroy</span>
@@ -111,8 +111,8 @@ const Message: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => openMessage()}
                     >
                         <span>Open the message box</span>
@@ -125,8 +125,8 @@ const Message: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => message.open({
                             content: 'This is a message',
                             duration: 0,
@@ -143,8 +143,8 @@ const Message: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => openCustomMessage()}
                     >
                         <span>openCustomMessage</span>
@@ -157,8 +157,8 @@ const Message: React.FC = () => {
                 <div className='w-full px-4'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md m-2 text-[16px] bg-[var(--bg-color)] select-none
-                            text-[var(--color-text)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
+                        className='px-[16px] border border-[var(--border-default)] rounded-md m-2 text-[16px] bg-[var(--bg-container)] select-none
+                            text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => message.info({
                             content: 'This is a message',
                             forbidClick: true,
@@ -174,3 +174,4 @@ const Message: React.FC = () => {
 }
 
 export default Message
+

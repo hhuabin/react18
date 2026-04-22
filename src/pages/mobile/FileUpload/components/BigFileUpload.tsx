@@ -179,7 +179,7 @@ const BigFileUpload: React.FC<Props> = (props) => {
                 <div className='ml-4'>
                     <div className='w-full text-[16px] leading-[24px]'>切片后回显的图片：</div>
                     <div className='w-full mt-4'>
-                        <div className='w-[80px] h-[80px] rounded-sm border border-[var(--color-border)] [box-shadow:var(--box-bottom-shadow)]'>
+                        <div className='w-[80px] h-[80px] rounded-sm border border-[var(--border-default)] [box-shadow:var(--shadow-sm)]'>
                             <img src={sliceImgFile} className='block w-full h-full object-contain' alt="" />
                         </div>
                     </div>

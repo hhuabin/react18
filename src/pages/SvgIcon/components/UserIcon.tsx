@@ -2,10 +2,10 @@ const UserIcon: React.FC = () => {
 
     return (
         <>
-            <div className='grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-x-[8px] gap-y-[16px] p-[8px] text-[var(--color-text)]'>
+            <div className='grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-x-[8px] gap-y-[16px] p-[8px] text-[var(--text-primary)]'>
                 <div className='flex flex-col items-center w-full'>
-                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--color-border)] box-content
-                        bg-[var(--bg-color)] [box-shadow:var(--box-bottom-shadow)] hover:bg-[var(--item-bg-hover)]'
+                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--border-default)] box-content
+                        bg-[var(--bg-container)] [box-shadow:var(--shadow-sm)] hover:bg-[var(--item-hover)]'
                     >
                         <svg width='100%' height='100%' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'>
                             <path
@@ -29,8 +29,8 @@ const UserIcon: React.FC = () => {
                 </div>
 
                 <div className='flex flex-col items-center w-full'>
-                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--color-border)] box-content
-                        bg-[var(--bg-color)] [box-shadow:var(--box-bottom-shadow)] hover:bg-[var(--item-bg-hover)]'
+                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--border-default)] box-content
+                        bg-[var(--bg-container)] [box-shadow:var(--shadow-sm)] hover:bg-[var(--item-hover)]'
                     >
                         <svg width='100%' height='100%' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'>
                             <path
@@ -53,8 +53,8 @@ const UserIcon: React.FC = () => {
                 </div>
 
                 <div className='flex flex-col items-center w-full'>
-                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--color-border)] box-content
-                        bg-[var(--bg-color)] [box-shadow:var(--box-bottom-shadow)] hover:bg-[var(--item-bg-hover)]'
+                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--border-default)] box-content
+                        bg-[var(--bg-container)] [box-shadow:var(--shadow-sm)] hover:bg-[var(--item-hover)]'
                     >
                         <svg width='100%' height='100%' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'>
                             <path
@@ -76,8 +76,8 @@ const UserIcon: React.FC = () => {
                 </div>
 
                 <div className='flex flex-col items-center w-full'>
-                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--color-border)] box-content
-                        bg-[var(--bg-color)] [box-shadow:var(--box-bottom-shadow)] hover:bg-[var(--item-bg-hover)]'
+                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--border-default)] box-content
+                        bg-[var(--bg-container)] [box-shadow:var(--shadow-sm)] hover:bg-[var(--item-hover)]'
                     >
                         <svg width='100%' height='100%' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'>
                             <path
@@ -104,8 +104,8 @@ const UserIcon: React.FC = () => {
                 </div>
 
                 <div className='flex flex-col items-center w-full'>
-                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--color-border)] box-content
-                        bg-[var(--bg-color)] [box-shadow:var(--box-bottom-shadow)] hover:bg-[var(--item-bg-hover)]'
+                    <div className='flex justify-center items-center w-[50px] h-[50px] border border-[var(--border-default)] box-content
+                        bg-[var(--bg-container)] [box-shadow:var(--shadow-sm)] hover:bg-[var(--item-hover)]'
                     >
                         <svg width='100%' height='100%' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg'>
                             <path
@@ -147,3 +147,4 @@ const UserIcon: React.FC = () => {
 }
 
 export default UserIcon
+

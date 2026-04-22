@@ -117,7 +117,7 @@ const ImageComponents: React.FC = () => {
                 <div className='mt-[12px]'>
                     <button
                         type='button'
-                        className='px-[16px] border border-[var(--color-border)] rounded-md text-[16px] bg-[var(--primary-color)] select-none
+                        className='px-[16px] border border-[var(--border-default)] rounded-md text-[16px] bg-[var(--color-primary)] select-none
                             text-[#FFF] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => setRandom(Date.now())}
                     >

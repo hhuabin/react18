@@ -79,15 +79,15 @@ const Header: React.FC = () => {
     }
 
     return (
-        <header className='fixed top-0 left-0 flex justify-between w-full h-[64px] bg-[var(--bg-color)] overflow-hidden
-            [box-shadow:var(--box-bottom-shadow)] transition-all ease-[ease] duration-[var(--theme-duration)] z-[1000]'
+        <header className='fixed top-0 left-0 flex justify-between w-full h-[64px] bg-[var(--bg-container)] overflow-hidden
+            [box-shadow:var(--shadow-sm)] transition-all ease-[ease] duration-[var(--theme-transition-duration)] z-[1000]'
         >
-            <div className='flex items-center px-8 text-[2rem] text-[var(--color-text)] font-bold cursor-pointer select-none' onClick={() => handleClickName()}>H H U A B I N</div>
+            <div className='flex items-center px-8 text-[2rem] text-[var(--text-primary)] font-bold cursor-pointer select-none' onClick={() => handleClickName()}>H H U A B I N</div>
 
             <div className='hidden md:flex items-center flex-nowrap gap-2 h-full pr-8 box-border'>
-                {/* <button className='inline-flex justify-center items-center w-8 h-8 rounded-md bg-[transparent] hover:bg-[var(--item-bg-hover)]'>
+                {/* <button className='inline-flex justify-center items-center w-8 h-8 rounded-md bg-[transparent] hover:bg-[var(--item-hover)]'>
                     <div className='inline-flex justify-center items-center w-4 h-4'>
-                        <svg width='100%' height='100%' viewBox='0 0 24 24' fill='var(--color-text)' xmlns='http://www.w3.org/2000/svg'>
+                        <svg width='100%' height='100%' viewBox='0 0 24 24' fill='var(--text-primary)' xmlns='http://www.w3.org/2000/svg'>
                             <g fill-rule='evenodd'>
                                 <g fill-rule='nonzero'>
                                     <path d='M7.02 3.635l12.518 12.518a1.863 1.863 0 010 2.635l-1.317 1.318a1.863 1.863 0 01-2.635 0
@@ -106,15 +106,15 @@ const Header: React.FC = () => {
                     </div>
                 </button> */}
                 <button
-                    className='inline-flex justify-center items-center w-8 h-8 rounded-md bg-[transparent] hover:bg-[var(--item-bg-hover)]'
+                    className='inline-flex justify-center items-center w-8 h-8 rounded-md bg-[transparent] hover:bg-[var(--item-container-hover)]'
                     onClick={() => changeTheme()}
                 >
                     <div className='inline-flex justify-center items-center w-4 h-4'>
                         {
                             theme === 'light' ? (
-                                <SunOutlined style={{ fontSize: '16px', color: 'var(--color-text)' }} />
+                                <SunOutlined style={{ fontSize: '16px', color: 'var(--text-primary)' }} />
                             ) : (
-                                <MoonOutlined style={{ fontSize: '16px', color: 'var(--color-text)' }} />
+                                <MoonOutlined style={{ fontSize: '16px', color: 'var(--text-primary)' }} />
                             )
                         }
                     </div>
@@ -122,9 +122,9 @@ const Header: React.FC = () => {
 
                 <Popover content='Github'>
                     <a href='https://github.com/hhuabin/react18' target='_blank' rel='noreferrer'>
-                        <button className='inline-flex justify-center items-center w-8 h-8 rounded-md bg-[transparent] hover:bg-[var(--item-bg-hover)]'>
+                        <button className='inline-flex justify-center items-center w-8 h-8 rounded-md bg-[transparent] hover:bg-[var(--item-container-hover)]'>
                             <div className='flex justify-center items-center w-4 h-4'>
-                                <svg width='100%' height='100%' viewBox='0 0 1024 1024' fill='var(--color-text)' xmlns='http://www.w3.org/2000/svg'>
+                                <svg width='100%' height='100%' viewBox='0 0 1024 1024' fill='var(--text-primary)' xmlns='http://www.w3.org/2000/svg'>
                                     <path d='M511.6 76.3C264.3 76.2 64 276.4 64 523.5 64 718.9 189.3 885 363.8 946c23.5 5.9 19.9-10.8 19.9-22.2
                                         v-77.5c-135.7 15.9-141.2-73.9-150.3-88.9C215 726 171.5 718 184.5 703
                                         c30.9-15.9 62.4 4 98.9 57.9 26.4 39.1 77.9 32.5 104 26 5.7-23.5 17.9-44.5 34.7-60.8-140.6-25.2-199.2-111-199.2-213 0-49.5
