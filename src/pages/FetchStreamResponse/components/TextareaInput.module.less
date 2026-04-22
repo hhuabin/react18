@@ -1,0 +1,44 @@
+.textarea-input {
+
+    // textarea 主要样式设计
+    .textarea {
+        display: block;
+        width: 100%;
+        height: auto;
+        min-height: 64px;
+        max-height: 280px;
+        padding: 16px 20px 0 20px;
+        background-color: transparent;
+        color: var(--text-primary);
+        font-size: 1rem;
+        line-height: 1.5em;
+        outline: none;
+        resize: none;
+        overflow-y: auto;
+
+        /* mask-image 遮罩层，上隐、下隐的关键 */
+        // 兼容 Chrome
+        -webkit-mask-image: linear-gradient(to bottom, transparent, black 3.75%, black calc(100% - 3.75%), transparent );
+        mask-image: linear-gradient(to bottom, transparent, black 3.75%, black calc(100% - 3.75%), transparent);
+
+        /* 垂直滚动条宽度 */
+        &::-webkit-scrollbar {
+            width: 6px;
+            background: transparent;
+        }
+        /* 轨道 */
+        &::-webkit-scrollbar-track {
+            border-radius: 6px;
+            margin-top: 16px;
+        }
+        /* 滑块 */
+        &::-webkit-scrollbar-thumb {
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+        &::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+    }
+}

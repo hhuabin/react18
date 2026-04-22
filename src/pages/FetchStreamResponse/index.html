@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>仿ChatUI风格文本框 - 自适应高度版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #e9eef3 0%, #dce3ec 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 2rem;
+        }
+
+        /* 卡片容器，优雅展示textarea */
+        .demo-container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255,255,255,0.4);
+            backdrop-filter: blur(2px);
+            border-radius: 2.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.6);
+        }
+
+        /* 标题区域，让视觉更接近对话界面氛围 */
+        .header-label {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 0.85rem;
+            padding: 0 0.5rem;
+        }
+
+        .label-text {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1e2a3e;
+            letter-spacing: -0.2px;
+            background: rgba(255,255,240,0.7);
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            backdrop-filter: blur(2px);
+        }
+
+        .hint {
+            font-size: 0.7rem;
+            color: #4a5b6e;
+            background: rgba(255,255,245,0.6);
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-weight: 450;
+        }
+
+        /* 
+            自适应高度的textarea容器包装器 
+            保持滚动条在需要时出现，但高度自动扩展，最大高度限制避免溢出
+        */
+        .auto-resize-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        /* 核心textarea样式 —— 完全仿照主流聊天界面输入框风格，且支持自动增高 */
+        .message-input {
+            width: 100%;
+            /* 内边距提供舒适书写空间 */
+            padding: 1rem 1.25rem;
+            /* 字体系统，干净现代 */
+            font-family: inherit;
+            font-size: 1rem;
+            line-height: 1.5;
+            font-weight: 450;
+            color: #11181c;
+            background-color: #ffffff;
+            /* 边框柔和但清晰 */
+            border: 1px solid #e2e8f0;
+            border-radius: 1.75rem;
+            /* 过渡微动效 */
+            transition: all 0.2s ease;
+            /* 轮廓移除，自定义focus样式 */
+            outline: none;
+            /* 关键改动: 禁用手动resize，因为高度自动适应，但仍允许垂直方向自动扩展 */
+            resize: none;
+            /* 初始最小高度舒适 */
+            min-height: 100px;
+            /* 盒子阴影浅而自然 */
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.02);
+            /* 滚动条仅在内容超过max-height时出现 */
+            overflow-y: auto;
+            /* 设置最大高度，防止无限增高撑爆布局 (典型聊天输入框最大高度200-300px) */
+            max-height: 280px;
+            /* 平滑滚动与高度变化 */
+            transition: height 0.05s ease;
+        }
+
+        /* 聚焦时的样式: 明亮边框 + 柔和光晕，像现代对话组件 */
+        .message-input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2), 0 2px 6px rgba(0,0,0,0.05);
+            background-color: #fefefe;
+        }
+
+        /* placeholder 样式，浅灰色阅读舒适 */
+        .message-input::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: -0.2px;
+        }
+
+        /* 针对hover轻微提升边界感知 */
+        .message-input:hover {
+            border-color: #cbd5e1;
+            background-color: #fdfdfd;
+        }
+
+        /* 自定义滚动条美观 (与textarea滚动条样式一致) */
+        .message-input::-webkit-scrollbar {
+            width: 6px;
+            background: transparent;
+        }
+
+        .message-input::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 12px;
+        }
+
+        .message-input::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 12px;
+            margin-block: 8px;
+        }
+
+        /* 下方模拟按钮组或者状态栏，增强真实感 (额外氛围) */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.9rem;
+            gap: 12px;
+            padding: 0 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        .fake-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .mock-btn {
+            font-size: 0.75rem;
+            color: #4b5568;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 0.9rem;
+            border-radius: 60px;
+            cursor: default;
+            transition: 0.1s;
+            font-weight: 500;
+            border: 0.5px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .mock-btn.primary-mock {
+            background: #8b5cf6;
+            color: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border: none;
+        }
+
+        .status {
+            font-size: 0.7rem;
+            color: #5b6e8c;
+            background: #f1f5f9cc;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .line-count {
+            font-weight: 600;
+            color: #8b5cf6;
+        }
+
+        /* 针对移动设备小屏提升触摸区域 */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+            .demo-container {
+                padding: 1rem;
+            }
+            .message-input {
+                padding: 0.9rem 1rem;
+                font-size: 0.95rem;
+                min-height: 85px;
+                max-height: 240px;
+            }
+            .action-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* 增加一个小提示动画 */
+        .auto-tip {
+            font-size: 0.7rem;
+            color: #6c86a3;
+            margin-top: 6px;
+            margin-left: 12px;
+            display: flex;
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="demo-container">
+    <div class="header-label">
+        <span class="label-text">✍️ 智能对话输入框</span>
+        <span class="hint">自动增高 · Shift+Enter 换行</span>
+    </div>
+    <!-- 
+        自适应textarea: 
+        - 完全继承之前所有视觉样式(圆角、阴影、边框、聚焦光效)
+        - 核心特性: 随着输入文字增多, 高度自动增加, 直到max-height后出现滚动条
+        - 实现原理: 监听input事件, 动态重置高度再设置为scrollHeight, 保证流畅。
+        - 保留所有原始视觉基因, 完全符合“和你这个textarea输入框一样”，且更智能。
+    -->
+    <div class="auto-resize-wrapper">
+        <textarea 
+            class="message-input" 
+            placeholder="输入文字试试看，我会自动变高～&#10;支持多行文本，和主流聊天应用一模一样。&#10;继续打字就会看到高度逐渐伸展..."
+            rows="1"
+            id="autoExpandingTextarea"
+        ></textarea>
+    </div>
+    <div class="action-bar">
+        <div class="fake-buttons">
+            <span class="mock-btn">✨ 灵感</span>
+            <span class="mock-btn primary-mock">📎 附件</span>
+        </div>
+        <div class="status">
+            <span>📝 <span id="charCounter">0</span> 字符</span>
+            <span>📏 <span id="lineCount">1</span> 行</span>
+        </div>
+    </div>
+    <div class="auto-tip">
+        <span>⚡ 自动增高特性：输入多行内容时高度平滑变化，最大高度280px后滚动</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const textarea = document.getElementById('autoExpandingTextarea');
+        const charSpan = document.getElementById('charCounter');
+        const lineSpan = document.getElementById('lineCount');
+        
+        if (!textarea) return;
+
+        // 自动调整高度的核心函数 (完全符合现代聊天输入框行为)
+        const autoResize = () => {
+            // 先将高度重置为auto，以便获取正确的scrollHeight（重点技巧）
+            textarea.style.height = 'auto';
+            // 获取内容实际高度（scrollHeight）
+            let newHeight = textarea.scrollHeight;
+            
+            // 获取计算后的min-height和max-height (确保边界)
+            const computedStyle = window.getComputedStyle(textarea);
+            const minHeight = parseInt(computedStyle.minHeight, 10);
+            const maxHeight = parseInt(computedStyle.maxHeight, 10);
+            
+            // 确保高度不小于最小高度，不大于最大高度
+            if (newHeight < minHeight) {
+                newHeight = minHeight;
+            }
+            if (newHeight > maxHeight) {
+                newHeight = maxHeight;
+                // 如果内容高度超过最大高度，滚动条自动出现（overflow-y: auto 已经设置）
+            } else {
+                // 未超过最大高度时保证没有垂直滚动条，用户体验更好
+                textarea.style.overflowY = 'hidden';
+            }
+            
+            // 如果未达到最大高度时，隐藏滚动条让界面更干净；达到最大高度再启用滚动
+            if (newHeight < maxHeight) {
+                textarea.style.overflowY = 'hidden';
+            } else {
+                textarea.style.overflowY = 'auto';
+            }
+            
+            textarea.style.height = newHeight + 'px';
+        };
+        
+        // 更新字符数和行数（辅助细节，体现文本增多带来的变化）
+        const updateStats = () => {
+            const text = textarea.value;
+            const charCount = text.length;
+            charSpan.innerText = charCount;
+            
+            // 计算行数：基于换行符分割，同时如果末尾没有换行但最后一行有内容也要计数
+            let lines = text.split(/\r\n|\r|\n/);
+            // 处理末尾空行但用户期待行数（例如仅输入一个换行符会得到一个空行数组）
+            let lineCount = lines.length;
+            // 特殊: 如果最后一个字符是换行，多数聊天界面多算一行，为了更直观展示行数变化
+            if (text.endsWith('\n') || text.endsWith('\r\n')) {
+                // 此时行数已经包含了最后空行，不做额外修正。保持所见即所得
+            }
+            // 但如果文本框完全为空，lines = [''] 长度为1，展示为1行合理
+            lineSpan.innerText = lineCount;
+        };
+        
+        // 合并处理函数（调整高度 + 更新字符行数）
+        const handleInput = () => {
+            autoResize();
+            updateStats();
+        };
+        
+        // 初始化时执行一次，保证默认高度符合内容（可能是预置文本或空状态）
+        const initialize = () => {
+            // 设置初始高度正确
+            autoResize();
+            updateStats();
+        };
+        
+        // 绑定输入事件
+        textarea.addEventListener('input', handleInput);
+        // 某些情况下窗口大小改变也可能影响显示，但不需要, 不过再保险加一个resize?
+        window.addEventListener('resize', () => {
+            // 当窗口缩放时，重新调整高度（确保布局不错位）
+            autoResize();
+        });
+        
+        // 监控内容如果是通过其他方式改变（例如程序赋值）, 可触发; 大多数场景足够
+        // 额外监听属性变化（比如值被外部修改）, 如果需要完美，可增加MutationObserver，但通常无需。
+        // 为保证完全符合预期，增加change事件（当失焦时有时候会变化）
+        textarea.addEventListener('change', () => {
+            autoResize();
+            updateStats();
+        });
+        
+        // 初始化调用
+        initialize();
+        
+        // 增加一个小特性: 如果用户手动粘贴大量文本，也完美自适应高度
+        textarea.addEventListener('paste', () => {
+            // 由于input事件会在粘贴后立即触发，但为了确保异步DOM更新完scrollHeight，使用setTimeout微处理
+            setTimeout(() => {
+                autoResize();
+                updateStats();
+            }, 0);
+        });
+        
+        // 可选: 支持动态设置最大高度和最小高度样式一致，无需额外操作
+        console.log('✅ 智能自适应高度textarea已激活 — 样式完全复刻现代聊天输入框，且支持随文本自动增高');
+        
+        // 附加小细节： 模仿大多数聊天界面，按Shift+Enter换行，直接Enter可做提交演示（不实现提交仅演示行为）
+        // 但为了更像聊天输入框, 增加一个可选的键盘体验提示，但不干扰自动增高功能
+        textarea.addEventListener('keydown', (e) => {
+            // 如果按下 Enter 且没有按下 Shift 键，可以阻止默认行为并模拟“发送”通知（仅示意，不强制）
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                // 模拟提示，完全不影响输入框样式，也不会造成误判；仅为演示扩展体验
+                // 真实场景这里一般是发送消息，但我们保留弹提示让用户知道具备发送感
+                const currentVal = textarea.value.trim();
+                if (currentVal !== '') {
+                    // 非强制，只做一个toast风格的消息（轻提醒），但不影响文本框内容和样式
+                    showToast('✨ 演示模式: 按Shift+Enter换行，按Enter发送消息的概念');
+                } else {
+                    showToast('💬 输入一些内容再试试发送');
+                }
+                // 注意：完全不会重置textarea或干扰自适应高度，保留完美体验
+            }
+        });
+        
+        // 小型toast提示，样式柔和且不干扰主界面，符合整体风格
+        const showToast = (message) => {
+            // 避免重复创建多个toast
+            let existingToast = document.querySelector('.custom-toast-message');
+            if (existingToast) existingToast.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = 'custom-toast-message';
+            toast.textContent = message;
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = '#1e293bb3';
+            toast.style.backdropFilter = 'blur(12px)';
+            toast.style.color = 'white';
+            toast.style.padding = '0.5rem 1.2rem';
+            toast.style.borderRadius = '60px';
+            toast.style.fontSize = '0.8rem';
+            toast.style.fontWeight = '500';
+            toast.style.zIndex = '9999';
+            toast.style.fontFamily = 'inherit';
+            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+            toast.style.pointerEvents = 'none';
+            toast.style.whiteSpace = 'nowrap';
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.2s';
+                setTimeout(() => {
+                    if (toast.parentNode) toast.remove();
+                }, 200);
+            }, 1800);
+        };
+    })();
+</script>
+</body>
+</html>
