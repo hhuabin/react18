@@ -4,7 +4,7 @@ import {
     preOrderTraversal,
     inOrderTraversal,
     postOrderTraversal,
-} from '../../../src/utils/algorithm/binaryTree'
+} from '@/utils/algorithm/binaryTree'
 
 describe('binaryTree utils', () => {
     test('BFSCreateTreeNode returns null for empty input', () => {
