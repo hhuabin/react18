@@ -31,15 +31,15 @@ export const useDebounce = <T extends (...args: any[]) => void>(callback: T, del
 
     useEffect(() => {
         return () => {
-            if (timerIdRef) clearTimeout(timerIdRef.current!)
+            if (timerIdRef.current) clearTimeout(timerIdRef.current)
         }
     }, [])
 
     // 创建防抖函数
     const debounce = useCallback((...args: Parameters<T>) => {
-        if (timerIdRef) clearTimeout(timerIdRef.current!)
+        if (timerIdRef.current) clearTimeout(timerIdRef.current)
         if (immediate) {
-            const callNow = !timerIdRef
+            const callNow = !timerIdRef.current
             if (callNow) callbackRef.current(...args)
             timerIdRef.current = setTimeout(() => {
                 timerIdRef.current = null

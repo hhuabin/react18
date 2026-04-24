@@ -6,7 +6,7 @@
         "isolatedModules": true,
         "types": [
             "jest",
-            "node"
+            "node"         // 如果是 jsdom 环境，需要改为 jsdom
         ]
     },
     "include": [
