@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-09-16 14:40:22
  * @LastEditors: bin
- * @LastEditTime: 2026-04-17 11:12:00
+ * @LastEditTime: 2026-04-24 17:38:23
  */
 /* eslint-disable max-lines */
 import React, {
@@ -202,7 +202,7 @@ const Swiper = forwardRef(function Swiper(props: SwiperProps, ref: ForwardedRef<
             if (autoplayTimer.current) clearTimeout(autoplayTimer.current)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [autoplay, autoplayInterval])
+    }, [autoplay, autoplayInterval, swiperItemCount])
 
     // 获取非循环 / 循环状态下的可信任的 Swiper 下标
     const getTrustedSwiperIndex = (index: number) => {
