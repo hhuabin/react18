@@ -72,6 +72,7 @@ export default function confirm(config: DialogOptions) {
                 zIndex={mergedZIndex}
                 onCancel={handleCancel}
                 onConfirm={handleConfirm}
+                onPopstate={close}
             >
                 { content }
             </Dialog>,

@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-10 10:13:42
  * @LastEditors: bin
- * @LastEditTime: 2026-03-30 15:54:02
+ * @LastEditTime: 2026-05-07 16:51:08
  */
 import { useEffect, useState } from 'react'
 
@@ -61,6 +61,7 @@ const Dialog: React.FC<DialogProps> = (props) => {
         mask = true,
         closeOnMaskClick = false,
         closeOnPopstate = true,
+        onPopstate,
         disableBodyScroll = true,
         destroyOnHidden = false,
         forceRender = false,
@@ -96,7 +97,8 @@ const Dialog: React.FC<DialogProps> = (props) => {
     useEffect(() => {
         const handlePopState = (event: PopStateEvent) => {
             if (closeOnPopstate) {
-                onCancel?.()
+                // bug：这里不能触发 onCancel 事件，如果 onCancel 执行了路由跳转navigate(-1)，那么 handlePopState 将会不断被触发，onCancel 也会被不断出发
+                onPopstate?.()
             }
         }
 

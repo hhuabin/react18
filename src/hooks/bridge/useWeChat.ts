@@ -2,9 +2,9 @@
  * @Author: bin
  * @Date: 2026-04-17 15:20:02
  * @LastEditors: bin
- * @LastEditTime: 2026-04-21 10:54:05
+ * @LastEditTime: 2026-04-28 10:10:24
  */
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { useSyncState } from '@/hooks/core'
 import { getEnv } from '@/hooks/core/useLayoutUpdateEffect'
@@ -62,6 +62,7 @@ export const loadScript = (src = WX_SDK): Promise<void> => {
 export default function useWxChat(options?: UseWxChatOptions): {
     wx: Wx | null;
     ready: boolean;
+    isWechatMiniProgram: boolean;
     safeCallWx: (callback: (wx: Wx) => void) => void;
 } {
     const {
@@ -134,6 +135,14 @@ export default function useWxChat(options?: UseWxChatOptions): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [config])
 
+    const isWechatMiniProgram = useMemo(() => {
+        return (
+            typeof window !== 'undefined' &&
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (window as any).__wxjs_environment === 'miniprogram'
+        )
+    }, [])
+
     const safeCallWx = (callback: (wx: Wx) => void) => {
         const syncWx = wx()
         const syncReady = ready()
@@ -152,6 +161,7 @@ export default function useWxChat(options?: UseWxChatOptions): {
     return {
         wx: wx(),
         ready: ready(),
+        isWechatMiniProgram,
         safeCallWx,
     }
 }
