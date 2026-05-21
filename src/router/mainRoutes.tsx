@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-04-16 14:12:24
  * @LastEditors: bin
- * @LastEditTime: 2026-04-15 16:36:50
+ * @LastEditTime: 2026-05-13 11:15:35
  */
 import { redirect, Navigate } from 'react-router-dom'
 import type { RouteConfig } from './types'
@@ -21,6 +21,7 @@ export const routes: RouteConfig[] = [
         errorElement: <ErrorElement />,        // 统一错误处理
         children: [
             {
+                // index: true,         // index 不能嵌套，children 中有 index 即可
                 lazy: async () => {
                     const { default: Home } = await import('@/pages/Home/Home')
                     // const RedirectCom = () => (<><Home/><Navigate to='/login' replace /></>)   // 重定向(不可重定向至子路由，子路由使用 index)
@@ -29,7 +30,7 @@ export const routes: RouteConfig[] = [
                 children: [
                     {
                         index: true,
-                        element: <Navigate to='/introduce' replace />,
+                        element: <Navigate to='introduce' replace />,
                     },
                     {
                         path: 'introduce',
@@ -43,7 +44,7 @@ export const routes: RouteConfig[] = [
             },
             {
                 // 切记该路由绝对不能放进 鉴权路由下
-                path: '/login',
+                path: 'login',
                 lazy: async () => {
                     const { default: Login } = await import('@/pages/Login/Login')
                     return { Component: Login }
@@ -61,7 +62,7 @@ export const routes: RouteConfig[] = [
                 children: [
                     ...mobileRoute,
                     {
-                        path: '/cssmotion',
+                        path: 'cssmotion',
                         lazy: async () => {
                             const { default: CSSMotion } = await import('@/pages/CSSMotion/CSSMotion')
                             return { Component: CSSMotion }
@@ -71,7 +72,7 @@ export const routes: RouteConfig[] = [
                         },
                     },
                     {
-                        path: '/message',
+                        path: 'message',
                         lazy: async () => {
                             const { default: Message } = await import('@/pages/Message/Message')
                             return { Component: Message }
@@ -81,7 +82,7 @@ export const routes: RouteConfig[] = [
                         },
                     },
                     {
-                        path: '/modal',
+                        path: 'modal',
                         lazy: async () => {
                             const { default: Modal } = await import('@/pages/Modal/Modal')
                             return { Component: Modal }
@@ -91,7 +92,7 @@ export const routes: RouteConfig[] = [
                         },
                     },
                     {
-                        path: '/fileupload',
+                        path: 'fileupload',
                         lazy: async () => {
                             const { default: FileUpload } = await import('@/pages/FileUpload/FileUpload')
                             return { Component: FileUpload }
@@ -101,7 +102,7 @@ export const routes: RouteConfig[] = [
                         },
                     },
                     {
-                        path: '/fetchStream',
+                        path: 'fetchStream',
                         lazy: async () => {
                             const { default: FetchStreamResponse } = await import('@/pages/FetchStreamResponse/FetchStreamResponse')
                             return { Component: FetchStreamResponse }
@@ -111,7 +112,7 @@ export const routes: RouteConfig[] = [
                         },
                     },
                     {
-                        path: '/timezoneTime',
+                        path: 'timezoneTime',
                         lazy: async () => {
                             const { default: TimezoneTime } = await import('@/pages/TimezoneTime/TimezoneTime')
                             return { Component: TimezoneTime }
@@ -121,7 +122,7 @@ export const routes: RouteConfig[] = [
                         },
                     },
                     {
-                        path: '/skeleton',
+                        path: 'skeleton',
                         lazy: async () => {
                             const { default: Skeleton } = await import('@/pages/Skeleton/Skeleton')
                             return { Component: Skeleton }
@@ -131,7 +132,7 @@ export const routes: RouteConfig[] = [
                         },
                     },
                     {
-                        path: '/svgicon',
+                        path: 'svgicon',
                         lazy: async () => {
                             const { default: SvgIcon } = await import('@/pages/SvgIcon/SvgIcon')
                             return { Component: SvgIcon }

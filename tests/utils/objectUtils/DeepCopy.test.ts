@@ -66,10 +66,10 @@ describe('DeepCopy', () => {
         }
 
         const copy = DeepCopy.deepCopyWithJSON(source) as {
-            keep: number
-            date: string
-            skip?: number
-            fn?: () => string
+            keep: number;
+            date: Date;
+            skip?: number;
+            fn?: () => string;
         }
 
         expect(copy).toEqual({
