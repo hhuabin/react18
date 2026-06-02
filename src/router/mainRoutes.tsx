@@ -8,7 +8,7 @@ import { redirect, Navigate } from 'react-router-dom'
 import type { RouteConfig } from './types'
 
 // 根组件，无需懒加载
-import RootRouteLayout from '@/layouts/RootRouteLayout'
+import RootRouteLayout from '@/layout/RootRouteLayout'
 // 错误组件，无需懒加载
 import ErrorElement from '@/components/ErrorElement/ErrorElement'
 
