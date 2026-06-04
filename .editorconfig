@@ -1,0 +1,24 @@
+# .editorconfig 编辑器设置，统一编辑器行为
+
+# 这里是项目根目录，不是则不设置即可
+root = true
+
+[*]
+# UTF-8 编码
+charset = utf-8
+# 行结尾为 LF
+end_of_line = lf
+# 文件结尾添加空行
+insert_final_newline = true
+# 使用空格缩进
+indent_style = space
+
+# 特殊文件的行结尾为 CRLF
+[*.bat]
+end_of_line = crlf
+
+[*.cmd]
+end_of_line = crlf
+
+[*.ps1]
+end_of_line = crlf

@@ -1,0 +1,38 @@
+# .gitattributes 文件设置，统一 Git 行为
+
+# ------------------------------
+# 通用文本处理，统一行结尾为 LF
+# ------------------------------
+* text=auto
+* text eol=lf
+
+# ------------------------------
+# 前端源码，拉取 / 提交时统一行结尾为 LF，方便 Windows 和 Mac 之间协作
+# ------------------------------
+*.js      text eol=lf
+*.jsx     text eol=lf
+*.ts      text eol=lf
+*.tsx     text eol=lf
+*.vue     text eol=lf
+
+*.css     text eol=lf
+*.scss    text eol=lf
+*.less    text eol=lf
+
+*.html    text eol=lf
+*.json    text eol=lf
+*.yaml    text eol=lf
+*.yml     text eol=lf
+*.md      text eol=lf
+
+*.svg     text eol=lf
+
+# ------------------------------
+# 二进制文件，不转换
+# ------------------------------
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.ico     binary
+*.webp    binary
