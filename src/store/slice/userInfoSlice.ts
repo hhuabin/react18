@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2024-05-29 22:12:59
  * @LastEditors: bin
- * @LastEditTime: 2025-12-16 16:38:11
+ * @LastEditTime: 2026-07-23 15:03:33
  */
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type { UserInfo } from '../types/userSlice'
@@ -24,11 +24,11 @@ export const userInfoSlice = createSlice({
     reducers: {
         saveUserInfo: (state, action: PayloadAction<UserInfo>) => {
             state.userInfo.token = action.payload.token
-            LocalStorageUtil.setItem('user_info', action.payload)
+            LocalStorageUtil.setItem('user_info', action.payload, true, isNeedEncrypt)
         },
         removeUserInfo: (state) => {
             state.userInfo.token = ''
-            LocalStorageUtil.setItem('user_info', defaultUserInfo)
+            LocalStorageUtil.removeItem('user_info')
         },
     },
 })

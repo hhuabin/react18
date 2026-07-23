@@ -3,7 +3,7 @@
  * @Author: bin
  * @Date: 2025-06-04 10:59:21
  * @LastEditors: bin
- * @LastEditTime: 2026-01-26 17:16:23
+ * @LastEditTime: 2026-07-23 15:13:33
  */
 import axios, {
     type AxiosInstance,
@@ -54,7 +54,7 @@ export default class MobileAxiosRequest {
         },
     })
     private controller: AbortController | null = null
-    private timerId: NodeJS.Timeout | null = null
+    private timerId: ReturnType<typeof setTimeout> | null = null
     private refreshTokenPromise: Promise<void> | null = null
     private publicParams: PublicParams = {
         version: packageVersion,
@@ -70,22 +70,24 @@ export default class MobileAxiosRequest {
 
     private init = () => {
         this.instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-            const { data = {} } = config
+            const { data = {}, params = {}, method = 'POST' } = config
+            const isGetRequest = method.toLowerCase() === 'get'
+            const requestData = isGetRequest ? params : data
 
             /**
              * 是否取消上次请求，适合用在请求数据接口，不适合在提交数据接口使用，以避免重复提交
              * 只有携带了 cancelLastRequest 参数的请求才允许被取消，避免取消必要的请求
              * attention：禁止多个并行请求（如Promise.all中）同时携带 cancelLastRequest 参数，会造成只有最后一个请求生效
              */
-            if (data.cancelLastRequest) {
-                delete data.cancelLastRequest
+            if (requestData.cancelLastRequest) {
+                delete requestData.cancelLastRequest
                 this.cancelRequest(this.controller)
                 this.updateController()
                 config.signal ??= (this.controller as AbortController).signal
             }
 
-            if (data.showLoading) {
-                delete data.showLoading
+            if (requestData.showLoading) {
+                delete requestData.showLoading
                 if (this.timerId) clearTimeout(this.timerId)
                 this.timerId = setTimeout(() => {
                     Toast.show({
@@ -95,6 +97,12 @@ export default class MobileAxiosRequest {
                         duration: 0,
                     })
                 }, 1000)
+            }
+
+            if (isGetRequest) {
+                // GET 参数由 Axios 序列化为 query string，且不注入公共参数。
+                config.params = requestData
+                return config
             }
 
             // 深拷贝数据，令对象不被改变
@@ -110,9 +118,9 @@ export default class MobileAxiosRequest {
             publicParams.timestamp = timestamp
 
             publicParams.token = authStore.getAuthState().userInfo.token
-            config.data = { ...publicParams, ...data }
+            config.data = { ...publicParams, ...requestData }
             // 默认使用POST方法
-            config.method = config.method || 'POST'
+            config.method = method
             return config
         }, this.handleRequestError)
 
@@ -120,9 +128,9 @@ export default class MobileAxiosRequest {
             this.clearTimerId()
 
             // response.status === 200
-            if (response.data.result_code === '0') {
+            if (response.data?.result_code === '0') {
                 return response
-            } else if (response.data.result_code === '-1' && response.config.url !== '/user/refreshtoken') {
+            } else if (response.data?.result_code === '-1' && response.config.url !== '/user/refreshtoken') {
                 // 无感刷新 token ，进入此逻辑的请求链接不能是无感刷新的 url ，避免逻辑死循环
                 console.error(response)
                 try {
@@ -210,10 +218,15 @@ export default class MobileAxiosRequest {
                 reject(response)
                 return
             }
-            // 每个data都需要解压
-            config.data = {
-                ...JSON.parse(response.config.data),
-                ...data,
+            if (config.method?.toLowerCase() === 'get') {
+                // GET 重试时保留 query 参数
+                config.params = { ...response.config.params }
+            } else {
+                // 每个data都需要解压
+                config.data = {
+                    ...JSON.parse(response.config.data),
+                    ...data,
+                }
             }
             config.requestRetryNumber = requestRetryNumber + 1
 
@@ -283,7 +296,7 @@ export default class MobileAxiosRequest {
             return new Promise(() => { })
         } else if (axios.isAxiosError(error)) {
             const status = error.response?.status || error.code || ''
-            if (error.code === 'ERR_NETWORK' && !window.navigator.onLine) {
+            if (error.code === 'ERR_NETWORK' && !window?.navigator.onLine) {
                 errorMessage = '网络已断开'
             } else {
                 errorMessage = HTTP_STATUS_CODES[status] || '请求错误，请稍后再试'

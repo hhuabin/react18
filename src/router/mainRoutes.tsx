@@ -92,6 +92,16 @@ export const routes: RouteConfig[] = [
                         },
                     },
                     {
+                        path: 'request',
+                        lazy: async () => {
+                            const { default: Request } = await import('@/pages/Request/Request')
+                            return { Component: Request }
+                        },
+                        handle: {
+                            title: 'Request',
+                        },
+                    },
+                    {
                         path: 'fileupload',
                         lazy: async () => {
                             const { default: FileUpload } = await import('@/pages/FileUpload/FileUpload')

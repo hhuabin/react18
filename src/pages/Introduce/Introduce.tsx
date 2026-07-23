@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-06-04 11:42:38
  * @LastEditors: bin
- * @LastEditTime: 2026-04-21 22:42:44
+ * @LastEditTime: 2026-07-23 12:39:24
  */
 import { useNavigate } from 'react-router-dom'
 
@@ -22,6 +22,10 @@ const routeList = [
     {
         label: 'Modal',
         path: '/modal',
+    },
+    {
+        label: 'Request',
+        path: '/request',
     },
     {
         label: '文件上传',

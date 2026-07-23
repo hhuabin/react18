@@ -4,7 +4,7 @@
  * @Author: bin
  * @Date: 2025-02-26 21:05:44
  * @LastEditors: bin
- * @LastEditTime: 2026-01-23 10:25:13
+ * @LastEditTime: 2026-07-23 15:13:05
  */
 import axios, {
     type AxiosInstance,
@@ -75,23 +75,25 @@ export default class AxiosRequest {
 
     private init = () => {
         this.instance.interceptors.request.use((config: CustomAxiosRequestConfig) => {
-            const { data = {} } = config
+            const { data = {}, params = {}, method = 'POST' } = config
+            const isGetRequest = method.toLowerCase() === 'get'
+            const requestData = isGetRequest ? params : data
 
             /**
              * 是否取消上一个携带 cancelLastRequest 的请求，适合用在请求数据接口，不适合在提交数据接口使用，以避免重复提交
              * 只有携带了 cancelLastRequest 参数的请求才允许被取消，避免取消必要的请求
              * attention：禁止多个并行请求（如Promise.all中）同时携带 cancelLastRequest 参数，会造成只有最后一个请求生效
              */
-            if (data.cancelLastRequest) {
-                delete data.cancelLastRequest
+            if (requestData.cancelLastRequest) {
+                delete requestData.cancelLastRequest
                 this.cancelRequest(this.controller)
                 this.updateController()
                 config.signal ??= (this.controller as AbortController).signal
             }
 
             // 默认 loading
-            if (data.showLoading) {
-                delete data.showLoading
+            if (requestData.showLoading) {
+                delete requestData.showLoading
                 const loadingSymbol = Symbol('loading')
                 let loadingHandler: () => void
                 const timerId = setTimeout(() => {
@@ -104,9 +106,15 @@ export default class AxiosRequest {
             }
 
             // 记录请求重试次数，当请求失败才会发起 请求重试
-            if (data.maxRequestRetryNumber) {
-                config.maxRequestRetryNumber = data.maxRequestRetryNumber
-                delete data.maxRequestRetryNumber
+            if (requestData.maxRequestRetryNumber) {
+                config.maxRequestRetryNumber = requestData.maxRequestRetryNumber
+                delete requestData.maxRequestRetryNumber
+            }
+
+            if (isGetRequest) {
+                // GET 参数由 Axios 序列化为 query string，且不注入公共参数。
+                config.params = requestData
+                return config
             }
 
             // 深拷贝数据，令对象不被改变
@@ -122,9 +130,9 @@ export default class AxiosRequest {
             publicParams.timestamp = timestamp
 
             publicParams.token = authStore.getAuthState().userInfo.token
-            config.data = { ...publicParams, ...data }
+            config.data = { ...publicParams, ...requestData }
             // 默认使用POST方法
-            config.method = config.method || 'POST'
+            config.method = method
             return config
         }, this.handleRequestError)
 
@@ -133,11 +141,11 @@ export default class AxiosRequest {
             const maxRequestRetryNumber = Number(config.maxRequestRetryNumber) || 0
 
             // response.status === 200
-            if (response.data.result_code === '0') {
+            if (response.data?.result_code === '0') {
                 // 成功返回，清除定时器并且关闭 loading（有返回就关闭请求 loading，没有返回可以一直沿用本 loading）
                 this.clearTimeoutTimer(config)
                 return response
-            } else if (response.data.result_code === '-1' && response.config.url !== '/user/refreshtoken') {
+            } else if (response.data?.result_code === '-1' && response.config.url !== '/user/refreshtoken') {
                 // 无感刷新 token ，进入此逻辑的请求链接不能是无感刷新的 url ，避免逻辑死循环
                 console.error(response)
                 try {
@@ -234,10 +242,15 @@ export default class AxiosRequest {
                 reject(response)
                 return
             }
-            // 每个data都需要解压
-            config.data = {
-                ...JSON.parse(response.config.data),
-                ...mergeData,
+            if (config.method?.toLowerCase() === 'get') {
+                // GET 重试时保留 query 参数
+                config.params = { ...response.config.params }
+            } else {
+                // 每个data都需要解压
+                config.data = {
+                    ...JSON.parse(response.config.data),
+                    ...mergeData,
+                }
             }
             // 给 config 添加 requestRetryNumber 记录
             config.requestRetryNumber = requestRetryNumber + 1
@@ -310,7 +323,7 @@ export default class AxiosRequest {
             return new Promise(() => { })
         } else if (axios.isAxiosError(error)) {
             const status = error.response?.status || error.code || ''
-            if (error.code === 'ERR_NETWORK' && !window.navigator.onLine) {
+            if (error.code === 'ERR_NETWORK' && !window?.navigator.onLine) {
                 errorMessage = '网络已断开'
             } else {
                 errorMessage = HTTP_STATUS_CODES[status] || '请求错误，请稍后再试'

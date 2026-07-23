@@ -1,18 +1,33 @@
+/**
+ * @Author: bin
+ * @Date: 2026-07-22 11:12:55
+ * @LastEditors: bin
+ * @LastEditTime: 2026-07-23 14:07:43
+ */
 import type { AxiosPromise, AxiosRequestConfig } from 'axios'
 
 import AxiosRequest from '@/utils/request/AxiosRequest'
-import type {
-    PublicParam, PublicAnswer,
-} from './types'
+import type { PublicParam, PublicAnswer } from './types'
 
 const axiosRequest = new AxiosRequest().getAxiosInstance()
 
-export const baseRequest = (params: PublicParam, config?: AxiosRequestConfig): AxiosPromise<PublicAnswer> => {
+export const basePost = (data: PublicParam, config?: AxiosRequestConfig): AxiosPromise<PublicAnswer> => {
     return axiosRequest({
         url: '/user/postlist',
-        method: 'post',
+        method: 'POST',
         ...config,
         data: {
+            ...data,
+        },
+    })
+}
+
+export const baseGet = (params: PublicParam, config?: AxiosRequestConfig): AxiosPromise<PublicAnswer> => {
+    return axiosRequest({
+        url: '/user/getlist',
+        method: 'GET',
+        ...config,
+        params: {
             ...params,
         },
     })

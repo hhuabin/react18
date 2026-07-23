@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-02-26 21:05:44
  * @LastEditors: bin
- * @LastEditTime: 2025-11-14 10:53:16
+ * @LastEditTime: 2026-07-23 14:54:41
  */
 import message from '@/components/Message'
 
@@ -35,12 +35,12 @@ export default class FetchRequest {
         }
 
         // 处理loading逻辑
-        let loadingMessage = () => {}
-        let timerId: NodeJS.Timeout
+        let closeLoadingMessage = () => {}
+        let timerId: ReturnType<typeof setTimeout>
         if (data.showLoading) {
             delete data.showLoading
             timerId = setTimeout(() => {
-                loadingMessage = message.loading('loading...', 0)
+                closeLoadingMessage = message.loading('loading...', 0)
             }, 1000)
         }
 
@@ -67,14 +67,14 @@ export default class FetchRequest {
         .then(data => {
             if (data.result_code === '0') {
                 clearTimeout(timerId)
-                loadingMessage()
+                closeLoadingMessage()
                 return data
             }
             return Promise.reject(data)
         })
         .catch(error => {
             clearTimeout(timerId)
-            loadingMessage()
+            closeLoadingMessage()
 
             if (error.name === 'AbortError') {
                 console.warn('请求被取消', error)
