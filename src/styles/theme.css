@@ -2,6 +2,7 @@
 :root {
     color-scheme: light;
 
+    --font-family: PingFangSC, PingFang SC;                /* 字体 */
     --font-size-base: 16px;                                /* PC端字体大小 */
     --theme-transition-duration: 0.2s;                     /* 主题动画切换过渡时长 */
     --bg-image: url('@/assets/images/bg.webp');            /* 背景图片 */

@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-11-12 19:20:27
  * @LastEditors: bin
- * @LastEditTime: 2025-11-13 10:04:42
+ * @LastEditTime: 2026-07-29 16:49:00
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useEffect, useRef } from 'react'
@@ -62,7 +62,7 @@ export const useDebounce = <T extends (...args: any[]) => void>(callback: T, del
         }
     }, [])
 
-    return [debounce, cancel]
+    return [debounce, cancel] as const
 }
 
 /**

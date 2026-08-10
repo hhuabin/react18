@@ -41,6 +41,7 @@ export const loadScript = (src = AlI_SCRIPT_SRC): Promise<void> => {
 
 /**
  * @description 异步加载支付宝小程序的API
+ *  使用方法参考 useWeChat
  */
 export default function useAlipayJSAPI(): {
 my: MyApi | null;

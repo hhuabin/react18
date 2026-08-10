@@ -2,13 +2,15 @@
  * @Author: bin
  * @Date: 2026-04-20 11:44:03
  * @LastEditors: bin
- * @LastEditTime: 2026-04-20 12:30:02
+ * @LastEditTime: 2026-08-10 16:42:01
  */
 import { useMemo } from 'react'
 
 export type RuntimeEnv =
     | 'wechat-miniprogram'
     | 'alipay-miniprogram'
+    | 'ios-app'
+    | 'android-app'
     | 'browser'
 
 const isWechatMiniProgram = (): boolean => {
@@ -34,6 +36,23 @@ const isAlipayMiniProgram = (): boolean => {
     return hasMy && isAlipay
 }
 
+const getAppPlatform = (): 'ios' | 'android' | null => {
+    if (typeof window === 'undefined') {
+        return null
+    }
+
+    // 注意：这里需要 App 注入变量才可以，和 App 配合使用，不然是没用的！！！
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const platform = (window as any).__APP_WEBVIEW__
+
+    if (platform === 'ios' || platform === 'android') {
+        return platform
+    }
+
+    return null
+}
+
+
 /**
  * @description 获取运行环境
  * @returns 微信小程序 | 支付宝小程序 | 浏览器
@@ -48,6 +67,11 @@ export default function useRuntimeEnv() {
             return 'alipay-miniprogram'
         }
 
+        const platform = getAppPlatform()
+        if (platform) {
+            return platform === 'ios' ? 'ios-app' : 'android-app'
+        }
+
         return 'browser'
     }, [])
 
@@ -55,6 +79,7 @@ export default function useRuntimeEnv() {
         env,
         isWechatMiniProgram: env === 'wechat-miniprogram',
         isAlipayMiniProgram: env === 'alipay-miniprogram',
+        isAppWebView: env === 'ios-app' || env === 'android-app',
         isBrowser: env === 'browser',
     }
 }

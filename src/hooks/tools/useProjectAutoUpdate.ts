@@ -21,7 +21,7 @@ export default function useProjectAutoUpdate(projectLink = '/', intervalRefresh 
     const versionAndtimestampRegex = /<meta\s+name="(version|timestamp)"\s+content="([^"]+)"\s*\/?>/gi
     const projectVersion = useRef('')
     const projectBuildTime = useRef('')
-    const intervalRefreshTimer = useRef<NodeJS.Timeout | null>(null)
+    const intervalRefreshTimer = useRef<ReturnType<typeof setInterval> | null>(null)
     const REFRESH_INTERVAL = 60000      // 一分钟轮询检查更新一次
 
     useEffect(() => {

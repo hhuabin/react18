@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-17 15:20:02
  * @LastEditors: bin
- * @LastEditTime: 2026-04-28 10:10:24
+ * @LastEditTime: 2026-08-10 17:08:53
  */
 import { useEffect, useMemo } from 'react'
 
@@ -53,7 +53,7 @@ export const loadScript = (src = WX_SDK): Promise<void> => {
  * 在组件的 useEffect 中无法同步获取，如果想同步加载，开发者只能自己引入 loadScript.then 获取了
  * @example
  *  const { wx, ready } = useWxChat()
- * @example
+ * @example 在 useEffect 中使用
  *  const { wx, ready } = useWxChat({ mode: 'config', config })
     useEffect(() => {
         if (!ready) return
