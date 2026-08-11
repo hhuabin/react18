@@ -2,9 +2,15 @@
  * @Author: bin
  * @Date: 2026-04-20 11:44:03
  * @LastEditors: bin
- * @LastEditTime: 2026-08-10 16:42:01
+ * @LastEditTime: 2026-08-11 10:32:21
  */
 import { useMemo } from 'react'
+
+export type AppRuntime = {
+    type: 'app'
+    platform: 'ios' | 'android'
+    version?: string
+}
 
 export type RuntimeEnv =
     | 'wechat-miniprogram'
@@ -36,25 +42,45 @@ const isAlipayMiniProgram = (): boolean => {
     return hasMy && isAlipay
 }
 
-const getAppPlatform = (): 'ios' | 'android' | null => {
+/* window.__APP_RUNTIME__ = {
+    type: 'app',
+    platform: 'ios',
+    version: '1.0.0'
+} */
+/**
+ * @description 获取 App 的平台类型
+ * Android：通过 WebView.addJavascriptInterface() 向 WebView 的 JavaScript 环境注入 __APP_RUNTIME__ 对象
+ * iOS：通过 WKUserContentController 配合 WKUserScript 向 WebView 的 JavaScript 环境注入 __APP_RUNTIME__ 对象
+ * H5 可通过 window.__APP_RUNTIME__ 判断当前是否运行在 App WebView 中，以及获取 App 平台信息
+ * 注意：App 一定要注入对象，不然 window.__APP_RUNTIME__ 将会是 undefined
+ */
+const getAppRuntime = (): AppRuntime | null => {
     if (typeof window === 'undefined') {
         return null
     }
 
-    // 注意：这里需要 App 注入变量才可以，和 App 配合使用，不然是没用的！！！
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const platform = (window as any).__APP_WEBVIEW__
+    const runtime = (window as any).__APP_RUNTIME__ as AppRuntime | undefined
 
-    if (platform === 'ios' || platform === 'android') {
-        return platform
+    if (
+        runtime &&
+        runtime.type === 'app' &&
+        (runtime.platform === 'ios' || runtime.platform === 'android')
+    ) {
+        return runtime
     }
 
     return null
 }
 
+export const getAppPlatform = (): 'ios' | 'android' | null => {
+    return getAppRuntime()?.platform ?? null
+}
+
 
 /**
- * @description 获取运行环境
+ * @description 获取运行环境，也仅仅负责判断运行环境，不负责提供方法
+ *  方法可从 @/hooks/bridge 下获取
  * @returns 微信小程序 | 支付宝小程序 | 浏览器
  */
 export default function useRuntimeEnv() {
