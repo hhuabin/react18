@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2024-05-29 22:12:59
  * @LastEditors: bin
- * @LastEditTime: 2026-08-12 18:17:03
+ * @LastEditTime: 2026-08-12 18:42:56
  */
 import { useLayoutEffect, useEffect } from 'react'
 
@@ -27,7 +27,7 @@ const App: React.FC = () => {
     // 性能监控
     usePerformanceMonitor()
     // 项目自动检测更新
-    useVersionCheck('/react18/')
+    useVersionCheck(window.location.pathname)
     // useVersionUpdate('/react18/', true, true)
 
     // App.tsx 不做登录状态管理，但是对于简单的，没有登陆页的项目可以在这里做一下

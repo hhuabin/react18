@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-08-12 14:09:57
  * @LastEditors: bin
- * @LastEditTime: 2026-08-12 18:20:58
+ * @LastEditTime: 2026-08-12 19:02:03
  */
 import { useEffect, useRef } from 'react'
 
@@ -84,11 +84,11 @@ const shouldProjectUpdate = (
 
 /**
  * @version version.json 2
- * @description 通过构建产物中的 version.json 检测项目更新
+ * @description 通过构建产物中的 version.json 检测项目更新；开发环境下不启用
  * vite.config.ts 需要在构建时生成包含 version 和 buildTime 的 version.json
  * 优点：比 useVersionUpdate 规范；缺点：配置较多，需要注入全局变量__APP_VERSION__和__BUILD_TIME__，也生成 version.json 文件在前端服务器
  *
- * @param { string } projectLink 项目部署于域名下的路径，默认为域名根路径/；如果项目部署于子路径，则需要填写子路径（子路径需以 / 结束），如 /project/
+ * @param { string } projectLink 项目部署于域名下的路径，默认为域名根路径/；如果项目部署于子路径(window.location.pathname)，则需要填写子路径（子路径需以 / 结束），如 /project/
  * @param { boolean } intervalRefresh 是否定时轮询检查更新，默认为 false，设置为true时，需要注意是否有表单提交页，用户刷新将会导致表单填写数据丢失
  * @param { boolean } strictUpdate 是否需要版本号和构建时间都变化才更新，默认为 false
  */
@@ -105,8 +105,8 @@ export default function useVersionCheck(projectLink = '/', intervalRefresh = fal
     const intervalRefreshTimer = useRef<ReturnType<typeof setInterval> | null>(null)
 
     useEffect(() => {
-        // 不是只有生产环境的，还是 test 等环境，所以该代码建议是注释掉
-        // if (import.meta.env.MODE !== 'production') return
+        // 开发环境下启用项目更新没有意义
+        if (import.meta.env.MODE === 'development') return
 
         initialize()
 
@@ -171,5 +171,4 @@ export default function useVersionCheck(projectLink = '/', intervalRefresh = fal
             intervalRefreshTimer.current = null
         }
     }
-
 }

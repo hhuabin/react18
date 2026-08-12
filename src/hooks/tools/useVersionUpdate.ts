@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2024-12-10 16:04:08
  * @LastEditors: bin
- * @LastEditTime: 2026-08-12 18:18:12
+ * @LastEditTime: 2026-08-12 19:01:24
  */
 import { useEffect, useRef } from 'react'
 
@@ -82,11 +82,11 @@ const shouldProjectUpdate = (
 
 /**
  * @version index.html 1
- * @description 通过 index.html 中的 version 和 timestamp meta 标签检测项目更新
+ * @description 通过 index.html 中的 version 和 timestamp meta 标签检测项目更新；开发环境下不启用
  * vite.config.ts 需要在构建时向两个 meta 标签分别注入版本号和构建时间
  * 优点：比 useVersionCheck 配置少，无需生成 version.json 文件；缺点：不够规范
  *
- * @param { string } projectLink 项目部署于域名下的路径，默认为域名根路径/；如果项目部署于子路径，则需要填写子路径（子路径需以 / 结束），如 /project/
+ * @param { string } projectLink 项目部署于域名下的路径，默认为域名根路径/；如果项目部署于子路径(window.location.pathname)，则需要填写子路径（子路径需以 / 结束），如 /project/
  * @param { boolean } intervalRefresh 是否定时轮询检查更新，默认为 false，设置为 true 时，需要注意刷新可能导致未提交的表单数据丢失
  * @param { boolean } strictUpdate 是否需要版本号和构建时间都变化才更新，默认为 false；开发环境启动的话，需要设置成 true，不然 buildTime 一直在变化一直触发更新
  */
@@ -100,6 +100,9 @@ export default function useVersionUpdate(projectLink = '/', intervalRefresh = fa
     const intervalRefreshTimer = useRef<ReturnType<typeof setInterval> | null>(null)
 
     useEffect(() => {
+        // 开发环境下启用项目更新没有意义
+        if (import.meta.env.MODE === 'development') return
+
         initialize()
 
         return () => {
