@@ -4,6 +4,7 @@ import { SunOutlined, MoonOutlined } from '@ant-design/icons'
 import { Popover } from 'antd'
 
 import message, { type NoticeType } from '@/components/Message'
+import LocalStorageUtil from '@/utils/storageUtils/LocalStorageUtil'
 import { randomIntInRange } from '@/utils/functionUtils/mathUtils'
 
 type Theme = 'light' | 'dark'
@@ -19,7 +20,7 @@ const Header: React.FC = () => {
          * 因为在App.tsx中已经修改成了黑色主题，故没有动画也没有了类似闪屏的问题
          * 若App.tsx没有修改主题，建议useEffect中修改主题，保持与html主题保持同步变化
          */
-        const currentTheme = localStorage.getItem('local-theme') || getOSTheme()
+        const currentTheme = LocalStorageUtil.getItem<Theme>('local_theme') || getOSTheme()
         if (currentTheme === 'dark') {
             changeTheme('dark')
         }
@@ -33,7 +34,7 @@ const Header: React.FC = () => {
             return
         }
         document.documentElement.dataset.theme = theme
-        localStorage.setItem('local-theme', theme)
+        LocalStorageUtil.setItem('local_theme', theme)
     }, [theme])
 
     useEffect(() => {

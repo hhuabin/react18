@@ -4,9 +4,15 @@ import { visualizer } from 'rollup-plugin-visualizer'
 
 import { version } from './package.json'
 
+const buildTimeStamp = Date.now()
+
 // https://vitejs.dev/config/
 export default defineConfig((env: ConfigEnv) => ({
     base: './',
+    define: {
+        __APP_VERSION__: JSON.stringify(version),
+        __BUILD_TIME__: JSON.stringify(buildTimeStamp),
+    },
     plugins: [
         react(),
         // 方式1：添加版本号等信息，用于网站检测更新，也可以不把版本号放在index.html，放到打包目录下的 version.json 也是可以的
@@ -14,11 +20,11 @@ export default defineConfig((env: ConfigEnv) => ({
             name: 'inject-version',
             transformIndexHtml(html) {
                 html = html.replace(/__VERSION__/g, version)
-                    .replace(/__BUILD_TIME__/g, String(Date.now()))
+                    .replace(/__BUILD_TIME__/g, String(buildTimeStamp))
                 return html
             },
         },
-        // 方式2：使用 rollup 插件生成版本文件
+        // 方式2：使用 rollup 插件生成版本文件，同时需要注入 __APP_VERSION__、__BUILD_TIME__ 全局变量
         {
             name: 'version-plugin',
             generateBundle() {
@@ -26,7 +32,7 @@ export default defineConfig((env: ConfigEnv) => ({
                 this.emitFile({
                     type: 'asset',                  // asset 文件类型
                     fileName: 'version.json',       // 输出文件名 version.json
-                    source: JSON.stringify({ version, buildTime: Date.now() }),
+                    source: JSON.stringify({ version, buildTime: buildTimeStamp }),
                 })
             },
         },
@@ -37,6 +43,7 @@ export default defineConfig((env: ConfigEnv) => ({
     server: {
         // 开发环境配置
         port: 3000,
+        strictPort: false,     // 端口被占用开启下一个端口
         open: true,
         headers: {
             'cache-control': 'no-cache, no-store, must-revalidate',
@@ -48,7 +55,7 @@ export default defineConfig((env: ConfigEnv) => ({
          * 在静态资源目录添加版本号
          * 1. 存下历史包，解决因为浏览器缓存了历史资源造成的**白屏问题**
          * 2. 方便做版本管理/回退，以及方便 nginx 配置缓存
-         * 3. 如果使用 CI/CD 构建，可以不做版本号处理
+         * 3. 如果使用 CI/CD 构建，可以不做版本号处理，也不建议做，CI/CD 一般配置了 nginx，nginx + useVersionCheck 足以应对大多数场景，就没必要复杂化了
          * 4. 部署时，只需要1.修改 index.html 和2.在 assets 下添加版本的静态资源即可，无需删除历史资源包
          */
         assetsDir: `assets/${version}`,

@@ -2,16 +2,19 @@
  * @Author: bin
  * @Date: 2024-05-29 22:12:59
  * @LastEditors: bin
- * @LastEditTime: 2026-04-15 17:43:01
+ * @LastEditTime: 2026-08-12 18:17:03
  */
 import { useLayoutEffect, useEffect } from 'react'
 
 import AppRouter from '@/router'
 
+import LocalStorageUtil from '@/utils/storageUtils/LocalStorageUtil'
+
 import {
     useGlobalErrorMonitor,
     usePerformanceMonitor,
-    useProjectAutoUpdate,
+    useVersionCheck,
+    useVersionUpdate,
     useAuth,
 } from '@/hooks'
 
@@ -24,14 +27,15 @@ const App: React.FC = () => {
     // 性能监控
     usePerformanceMonitor()
     // 项目自动检测更新
-    useProjectAutoUpdate()
+    useVersionCheck('/react18/')
+    // useVersionUpdate('/react18/', true, true)
 
     // App.tsx 不做登录状态管理，但是对于简单的，没有登陆页的项目可以在这里做一下
     const { isLogin, login } = useAuth()
 
     useLayoutEffect(() => {
         // window.matchMedia 获取浏览器当前主题的色彩模式
-        const currentTheme = localStorage.getItem('local-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        const currentTheme = LocalStorageUtil.getItem<'light' | 'dark'>('local_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
         if (currentTheme === 'dark') {
             document.documentElement.dataset.theme = 'dark'
         }
