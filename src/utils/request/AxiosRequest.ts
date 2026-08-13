@@ -4,7 +4,7 @@
  * @Author: bin
  * @Date: 2025-02-26 21:05:44
  * @LastEditors: bin
- * @LastEditTime: 2026-08-13 10:34:10
+ * @LastEditTime: 2026-08-13 11:25:45
  */
 import { router } from '@/router'
 import axios, {
@@ -19,7 +19,7 @@ import { version as packageVersion } from '@/../package.json'
 
 // import { navigate } from '@/hooks/useRouter'
 import authStore from '@/store/slice/auth.store'
-import { getDateStrByTimeAndCurrentOffset } from '@/utils/stringUtils/dateUtils'
+import { getBeiJingDateString } from '@/utils/stringUtils/dateUtils'
 import HTTP_STATUS_CODES from './httpStatusCodes'
 
 /**
@@ -135,7 +135,7 @@ export default class AxiosRequest {
             }
             publicParams.requestSerial = requestSerial
             // timestamp 请求时间
-            const timestamp: string = getDateStrByTimeAndCurrentOffset()
+            const timestamp: string = getBeiJingDateString()
             publicParams.timestamp = timestamp
 
             publicParams.token = token
@@ -302,6 +302,7 @@ export default class AxiosRequest {
             const { pathname, search } = router.state.location
             // 此处可做跳转至登录页
             router.navigate('/login', {
+                replace: true,
                 state: {
                     message: 'failed to refresh token',
                     // 需要根据 历史路由 和 哈希路由 修改，这里写了历史路由的

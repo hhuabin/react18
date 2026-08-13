@@ -1,7 +1,13 @@
+/**
+ * @Author: bin
+ * @Date: 2026-07-22 11:12:55
+ * @LastEditors: bin
+ * @LastEditTime: 2026-08-13 11:41:56
+ */
 import { useEffect, useState } from 'react'
 
 import createAnimation from '@/utils/functionUtils/requestAnimationFrame'
-import { getDateStrByTimeAndCurrentOffset } from '@/utils/stringUtils/dateUtils'
+import { getDateStringByTimeAndCurrentOffset } from '@/utils/stringUtils/dateUtils'
 
 const TimezoneTime: React.FC = () => {
 
@@ -31,18 +37,18 @@ const TimezoneTime: React.FC = () => {
     }, [])
 
     const getTimezoneTime = () => {
-        const Hawaii = getDateStrByTimeAndCurrentOffset(Date.now(), 720, 'YYYY-MM-DD hh:mm:ss:mss')
-        const Alaska = getDateStrByTimeAndCurrentOffset(Date.now(), 660, 'YYYY-MM-DD hh:mm:ss:mss')
-        const EasterIsland = getDateStrByTimeAndCurrentOffset(Date.now(), 360, 'YYYY-MM-DD hh:mm:ss:mss')
-        const NewYork = getDateStrByTimeAndCurrentOffset(Date.now(), 300, 'YYYY-MM-DD hh:mm:ss:mss')
-        const London = getDateStrByTimeAndCurrentOffset(Date.now(), 0, 'YYYY-MM-DD hh:mm:ss:mss')
-        const Berlin = getDateStrByTimeAndCurrentOffset(Date.now(), -60, 'YYYY-MM-DD hh:mm:ss:mss')
-        const Athens = getDateStrByTimeAndCurrentOffset(Date.now(), -120, 'YYYY-MM-DD hh:mm:ss:mss')
-        const Moscow = getDateStrByTimeAndCurrentOffset(Date.now(), -180, 'YYYY-MM-DD hh:mm:ss:mss')
-        const Bangkok = getDateStrByTimeAndCurrentOffset(Date.now(), -420, 'YYYY-MM-DD hh:mm:ss:mss')
-        const Beijing = getDateStrByTimeAndCurrentOffset(Date.now(), -480, 'YYYY-MM-DD hh:mm:ss:mss')
-        const Japan = getDateStrByTimeAndCurrentOffset(Date.now(), -540, 'YYYY-MM-DD hh:mm:ss:mss')
-        const ChristmasIsland = getDateStrByTimeAndCurrentOffset(Date.now(), -840, 'YYYY-MM-DD hh:mm:ss:mss')
+        const Hawaii = getDateStringByTimeAndCurrentOffset(Date.now(), 720, 'YYYY-MM-DD hh:mm:ss:mss')
+        const Alaska = getDateStringByTimeAndCurrentOffset(Date.now(), 660, 'YYYY-MM-DD hh:mm:ss:mss')
+        const EasterIsland = getDateStringByTimeAndCurrentOffset(Date.now(), 360, 'YYYY-MM-DD hh:mm:ss:mss')
+        const NewYork = getDateStringByTimeAndCurrentOffset(Date.now(), 300, 'YYYY-MM-DD hh:mm:ss:mss')
+        const London = getDateStringByTimeAndCurrentOffset(Date.now(), 0, 'YYYY-MM-DD hh:mm:ss:mss')
+        const Berlin = getDateStringByTimeAndCurrentOffset(Date.now(), -60, 'YYYY-MM-DD hh:mm:ss:mss')
+        const Athens = getDateStringByTimeAndCurrentOffset(Date.now(), -120, 'YYYY-MM-DD hh:mm:ss:mss')
+        const Moscow = getDateStringByTimeAndCurrentOffset(Date.now(), -180, 'YYYY-MM-DD hh:mm:ss:mss')
+        const Bangkok = getDateStringByTimeAndCurrentOffset(Date.now(), -420, 'YYYY-MM-DD hh:mm:ss:mss')
+        const Beijing = getDateStringByTimeAndCurrentOffset(Date.now(), -480, 'YYYY-MM-DD hh:mm:ss:mss')
+        const Japan = getDateStringByTimeAndCurrentOffset(Date.now(), -540, 'YYYY-MM-DD hh:mm:ss:mss')
+        const ChristmasIsland = getDateStringByTimeAndCurrentOffset(Date.now(), -840, 'YYYY-MM-DD hh:mm:ss:mss')
 
         setTimezone((prev) => ({
             ...prev,

@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-10 16:20:09
  * @LastEditors: bin
- * @LastEditTime: 2026-08-13 10:34:50
+ * @LastEditTime: 2026-08-13 11:40:04
  */
 import { useLocation, Navigate, Outlet } from 'react-router-dom'
 
@@ -10,15 +10,15 @@ import { useAuth } from '@/hooks/auth'
 
 /**
  * @description 登录鉴权路由组件，需要登录的路由组件，必须放在 AuthGuard 子路由下
- * {
-    lazy: async () => {
-        const { default: AuthGuard } = await import('@/router/guard/AuthGuard')
-        return { Component: AuthGuard }
-    },
-    children: [
-        // 需要登录的路由
-    ]
-   }
+ *  {
+        lazy: async () => {
+            const { default: AuthGuard } = await import('@/router/guard/AuthGuard')
+            return { Component: AuthGuard }
+        },
+        children: [
+            // 需要登录的路由
+        ]
+    }
  */
 const AuthGuard: React.FC = () => {
 
@@ -27,6 +27,7 @@ const AuthGuard: React.FC = () => {
     const { isLogin } = useAuth()
 
     if (!isLogin) {
+        // replace 跳转
         return <Navigate
             to='/login'
             state={{

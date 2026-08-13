@@ -35,21 +35,22 @@ export const getTimestampByTimeAndOffset = (
 
 /**
  * @description 通过 当前时区时间 获取 目标时区时间字符串
- * @example getDateStrByTimeAndCurrentOffset(new Date(), new Date().getTimezoneOffset()) 获取当前时区的此刻的时间字符串
- * @example getDateStrByTimeAndCurrentOffset(new Date(), -480) 获取当前时区的此刻的北京时间字符串
  * @param { string | Date | number } date 日期，默认值：当前时区该时刻
  * @param { number } timezoneOffset 指定时区相对于 UTC 的“反向”偏移值[ -840, +720 ]；默认值：当前时区 new Date().getTimezoneOffset()
  * @param { string } fmt 日期格式，默认值：YYYY-MM-DD hh:mm:ss
  * @returns { string } 日期字符串
- * @introduction 是 getDateStrByTimeAndOffset 的一个用法，固定是当前时区
+ *
+ * @example getDateStringByTimeAndCurrentOffset(new Date(), new Date().getTimezoneOffset()) 获取当前时区的此刻的时间字符串
+ * @example getDateStringByTimeAndCurrentOffset(new Date(), -480) 获取当前时区的此刻的北京时间字符串
+ * @introduction 是 getDateStringByTimeAndOffset 的一个用法，固定是当前时区
  */
-export const getDateStrByTimeAndCurrentOffset = (
+export const getDateStringByTimeAndCurrentOffset = (
     date: string | Date | number = new Date(),
     timezoneOffset: number = new Date().getTimezoneOffset(),
     fmt = 'YYYY-MM-DD hh:mm:ss',
 ): string => {
     // 可以直接调用以下函数
-    return getDateStrByTimeAndOffset(date, new Date().getTimezoneOffset(), timezoneOffset, fmt)
+    return getDateStringByTimeAndOffset(date, new Date().getTimezoneOffset(), timezoneOffset, fmt)
     /* try {
         if (typeof date === 'string' && date.constructor === String) {
             // ios 不支持 - 连接故而需要使用 /
@@ -97,15 +98,29 @@ export const getDateStrByTimeAndCurrentOffset = (
 }
 
 /**
- * @description 通过 任意时区时间 获取 目标时区时间字符串
- * @example getDateStrByTimeAndOffset(new Date(), new Date().getTimezoneOffset(), -480) 获取当前时区的此刻的北京时间
+ * @description 获取 当前时区目标时间 的 北京时间
+ * @param date 目标时间
+ * @param fmt 日期格式，默认值：YYYY-MM-DD hh:mm:ss
+ * @returns { string } 北京时间日期字符串
+ */
+export const getBeiJingDateString = (
+    date: string | Date | number = new Date(),
+    fmt = 'YYYY-MM-DD hh:mm:ss',
+): string => {
+    return getDateStringByTimeAndOffset(date, new Date().getTimezoneOffset(), -480, fmt)
+}
+
+/**
+ * @description 通过 任意时区时间 获取 目标时区时间字符串；
+ *  主要用于：调用该函数，可以确认传给后端的字符串时间都是北京时间，若后端服务器分布在多个时区，则应该改为传时间戳
+ * @example getDateStringByTimeAndOffset(new Date(), new Date().getTimezoneOffset(), -480, 'YYYY-MM-DD hh:mm:ss') 获取当前时区的此刻的北京时间
  * @param { string | Date | number } currentDate 任意时区时间，默认值：new Date()
  * @param { number } currentTimezoneOffset 任意时区对于 UTC 的“反向”偏移值[ -840, +720 ]；默认值：new Date ().getTimezoneOffset()
  * @param { number } targetTimezoneOffset 目标时区对于 UTC 的“反向”偏移值[ -840, +720 ]；默认值：东八区（北京） -480
  * @param fmt 日期格式，默认值：YYYY-MM-DD hh:mm:ss
  * @returns { string } 日期字符串
  */
-export const getDateStrByTimeAndOffset = (
+export const getDateStringByTimeAndOffset = (
     date: string | Date | number = new Date(),
     currentTimezoneOffset: number = new Date().getTimezoneOffset(),
     targetTimezoneOffset: number = -480,

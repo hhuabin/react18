@@ -1,7 +1,8 @@
 import {
     compareTimezoneTime,
-    getDateStrByTimeAndCurrentOffset,
-    getDateStrByTimeAndOffset,
+    getBeiJingDateString,
+    getDateStringByTimeAndCurrentOffset,
+    getDateStringByTimeAndOffset,
     getTimestampByTimeAndOffset,
 } from '@/utils/stringUtils/dateUtils'
 
@@ -19,9 +20,9 @@ describe('dateUtils', () => {
         expect(() => getTimestampByTimeAndOffset('invalid date', beijingOffset)).toThrow('Invalid time string')
     })
 
-    test('getDateStrByTimeAndOffset formats a UTC timestamp into the target timezone', () => {
+    test('getDateStringByTimeAndOffset formats a UTC timestamp into the target timezone', () => {
         expect(
-            getDateStrByTimeAndOffset(
+            getDateStringByTimeAndOffset(
                 Date.UTC(2025, 6, 7, 9, 5, 6, 7),
                 utcOffset,
                 beijingOffset,
@@ -30,34 +31,43 @@ describe('dateUtils', () => {
         ).toBe('2025-07-07 17:05:06 007')
     })
 
-    test('getDateStrByTimeAndOffset converts time strings between timezones', () => {
-        expect(getDateStrByTimeAndOffset('2025-07-07 17:00:00', beijingOffset, utcOffset)).toBe(
+    test('getDateStringByTimeAndOffset converts time strings between timezones', () => {
+        expect(getDateStringByTimeAndOffset('2025-07-07 17:00:00', beijingOffset, utcOffset)).toBe(
             '2025-07-07 09:00:00',
         )
     })
 
-    test('getDateStrByTimeAndCurrentOffset formats to the target timezone', () => {
-        expect(getDateStrByTimeAndCurrentOffset(Date.UTC(2025, 6, 7, 9, 0, 0), beijingOffset)).toBe(
+    test('getDateStringByTimeAndCurrentOffset formats to the target timezone', () => {
+        expect(getDateStringByTimeAndCurrentOffset(Date.UTC(2025, 6, 7, 9, 0, 0), beijingOffset)).toBe(
             '2025-07-07 17:00:00',
         )
     })
 
-    test('getDateStrByTimeAndOffset returns the original value when date parsing fails', () => {
+    test('getBeiJingDateString formats a timestamp as Beijing time', () => {
+        const timestamp = Date.UTC(2025, 6, 7, 9, 5, 6, 7)
+
+        expect(getBeiJingDateString(timestamp)).toBe('2025-07-07 17:05:06')
+        expect(getBeiJingDateString(timestamp, 'YYYY/MM/DD hh:mm:ss mss')).toBe(
+            '2025/07/07 17:05:06 007',
+        )
+    })
+
+    test('getDateStringByTimeAndOffset returns the original value when date parsing fails', () => {
         const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
 
-        expect(getDateStrByTimeAndOffset('invalid date', utcOffset, beijingOffset)).toBe('invalid date')
+        expect(getDateStringByTimeAndOffset('invalid date', utcOffset, beijingOffset)).toBe('invalid date')
         expect(consoleErrorSpy).toHaveBeenCalled()
 
         consoleErrorSpy.mockRestore()
     })
 
-    test('getDateStrByTimeAndOffset validates timezone offset ranges', () => {
+    test('getDateStringByTimeAndOffset validates timezone offset ranges', () => {
         const timestamp = Date.UTC(2025, 6, 7, 9, 0, 0)
 
-        expect(() => getDateStrByTimeAndOffset(timestamp, 721, beijingOffset)).toThrow(
+        expect(() => getDateStringByTimeAndOffset(timestamp, 721, beijingOffset)).toThrow(
             'Invalid currentTimezoneOffset value',
         )
-        expect(() => getDateStrByTimeAndOffset(timestamp, utcOffset, -841)).toThrow(
+        expect(() => getDateStringByTimeAndOffset(timestamp, utcOffset, -841)).toThrow(
             'Invalid targetTimezoneOffset value',
         )
     })

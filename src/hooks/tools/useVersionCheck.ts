@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-08-12 14:09:57
  * @LastEditors: bin
- * @LastEditTime: 2026-08-13 09:53:00
+ * @LastEditTime: 2026-08-13 11:31:19
  */
 import { useEffect, useRef } from 'react'
 
@@ -104,7 +104,7 @@ export default function useVersionCheck(projectLink = '/', intervalRefresh = fal
     // 轮询更新的定时器
     const intervalRefreshTimer = useRef<ReturnType<typeof setInterval> | null>(null)
     // 当前是否正在请求版本信息，避免轮询请求重叠
-    const isChecking = useRef(false)
+    const isRequesting = useRef(false)
 
     useEffect(() => {
         // 开发环境下启用项目更新没有意义
@@ -137,9 +137,9 @@ export default function useVersionCheck(projectLink = '/', intervalRefresh = fal
     }
 
     const checkProjectUpdate = async (link = projectLink) => {
-        if (isChecking.current) return
+        if (isRequesting.current) return
 
-        isChecking.current = true
+        isRequesting.current = true
         try {
             const latestVersionInfo = await getVersionInfo(link)
 
@@ -163,7 +163,7 @@ export default function useVersionCheck(projectLink = '/', intervalRefresh = fal
         } catch (error) {
             console.warn('[useVersionCheck] 检测项目更新失败，请稍后重试', error)
         } finally {
-            isChecking.current = false
+            isRequesting.current = false
         }
     }
 
