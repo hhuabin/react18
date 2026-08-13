@@ -11,7 +11,8 @@ import { routes } from './mainRoutes'
 import Loading from '@/components/Loading/Loading'
 
 // 一定要这个赋值步骤，避免重复创建 Router 实例
-const router = createHashRouter(
+// eslint-disable-next-line react-refresh/only-export-components
+export const router = createHashRouter(
     routes,
     {
         basename: '/',

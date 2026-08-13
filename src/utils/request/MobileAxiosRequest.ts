@@ -3,8 +3,9 @@
  * @Author: bin
  * @Date: 2025-06-04 10:59:21
  * @LastEditors: bin
- * @LastEditTime: 2026-07-23 15:13:33
+ * @LastEditTime: 2026-08-13 10:32:12
  */
+import { router } from '@/router'
 import axios, {
     type AxiosInstance,
     type InternalAxiosRequestConfig,
@@ -17,7 +18,6 @@ import { version as packageVersion } from '@/../package.json'
 
 // import { navigate } from '@/hooks/useRouter'
 import authStore from '@/store/slice/auth.store'
-import { saveUserInfo, removeUserInfo } from '@/store/slice/userInfoSlice'
 import { getDateStrByTimeAndCurrentOffset } from '@/utils/stringUtils/dateUtils'
 import HTTP_STATUS_CODES from './httpStatusCodes'
 
@@ -50,7 +50,7 @@ export default class MobileAxiosRequest {
         timeout: 60000,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer <token>',
+            // 'Authorization': 'Bearer <token>',                     // 由于 create 执行时 token 一般为空，并且后续难以更新，所以该请求头应该放在请求中赋值
         },
     })
     private controller: AbortController | null = null
@@ -70,6 +70,14 @@ export default class MobileAxiosRequest {
 
     private init = () => {
         this.instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+            const { token } = authStore.getAuthState().userInfo
+            // 如果不是每个请求都要携带 token 参数，可以需要 token 的请求中挨个添加
+            if (token) {
+                config.headers.set('Authorization', `Bearer ${token}`)
+            } else {
+                config.headers.delete('Authorization')
+            }
+
             const { data = {}, params = {}, method = 'POST' } = config
             const isGetRequest = method.toLowerCase() === 'get'
             const requestData = isGetRequest ? params : data
@@ -117,7 +125,7 @@ export default class MobileAxiosRequest {
             const timestamp: string = getDateStrByTimeAndCurrentOffset()
             publicParams.timestamp = timestamp
 
-            publicParams.token = authStore.getAuthState().userInfo.token
+            publicParams.token = token
             config.data = { ...publicParams, ...requestData }
             // 默认使用POST方法
             config.method = method
@@ -134,7 +142,7 @@ export default class MobileAxiosRequest {
                 // 无感刷新 token ，进入此逻辑的请求链接不能是无感刷新的 url ，避免逻辑死循环
                 console.error(response)
                 try {
-                    await this.refreshToken()
+                    await this.refreshToken('refreshTokenValue')
                     // 重新发送请求，如果此时接口还是报token过期，则会继续请求
                     return this.requestRetry(
                         response.config,
@@ -159,9 +167,7 @@ export default class MobileAxiosRequest {
         this.controller = new AbortController()
     }
 
-    /**
-     * 清除 loading 定时器
-     */
+    // 清除 loading 定时器
     private clearTimerId = () => {
         if (this.timerId) {
             /**
@@ -177,7 +183,7 @@ export default class MobileAxiosRequest {
     }
 
     /**
-     * 取消请求
+     * @description 取消请求
      * @param controller AbortController
      * @returns void
      */
@@ -194,7 +200,7 @@ export default class MobileAxiosRequest {
     }
 
     /**
-     * 请求重发
+     * @description 请求重发
      * 基于 response.cnofig === request 的 config
      * @param config InternalAxiosRequestConfig 无需解压 config.data
      * @param response AxiosResponse 错误响应
@@ -237,45 +243,48 @@ export default class MobileAxiosRequest {
     }
 
     /**
-     * 无感刷新 token 函数
+     * @description 无感刷新 token 函数
+     * @param { string } refreshTokenValue 用来刷新 token 的备用 token
      * @returns Promise<void>
      */
-    private refreshToken = (): Promise<void> => {
+    private refreshToken = (refreshTokenValue = 'refreshTokenValue'): Promise<void> => {
 
         // 当多个并发请求同时触发时 refreshToken时，只会发起一次请求
         if (this.refreshTokenPromise) return this.refreshTokenPromise
 
-        console.log('refresh-token')
-        authStore.logout()
-        // 开发者自行修改
-        const refreshToken = 'refreshToken'
+        console.log('start-refresh-token')
 
-        this.refreshTokenPromise = new Promise<void>((resolve, reject) => {
-            // 发起刷新token请求
-            this.instance({
-                url: '/user/refreshtoken',
-                method: 'post',
-                headers: {
-                    Authorization: `Bearer ${refreshToken}`,
+        // 发起刷新token请求
+        this.refreshTokenPromise = this.instance({
+            url: '/user/refreshtoken',
+            method: 'post',
+            data: {
+                refreshTokenValue,
+            },
+        })
+        .then((res) => {
+            const newToken = res.data.token
+            if (!newToken) {
+                throw new Error('刷新 token 返回值无效')
+            }
+            // 存储新的 token 到 store 中
+            authStore.login({ token: newToken })
+        })
+        .catch((error) => {
+            authStore.logout()
+            const { pathname, search } = router.state.location
+            // 此处可做跳转至登录页
+            router.navigate('/login', {
+                state: {
+                    message: 'failed to refresh token',
+                    // 需要根据 历史路由 和 哈希路由 修改，这里写了历史路由的
+                    from: encodeURIComponent(pathname + search),
                 },
             })
-            .then((res) => {
-                const newToken = res.data.token
-                if (newToken) {
-                    // 存储新的 token 到 store 中
-                    authStore.login({ token: newToken })
-                    resolve()
-                }
-                return Promise.reject(res)
-            })
-            .catch((error) => {
-                // 此处可做跳转至登录页
-                // navigate('login')
-                reject(error)
-            })
-            .finally(() => {
-                this.refreshTokenPromise = null
-            })
+            throw error
+        })
+        .finally(() => {
+            this.refreshTokenPromise = null
         })
 
         return this.refreshTokenPromise

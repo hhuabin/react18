@@ -27,7 +27,7 @@ const App: React.FC = () => {
     // 性能监控
     usePerformanceMonitor()
     // 项目自动检测更新
-    useVersionCheck(window.location.pathname)
+    useVersionCheck(window.location.pathname, true)
     // useVersionUpdate('/react18/', true, true)
 
     // App.tsx 不做登录状态管理，但是对于简单的，没有登陆页的项目可以在这里做一下

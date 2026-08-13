@@ -2,13 +2,9 @@
  * @Author: bin
  * @Date: 2026-04-10 16:20:09
  * @LastEditors: bin
- * @LastEditTime: 2026-04-13 11:29:34
+ * @LastEditTime: 2026-08-13 10:34:50
  */
-import {
-    useLocation,
-    Navigate,
-    Outlet,
-} from 'react-router-dom'
+import { useLocation, Navigate, Outlet } from 'react-router-dom'
 
 import { useAuth } from '@/hooks/auth'
 
