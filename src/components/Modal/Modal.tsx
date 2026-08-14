@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-02-10 17:03:16
  * @LastEditors: bin
- * @LastEditTime: 2026-03-30 15:11:08
+ * @LastEditTime: 2026-08-14 10:20:47
  */
 import Dialog from './RCDialog/Dialog'
 import type { ModalProps, MousePosition } from './Modal.d'
@@ -79,12 +79,12 @@ const Modal: React.FC<ModalProps> = (props) => {
 
     // 自定义页脚
     const dialogFooter = footer !== null
-        ?   (<Footer
+        ? (<Footer
                 {...props}
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />)
-        :   null
+        : null
 
     return (
         <Dialog

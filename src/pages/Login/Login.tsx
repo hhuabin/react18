@@ -45,7 +45,7 @@ const Login: React.FC = () => {
         })
         .then(() => {
             // 登录
-            login({ token: 'bin'  })
+            login({ token: 'bin' })
             return goBackOrGoRoot()
         })
         .then(() => {

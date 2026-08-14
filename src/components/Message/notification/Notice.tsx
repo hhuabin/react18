@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-02 15:15:48
  * @LastEditors: bin
- * @LastEditTime: 2026-04-08 15:30:52
+ * @LastEditTime: 2026-08-14 10:20:36
  */
 import { useState, useEffect } from 'react'
 
@@ -154,10 +154,10 @@ const Notice: React.FC<NoticeProps & { times?: number }> = (props) => {
                 >
                     {
                         (typeof closable === 'object' && closable !== null)
-                            ?   (
+                            ? (
                                     closable.closeIcon
                                 )
-                            :   (
+                            : (
                                     <svg width='100%' height='100%' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
                                         <line x1='25' y1='25' x2='75' y2='75' stroke='currentColor' strokeWidth='8' strokeLinecap='round' />
                                         <line x1='75' y1='25' x2='25' y2='75' stroke='currentColor' strokeWidth='8' strokeLinecap='round' />

@@ -5,7 +5,7 @@ const SwiperComponent: React.FC = () => {
     const indicator = (total: number, current: number) => {
         return (
             <div className='absolute left-1/2 bottom-[12px] px-[6px] rounded-[2px] bg-[#000]/[0.1] translate-x-[-50%] text-[#fff] text-[14px] leading-[20px]'>
-                { (current + 1) +  ' / ' + total }
+                { (current + 1) + ' / ' + total }
             </div>
         )
     }

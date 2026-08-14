@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 import type { PickerColumn as SinglePickerColumn } from '@/components/mobile/Picker/SinglePicker'
-import type {  PickerColumn } from '@/components/mobile/Picker'
+import type { PickerColumn } from '@/components/mobile/Picker'
 
 export const singlePickerColumns1: SinglePickerColumn = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 export const singlePickerColumns2: SinglePickerColumn = [

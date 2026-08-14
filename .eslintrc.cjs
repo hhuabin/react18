@@ -43,8 +43,9 @@ module.exports = {
         'space-in-parens': ['warn', 'never'],                      // 括号内无空格  let a = (1 + 2) * 3;
         'space-infix-ops': ['warn'],                               // 运算符两边必须空格  a + b
         'block-spacing': ['warn', 'always'],                       // {} 块内加空格  function() { return 1 }
-        'keyword-spacing': ['warn', { 'before': true, 'after': true }],                            // add space before and after keywords
-        'key-spacing': ['warn', { 'beforeColon': false, 'afterColon': true, 'mode': 'strict' }],   // : after with one space between object keys and values
+        'keyword-spacing': ['warn', { 'before': true, 'after': true }],                            // add space before and after keywords -> if () {}
+        'key-spacing': ['warn', { 'beforeColon': false, 'afterColon': true, 'mode': 'strict' }],   // : after with one space between object keys and values -> { a: '1' }
+        'no-multi-spaces': ['warn', { ignoreEOLComments: true }],  // not if  () {}
         'object-curly-spacing': ['warn', 'always'],                // add space in object
         'space-before-function-paren': ['warn', {                  // 函数括号前添加空格
             'anonymous': 'always',                                 // 匿名函数

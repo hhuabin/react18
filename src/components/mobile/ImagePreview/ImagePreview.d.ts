@@ -10,7 +10,7 @@ export type ImagePreviewProps = {
     direction?: 'horizontal' | 'vertical';     // 滚动方向，默认为 'horizontal'
     loop?: boolean;                            // 是否循环播放，默认值 false
     defaultIndex?: number;                     // 默认显示第几张图片，默认值 0
-    images?:  string[];                        // 图片地址列表，默认值 []
+    images?: string[];                        // 图片地址列表，默认值 []
     maxZoom?: number;                          // 最大缩放倍数，默认值 3
     minZoom?: number;                          // 最小缩放倍数，默认值 1 / 3
     closeOnPopstate?: boolean;                 // 是否在 popstate 时关闭图片预览，默认值 true

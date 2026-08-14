@@ -43,7 +43,7 @@ interface ChooseImageOptions extends AliBaseOptions {
 
 interface PreviewImageOptions extends AliBaseOptions {
     enableSavePhoto?: boolean;
-    enableShowPhotoDownload?:  boolean;
+    enableShowPhotoDownload?: boolean;
     urls: string[];
     current?: string;
 }

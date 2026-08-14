@@ -2,20 +2,26 @@
  * @Author: bin
  * @Date: 2025-08-04 14:37:21
  * @LastEditors: bin
- * @LastEditTime: 2026-01-13 10:29:47
+ * @LastEditTime: 2026-08-14 10:44:52
  */
 
 const FIRST_IDNO_PATTERN = /^([1-6][1-9]|50)\d{4}\d{2}((0[1-9])|1[0-2])(([0-2][1-9])|10|20|30|31)\d{3}/
 const SECOND_IDNO_PATTERN = /^([1-6][1-9]|50)\d{4}(19|20)\d{2}((0[1-9])|1[0-2])(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
 
-// 辅助函数：验证日期有效性
+/**
+ * @description 辅助函数：验证日期有效性，判断是不是有效的日期
+ * @example isValidDate('2026', '02', '31') = false
+ * @returns { boolean }
+ */
 const isValidDate = (year: string, month: string, day: string): boolean => {
     const y = parseInt(year, 10)
     const m = parseInt(month, 10)
     const d = parseInt(day, 10)
 
+    // 参数必须是有效数字
+    if ([y, m, d].some(Number.isNaN)) return false
+
     // 基本范围检查
-    if (y < 1900 || y > new Date().getFullYear()) return false
     if (m < 1 || m > 12) return false
     if (d < 1 || d > 31) return false
 
@@ -25,6 +31,26 @@ const isValidDate = (year: string, month: string, day: string): boolean => {
     return date.getFullYear() === y &&
            date.getMonth() + 1 === m &&
            date.getDate() === d
+}
+
+// 验证生日日期的有效性
+const isValidBirthdayDate = (year: string, month: string, day: string): boolean => {
+    // 先验证日期是否合法
+    if (!isValidDate(year, month, day)) return false
+
+    const y = parseInt(year, 10)
+    const m = parseInt(month, 10)
+    const d = parseInt(day, 10)
+
+    // 生日年份不能早于 1900 年
+    if (y < 1900) return false
+
+    // 生日不能是未来日期
+    const birthDate = new Date(y, m - 1, d)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    return birthDate <= today
 }
 
 /**
@@ -116,7 +142,7 @@ const validateSecondIdCard = (idCardNumber: string): boolean => {
  * @param { boolean } enableFirst 是否开启第一代身份证校验
  * @returns { -1 | 0 | 1 } -1 未知 | 0女 | 1 男
  */
-const getGenderFromId = (idCardNumber: string,  enableFirst = false): -1 | 0 | 1 => {
+const getGenderFromId = (idCardNumber: string, enableFirst = false): -1 | 0 | 1 => {
     let genderDigit: number = -1
     if (enableFirst && idCardNumber.length === 15 && validateFirstIdCard(idCardNumber)) {
         // 第一代身份证

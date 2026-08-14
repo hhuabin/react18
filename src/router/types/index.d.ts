@@ -12,10 +12,10 @@ export type RouteHandle = {
 }
 
 export type RouteConfig =
-    |   Omit<IndexRouteObject, 'handle'> & {
+    | Omit<IndexRouteObject, 'handle'> & {
             handle?: RouteHandle;
         }
-    |   Omit<NonIndexRouteObject, 'handle'> & {
+    | Omit<NonIndexRouteObject, 'handle'> & {
             handle?: RouteHandle;
             children?: RouteConfig[];
         }

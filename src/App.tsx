@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2024-05-29 22:12:59
  * @LastEditors: bin
- * @LastEditTime: 2026-08-12 18:42:56
+ * @LastEditTime: 2026-08-14 10:07:22
  */
 import { useLayoutEffect, useEffect } from 'react'
 
@@ -20,6 +20,21 @@ import {
 
 import './App.less'
 
+type Theme = 'light' | 'dark'
+
+// window.matchMedia 获取浏览器当前主题的色彩模式
+const getOSTheme = (): Theme => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+
+const getLocalTheme = (): 'light' | 'dark' | null => {
+    const theme = LocalStorageUtil.getItem('local_theme', null)
+
+    if (theme === 'dark' || theme === null) {
+        return theme
+    }
+
+    return 'light'
+}
+
 const App: React.FC = () => {
 
     // 全局错误监控
@@ -34,8 +49,8 @@ const App: React.FC = () => {
     const { isLogin, login } = useAuth()
 
     useLayoutEffect(() => {
-        // window.matchMedia 获取浏览器当前主题的色彩模式
-        const currentTheme = LocalStorageUtil.getItem<'light' | 'dark'>('local_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        // 只有当前是深色主题才需要改动整体样式
+        const currentTheme = getLocalTheme() || getOSTheme()
         if (currentTheme === 'dark') {
             document.documentElement.dataset.theme = 'dark'
         }

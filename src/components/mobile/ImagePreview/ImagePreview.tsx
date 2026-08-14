@@ -119,7 +119,7 @@ export default forwardRef(function ImagePreview(props: ImagePreviewProps, ref: F
         if (indicator) return indicator(total, current)
         if (!showIndicator) return null
 
-        return (<div className='bin-image-preview-indicator'>{ (current + 1) +  ' / ' + total }</div>)
+        return (<div className='bin-image-preview-indicator'>{ (current + 1) + ' / ' + total }</div>)
     }
 
     const renderImages = () => (
