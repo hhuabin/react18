@@ -1,3 +1,9 @@
+/**
+ * @Author: bin
+ * @Date: 2026-07-22 11:12:55
+ * @LastEditors: bin
+ * @LastEditTime: 2026-08-19 18:34:32
+ */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export type TaskFn<T = any> = () => Promise<T>
@@ -6,6 +12,8 @@ export type TaskResult<T> =
   | { status: 'fulfilled'; value: T }         // fulfilled：成功返回
   | { status: 'rejected'; reason: any };      // rejected：失败返回
 
+export type ShouldRetry = (error: unknown) => boolean
+
 /**
  * @description 并发执行任务
  * 任务数控制在 limit 以内，参考 Promise.all() 使用
@@ -13,6 +21,7 @@ export type TaskResult<T> =
  * @param { TaskFn<any>[] } tasks Promise 任务列表
  * @param { number } limit 并发任务数量
  * @param { number } maxRetries 非负整数；任务执行失败后重试次数，默认为 0
+ * @param { ShouldRetry } shouldRetry 开发者通过该函数决定要不要继续重试
  * @returns 全部任务成功时按任务顺序返回所有结果，否则返回第一个失败的错误
  * 该情况 .then() 成功 / 失败状态和 .catch() 都可能会执行
  */
@@ -21,6 +30,7 @@ export const runTasksWithLimitFailFast = <T extends (() => Promise<any>)[]>(
     tasks: readonly [...T],
     limit: number,
     maxRetries = 0,
+    shouldRetry: ShouldRetry = () => true,
 ): Promise<{[K in keyof T]: T[K] extends () => Promise<infer R> ? R : never}> => {
     return new Promise((resolve, reject) => {
         // const results = [] as {[K in keyof T]: T[K] extends () => Promise<infer R> ? R : never}
@@ -30,19 +40,21 @@ export const runTasksWithLimitFailFast = <T extends (() => Promise<any>)[]>(
         let finished = 0
         let aborted = false // 控制调度中止
 
-        const retryWrapper = async (task: typeof tasks[number], retries = maxRetries) => {
-            let lastError: any
+        const retryWrapper = async (
+            task: typeof tasks[number],
+            retries = maxRetries,
+            shouldRetry: ShouldRetry = () => true,
+        ) => {
             for (let i = 0; i <= retries; i++) {
                 try {
                     return await task()
-                } catch (err) {
-                    lastError = err
-                    if (i >= retries) {
-                        throw err
+                } catch (error) {
+                    if (i >= retries || !shouldRetry(error)) {
+                        throw error
                     }
                 }
             }
-            throw lastError
+            // throw new Error('Unexpected retry state')
         }
 
         const run = () => {
@@ -55,7 +67,7 @@ export const runTasksWithLimitFailFast = <T extends (() => Promise<any>)[]>(
                 const i = currentIndex++
                 running++
 
-                retryWrapper(tasks[i])
+                retryWrapper(tasks[i], maxRetries, shouldRetry)
                 .then(result => {
                     // 按顺序收集正确结果
                     results[i] = result
@@ -88,6 +100,7 @@ export const runTasksWithLimitFailFast = <T extends (() => Promise<any>)[]>(
  * @param { TaskFn<any>[] } tasks Promise 任务列表
  * @param { number } limit 并发任务数量
  * @param { number } maxRetries 非负整数；任务执行失败后重试次数，默认为 0
+ * @param { ShouldRetry } shouldRetry 开发者通过该函数决定要不要继续重试
  * @returns 无论成功失败，全部执行完成后按任务顺序返回状态和结果
  * 该情况只有 .then() 成功状态会执行，故而给予了 status 去判断成功 / 失败状态
  */
@@ -96,6 +109,7 @@ export const runTasksWithLimitSettled = <T extends (() => Promise<any>)[]>(
     tasks: readonly [...T],
     limit: number,
     maxRetries = 0,
+    shouldRetry: ShouldRetry = () => true,
 ): Promise<{[K in keyof T]: T[K] extends () => Promise<infer R> ? TaskResult<R> : never}> => {
     return new Promise((resolve, reject) => {
         // const results = [] as {[K in keyof T]: T[K] extends () => Promise<infer R> ? TaskResult<R> : never}
@@ -104,19 +118,21 @@ export const runTasksWithLimitSettled = <T extends (() => Promise<any>)[]>(
         let running = 0
         let finished = 0
 
-        const retryWrapper = async (task: typeof tasks[number], retries = maxRetries) => {
-            let lastError: any
+        const retryWrapper = async (
+            task: typeof tasks[number],
+            retries = maxRetries,
+            shouldRetry: ShouldRetry = () => true,
+        ) => {
             for (let i = 0; i <= retries; i++) {
                 try {
                     return await task()
-                } catch (err) {
-                    lastError = err
-                    if (i >= retries) {
-                        throw err
+                } catch (error) {
+                    if (i >= retries || !shouldRetry(error)) {
+                        throw error
                     }
                 }
             }
-            throw lastError
+            // throw new Error('Unexpected retry state')
         }
 
         const run = () => {
@@ -129,7 +145,7 @@ export const runTasksWithLimitSettled = <T extends (() => Promise<any>)[]>(
                 const i = currentIndex++
                 running++
 
-                retryWrapper(tasks[i])
+                retryWrapper(tasks[i], maxRetries, shouldRetry)
                 .then(result => {
                     // 按顺序收集正确结果
                     results[i] = {
@@ -166,15 +182,22 @@ export const runTasksWithLimitSettled = <T extends (() => Promise<any>)[]>(
 }
 
 const tasks = [
-    () => sleep(1, 1000), () => sleep(2, 500), () => sleep(3, 300),
-    () => sleep(4, 700), () => sleep(5, 400),
+    () => sleep(1, 1000),
+    () => sleep(2, 500),
+    () => sleep(3, 300),
+    () => sleep(4, 700),
+    () => sleep(5, 400),
 ]
+
+const shouldRetry = (error: any) => {
+    return false
+}
 
 // 不定义泛型也可自行推导 results 类型
 runTasksWithLimitFailFast([
     () => new Promise<string>(resolve => resolve('task 0 success')),
     () => new Promise<number>(resolve => resolve(1001)),
-], 2)
+], 2, 3, shouldRetry)
 .then(results => {
     results.forEach(result => {
         console.log(result)
