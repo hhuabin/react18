@@ -1,1 +1,1 @@
-import type { PublicParam, PublicAnswer } from './public'
+import type { PublicRequest, PublicResponse } from './public'

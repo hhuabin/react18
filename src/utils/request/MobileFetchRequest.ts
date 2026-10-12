@@ -51,7 +51,7 @@ export default class MobileFetchRequest {
             return response.json()
         })
         .then(data => {
-            if (data.result_code === '0') {
+            if (data.code === 0) {
                 return data
             }
             return Promise.reject(data)

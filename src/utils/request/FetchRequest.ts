@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-02-26 21:05:44
  * @LastEditors: bin
- * @LastEditTime: 2026-07-23 14:54:41
+ * @LastEditTime: 2026-10-10 16:42:43
  */
 import message from '@/components/Message'
 
@@ -65,7 +65,7 @@ export default class FetchRequest {
             return response.json()
         })
         .then(data => {
-            if (data.result_code === '0') {
+            if (data.code === 0) {
                 clearTimeout(timerId)
                 closeLoadingMessage()
                 return data

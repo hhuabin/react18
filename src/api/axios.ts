@@ -2,18 +2,24 @@
  * @Author: bin
  * @Date: 2026-07-22 11:12:55
  * @LastEditors: bin
- * @LastEditTime: 2026-07-23 14:07:43
+ * @LastEditTime: 2026-10-12 15:37:09
  */
 import type { AxiosPromise, AxiosRequestConfig } from 'axios'
 
 import AxiosRequest from '@/utils/request/AxiosRequest'
-import type { PublicParam, PublicAnswer } from './types'
+import type { PublicRequest, PublicResponse } from './types'
 
 const axiosRequest = new AxiosRequest().getAxiosInstance()
 
-export const basePost = (data: PublicParam, config?: AxiosRequestConfig): AxiosPromise<PublicAnswer> => {
+/**
+ * 命名规范：
+ * 1. axios 请求方法应该统一添加 axios 前缀，如 axiosGetUserInfoById ，后续维护一眼就知道这个是 axios 请求方法
+ * 2. POST 请求的参数应该使用 data
+ * 3. GET 请求的参数应该使用 params
+ */
+export const axiosBasePost = (data: PublicRequest, config?: AxiosRequestConfig): AxiosPromise<PublicResponse> => {
     return axiosRequest({
-        url: '/user/postlist',
+        url: '/user/getUserInfoById',
         method: 'POST',
         ...config,
         data: {
@@ -22,9 +28,9 @@ export const basePost = (data: PublicParam, config?: AxiosRequestConfig): AxiosP
     })
 }
 
-export const baseGet = (params: PublicParam, config?: AxiosRequestConfig): AxiosPromise<PublicAnswer> => {
+export const axiosBaseGet = (params: PublicRequest, config?: AxiosRequestConfig): AxiosPromise<PublicResponse> => {
     return axiosRequest({
-        url: '/user/getlist',
+        url: '/user/getUserNameById',
         method: 'GET',
         ...config,
         params: {
@@ -39,7 +45,7 @@ export const baseGet = (params: PublicParam, config?: AxiosRequestConfig): Axios
  * @param { AxiosRequestConfig } config 请求配置
  * @returns { Promise<AxiosResponse<any, any>> }
  */
-export const largeFileUpload = (params: { file: FormData }, config?: AxiosRequestConfig) => {
+export const axioslargeFileUpload = (params: { file: FormData }, config?: AxiosRequestConfig) => {
     return axiosRequest({
         url: 'url',
         method: 'post',

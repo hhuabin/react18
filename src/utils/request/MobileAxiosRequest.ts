@@ -3,7 +3,7 @@
  * @Author: bin
  * @Date: 2025-06-04 10:59:21
  * @LastEditors: bin
- * @LastEditTime: 2026-08-13 10:32:12
+ * @LastEditTime: 2026-10-10 16:43:20
  */
 import { router } from '@/router'
 import axios, {
@@ -26,7 +26,7 @@ import HTTP_STATUS_CODES from './httpStatusCodes'
  * 只适合单例 Toast 的移动端请求，多例的 message 请使用 AxiosRequest
  * 1. cancelLastRequest：取消上次请求，适合用在请求数据接口，不适合在提交数据接口使用，以避免重复提交
  * 2. showLoading：可使用 showLoading 开启请求 loading
- * 3. refreshToken：配置token过期的result_code，配置新token请求的url
+ * 3. refreshToken：配置token过期的 code ，配置新token请求的url
  * 4. requestRetry 存在间隔 loading 问题，建议修复为只有一个loading
  */
 
@@ -136,9 +136,9 @@ export default class MobileAxiosRequest {
             this.clearTimerId()
 
             // response.status === 200
-            if (response.data?.result_code === '0') {
+            if (response.data?.code === 0) {
                 return response
-            } else if (response.data?.result_code === '-1' && response.config.url !== '/user/refreshtoken') {
+            } else if (response.data?.code === -1 && response.config.url !== '/user/refreshtoken') {
                 // 无感刷新 token ，进入此逻辑的请求链接不能是无感刷新的 url ，避免逻辑死循环
                 console.error(response)
                 try {
@@ -314,9 +314,9 @@ export default class MobileAxiosRequest {
             console.error(`Request Error: ${status} ${errorMessage}`)
         }
         console.error(error)
-        // err_msg 字段需要根据src/api/types/public.d 的 PublicAnswer进行自定义，供请求失败提示使用
-        return Promise.reject({ ...(error as AxiosError), data: { err_msg: errorMessage } })
-        // message.error(error.data.err_msg || '未知错误')
+        // message 字段需要根据src/api/types/public.d 的 PublicAnswer进行自定义，供请求失败提示使用
+        return Promise.reject({ ...(error as AxiosError), data: { message: errorMessage } })
+        // message.error(error.data.message || '未知错误')
     }
 
     // 暴露实例

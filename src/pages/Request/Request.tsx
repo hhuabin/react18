@@ -2,143 +2,143 @@ import { useEffect } from 'react'
 
 import message from '@/components/Message'
 
-import { basePost, baseGet } from '@/api/axios'
-import { baseFetch } from '@/api/fetch'
+import { axiosBasePost, axiosBaseGet } from '@/api/axios'
+import { fetchBasePost } from '@/api/fetch'
 
 const Request: React.FC = () => {
 
     const handlePost = () => {
-        basePost({
+        axiosBasePost({
             userId: '123',
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
     const handleGet = () => {
-        baseGet({
+        axiosBaseGet({
             userId: '123',
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
     const handleFetch = () => {
-        baseFetch({
+        fetchBasePost({
             userId: '123',
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
     const handleShowLoadingPost = () => {
-        basePost({
+        axiosBasePost({
             userId: '123',
             showLoading: true,
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
     const handleShowLoadingGet = () => {
-        baseGet({
+        axiosBaseGet({
             userId: '123',
             showLoading: true,
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
     const handleShowLoadingFetch = () => {
-        baseFetch({
+        fetchBasePost({
             userId: '123',
             showLoading: true,
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
     const handleCancelLastPost = () => {
-        basePost({
+        axiosBasePost({
             userId: '123',
             showLoading: true,
             cancelLastRequest: true,
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
     const handleCancelLastGet = () => {
-        baseGet({
+        axiosBaseGet({
             userId: '123',
             showLoading: true,
             cancelLastRequest: true,
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
     const handleCancelLastFetch = () => {
-        baseFetch({
+        fetchBasePost({
             userId: '123',
             showLoading: true,
             cancelLastRequest: true,
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
     const handleRetryPost = () => {
-        basePost({
+        axiosBasePost({
             userId: '123',
             showLoading: true,
             maxRequestRetryNumber: 3,
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
     const handleRetryGet = () => {
-        baseGet({
+        axiosBaseGet({
             userId: '123',
             showLoading: true,
             maxRequestRetryNumber: 3,
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
     const handleRetryFetch = () => {
-        baseFetch({
+        fetchBasePost({
             userId: '123',
             showLoading: true,
             maxRequestRetryNumber: 3,
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.err_msg)
+            message.error(err.data?.message)
         })
     }
 
@@ -153,7 +153,7 @@ const Request: React.FC = () => {
                             text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => handlePost()}
                     >
-                        <span>BasePost</span>
+                        <span>axiosBasePost</span>
                     </button>
 
                     <button
@@ -162,7 +162,7 @@ const Request: React.FC = () => {
                             text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => handleGet()}
                     >
-                        <span>BaseGet</span>
+                        <span>axiosBaseGet</span>
                     </button>
 
                     <button
@@ -171,7 +171,7 @@ const Request: React.FC = () => {
                             text-[var(--text-primary)] leading-[32px] hover:border-[var(--color-primary-hover)] hover:text-[var(--color-primary-hover)]'
                         onClick={() => handleFetch()}
                     >
-                        <span>BaseFetch</span>
+                        <span>fetchBasePost</span>
                     </button>
                 </div>
             </div>

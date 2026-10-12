@@ -4,7 +4,7 @@
  * @Author: bin
  * @Date: 2025-02-26 21:05:44
  * @LastEditors: bin
- * @LastEditTime: 2026-08-13 11:25:45
+ * @LastEditTime: 2026-10-10 16:41:40
  */
 import { router } from '@/router'
 import axios, {
@@ -26,7 +26,7 @@ import HTTP_STATUS_CODES from './httpStatusCodes'
  * @description AxiosRequest
  * 1. cancelLastRequest：取消上一个携带 cancelLastRequest 的请求，适合用在请求数据接口，不适合在提交数据接口使用，以避免重复提交
  * 2. showLoading：可使用showLoading开启请求loading
- * 3. refreshToken：配置 token 过期的 result_code，配置新 token 请求的 url
+ * 3. refreshToken：配置 token 过期的 code ，配置新 token 请求的 url
  * 4. requestRetry 存在第一次请求结束便会清除 loading 的问题。（该问题已在 requestRetry 中解决）
  * 5. 一个请求对应一个 loading ，两个请求就有两个 loading，若不需要，不设置 showLoading 参数即可
  */
@@ -150,11 +150,11 @@ export default class AxiosRequest {
             const maxRequestRetryNumber = Number(config.maxRequestRetryNumber) || 0
 
             // response.status === 200
-            if (response.data?.result_code === '0') {
+            if (response.data?.code === 0) {
                 // 成功返回，清除定时器并且关闭 loading（有返回就关闭请求 loading，没有返回可以一直沿用本 loading）
                 this.clearTimeoutTimer(config)
                 return response
-            } else if (response.data?.result_code === '-1' && response.config.url !== '/user/refreshtoken') {
+            } else if (response.data?.code === -1 && response.config.url !== '/user/refreshtoken') {
                 // 无感刷新 token ，进入此逻辑的请求链接不能是无感刷新的 url ，避免逻辑死循环
                 console.error(response)
                 try {
@@ -342,9 +342,9 @@ export default class AxiosRequest {
             console.error(`Request Error: ${status} ${errorMessage}`)
         }
         console.error(error)
-        // err_msg 字段需要根据src/api/types/public.d 的 PublicAnswer进行自定义，供请求失败提示使用
-        return Promise.reject({ ...(error as AxiosError), data: { err_msg: errorMessage } })
-        // message.error(error.data.err_msg || '未知错误')
+        // message 字段需要根据src/api/types/public.d 的 PublicAnswer进行自定义，供请求失败提示使用
+        return Promise.reject({ ...(error as AxiosError), data: { message: errorMessage } })
+        // message.error(error.data.message || '未知错误')
     }
 
     // 暴露实例
