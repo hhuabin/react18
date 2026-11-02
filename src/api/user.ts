@@ -29,7 +29,7 @@ export const axiosLogin = (data: LoginRequest, config?: AxiosRequestConfig): Axi
 
 export const axiosGetUserInfoById = (data: GetUserInfoByIdRequest, config?: AxiosRequestConfig): AxiosPromise<GetUserInfoByIdResponse> => {
     return axiosRequest({
-        url: '/user/getUserInfoById',
+        url: '/user/info/getUserInfoById',
         method: 'POST',
         ...config,
         data: {

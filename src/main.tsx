@@ -7,6 +7,11 @@ import './styles/tailwind.css'
 import App from './App.tsx'
 import store from './store/store'
 
+import { enableMocking } from '@/mocks/enableMocking.ts'
+
+// 启动 Mock Service Worker
+enableMocking()
+
 createRoot(document.getElementById('root')!)
 .render(
     <StrictMode>

@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-07-22 11:12:55
  * @LastEditors: bin
- * @LastEditTime: 2026-10-12 15:37:09
+ * @LastEditTime: 2026-11-02 16:56:52
  */
 import type { AxiosPromise, AxiosRequestConfig } from 'axios'
 
@@ -19,7 +19,7 @@ const axiosRequest = new AxiosRequest().getAxiosInstance()
  */
 export const axiosBasePost = (data: PublicRequest, config?: AxiosRequestConfig): AxiosPromise<PublicResponse> => {
     return axiosRequest({
-        url: '/user/getUserInfoById',
+        url: '/user/info/getUserInfoById',
         method: 'POST',
         ...config,
         data: {
@@ -30,7 +30,7 @@ export const axiosBasePost = (data: PublicRequest, config?: AxiosRequestConfig):
 
 export const axiosBaseGet = (params: PublicRequest, config?: AxiosRequestConfig): AxiosPromise<PublicResponse> => {
     return axiosRequest({
-        url: '/user/getUserNameById',
+        url: '/user/info/getUserNameById',
         method: 'GET',
         ...config,
         params: {

@@ -25,4 +25,9 @@ coverage
 *.sw?
 .claude
 
+# ai agents
+.agents/
+.workbuddy/
+
+# report
 stats.html

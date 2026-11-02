@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-07-22 11:12:55
  * @LastEditors: bin
- * @LastEditTime: 2026-10-10 15:05:15
+ * @LastEditTime: 2026-11-02 16:56:59
  */
 import FetchRequest from '@/utils/request/FetchRequest'
 import type { PublicRequest, PublicResponse } from './types'
@@ -17,7 +17,7 @@ const fetchRequest = new FetchRequest()
  */
 export const fetchBasePost = (data: PublicRequest, options?: RequestInit): Promise<PublicResponse> => {
     return fetchRequest.sendRequest(
-        '/user/getUserInfoById',
+        '/user/info/getUserInfoById',
         {
             ...data,
         },
