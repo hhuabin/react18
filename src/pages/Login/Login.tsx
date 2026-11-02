@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-12-25 15:43:01
  * @LastEditors: bin
- * @LastEditTime: 2026-04-10 17:04:09
+ * @LastEditTime: 2026-11-02 14:54:50
  */
 import { useRef, useEffect } from 'react'
 import { useSearchParams, useLocation, useNavigate } from 'react-router-dom'
@@ -11,6 +11,8 @@ import axios from 'axios'
 
 import message from '@/components/Message'
 import { useAuth } from '@/hooks/auth'
+
+import { axiosLogin } from '@/api/user'
 
 /**
  * @description 登录页面
@@ -40,16 +42,25 @@ const Login: React.FC = () => {
 
     const goToLogin = () => {
         if (loading.current) return
-        new Promise((resolve) => {
-            resolve(true) // 模拟登录请求成功
+
+        axiosLogin({
+            userName: 'bin',
+            password: '123456',
         })
-        .then(() => {
+        .then((res) => {
+            const { accessToken = 'bin', userInfo } = res.data.data
+            console.log('userInfo', userInfo)
+
             // 登录
-            login({ token: 'bin' })
+            login({ token: accessToken })
             return goBackOrGoRoot()
         })
         .then(() => {
             message.success('登录成功！')
+        })
+        .catch((error) => {
+            console.error(error)
+            message.error(error.data?.message || '登录失败！')
         })
         .finally(() => {
             loading.current = false

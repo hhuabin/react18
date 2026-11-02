@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2024-12-16 09:17:45
  * @LastEditors: bin
- * @LastEditTime: 2026-10-10 17:06:15
+ * @LastEditTime: 2026-11-02 14:54:25
  */
 /** 公共请求参数 */
 export interface PublicRequest {
@@ -19,6 +19,6 @@ export interface PublicRequest {
 export interface PublicResponse<T = null> {
     readonly code: number;
     readonly message: string;
-    /** 需要和后端统一，数据统一放在 data 中 */
+    /** 后端返回数据（需要和后端统一，数据统一放在 data 中） */
     readonly data: T;
 }
