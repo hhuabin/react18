@@ -5,13 +5,13 @@ import type { PublicRequest, PublicResponse } from './public'
  */
 export interface LoginRequest extends PublicRequest {
     /** 用户名 */
-    readonly userName: string
+    readonly userName: string;
 
     /** 登录密码 */
-    readonly password: string
+    readonly password: string;
 
     /** 是否记住登录状态 */
-    readonly rememberMe?: boolean
+    readonly rememberMe?: boolean;
 }
 
 /**

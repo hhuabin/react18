@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-08-12 14:09:57
  * @LastEditors: bin
- * @LastEditTime: 2026-08-13 11:31:19
+ * @LastEditTime: 2026-11-05 11:01:07
  */
 import { useEffect, useRef } from 'react'
 
@@ -75,8 +75,8 @@ const shouldProjectUpdate = (
     const versionChanged = latest.version !== current.version
     const buildTimeChanged = latest.buildTime !== current.buildTime
     if (strictUpdate) {
-        if (versionChanged) console.warn('[useVersionCheck] 检测到 version 变化，但 buildTime 没变')
-        if (buildTimeChanged) console.warn('[useVersionCheck] 检测到 buildTime 变化，但 version 没变')
+        if (versionChanged) console.warn('[useVersionCheck] 检测到 version 变化')
+        if (buildTimeChanged) console.warn('[useVersionCheck] 检测到 buildTime 变化')
         return versionChanged && buildTimeChanged
     }
     return versionChanged || buildTimeChanged
@@ -84,9 +84,10 @@ const shouldProjectUpdate = (
 
 /**
  * @version version.json 2
- * @description 通过构建产物中的 version.json 检测项目更新；开发环境下不启用
+ * @description 通过构建产物中的 version.json 检测项目更新；开发环境下默认不启用
  * vite.config.ts 需要在构建时生成包含 version 和 buildTime 的 version.json
  * 优点：比 useVersionUpdate 规范；缺点：配置较多，需要注入全局变量__APP_VERSION__和__BUILD_TIME__，也生成 version.json 文件在前端服务器
+ * PS：开发环境下，没有 version.json，拿到的是 index.html 会报错
  *
  * @param { string } projectLink 项目部署于域名下的路径，默认为域名根路径/
  *  历史路由可以使用 import.meta.env.BASE_URL
@@ -122,6 +123,10 @@ export default function useVersionCheck(projectLink = '/', intervalRefresh = fal
     }, [])
 
     const initialize = () => {
+        if (!projectLink.endsWith('/')) {
+            console.warn(`[useVersionCheck] projectLink 应以 / 结尾，当前值为 “${projectLink}”`)
+        }
+
         if (!currentVersionInfo.current.version || !currentVersionInfo.current.buildTime) {
             console.warn('[useVersionCheck] 未找到构建版本信息， 请检查 vite.config.ts 构建信息')
             return

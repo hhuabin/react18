@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2025-12-01 16:09:10
  * @LastEditors: bin
- * @LastEditTime: 2026-01-13 09:20:57
+ * @LastEditTime: 2026-11-05 14:51:28
  */
 
 // 需要被转义的字符组成的对象 &<>"'`=/
@@ -24,6 +24,7 @@ const safeEscapeChar: Record<string, string> = {
  * @description 安全 HTML 字符串过滤，转义 & 但过滤特殊 &** 字符    use this
  * @param { string } str 待过滤的字符串
  * @returns { string } 过滤后的字符串
+ *
  * @example const str = safeEscapeHTML(str.trim())
  */
 export const safeEscapeHTML = (str: string): string => {
@@ -62,6 +63,7 @@ const escapeChar: Record<string, string> = {
  * @description HTML 字符串过滤，不转义 &
  * @param { string } str 待过滤的字符串
  * @returns { string } 过滤后的字符串
+ *
  * @example @example const str = escapeHTML(str.trim())
  */
 export const escapeHTML = (str: string): string => str.replace(/[<>"'`=/]/g, char => (escapeChar[char] || char))

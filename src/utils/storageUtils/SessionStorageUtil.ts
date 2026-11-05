@@ -35,6 +35,7 @@ export default class SessionStorageUtil {
      * @param { any } defaultValue 默认返回值，默认为null
      * @param { boolean } prefixFlag 是否添加公共前缀，默认为 true
      * @returns { T | null } 本地缓存的值或 defaultValue 默认返回值
+     *
      * @example SessionStorageUtil.getItem<User>('', '')
      */
     public static getItem: {

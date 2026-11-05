@@ -1,3 +1,6 @@
+import { existsSync, rmSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+
 import { defineConfig, type ConfigEnv } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { visualizer } from 'rollup-plugin-visualizer'
@@ -6,6 +9,7 @@ import { version } from './package.json'
 
 // 历史路由前缀，默认为 ''
 const BASE_ROUTE_PATH = '/react18'
+const OUT_DIR = 'dist' + BASE_ROUTE_PATH
 const buildTimeStamp = Date.now()
 
 // https://vitejs.dev/config/
@@ -38,6 +42,25 @@ export default defineConfig((env: ConfigEnv) => ({
                 })
             },
         },
+        {
+            /**
+             * @description 排除打包 public 目录下的部分文件
+             * public 目录会被原样拷贝到产物中，但 mockServiceWorker.js 只在开发环境
+             * 由 msw 的 Service Worker 使用（见 src/main.tsx 的 enableMocking），
+             * 生产包不需要它，构建完成后删掉，避免发布一个无用的静态文件
+             */
+            name: 'remove-msw-worker',
+            apply: 'build',                        // 仅构建时生效，vite dev 不受影响
+            closeBundle() {
+                // 只在 development（如 --mode development 联调包）时保留
+                if (env.mode === 'development') return
+
+                const file = fileURLToPath(new URL(`./${OUT_DIR}/mockServiceWorker.js`, import.meta.url))
+                if (existsSync(file)) {
+                    rmSync(file)
+                }
+            },
+        },
     ],
     resolve: {
         alias: { '@': new URL('./src', import.meta.url).pathname },
@@ -52,7 +75,7 @@ export default defineConfig((env: ConfigEnv) => ({
         },
     },
     build: {
-        outDir: 'dist' + BASE_ROUTE_PATH,
+        outDir: OUT_DIR,
         /**
          * 在静态资源目录添加版本号
          * 1. 存下历史包，解决因为浏览器缓存了历史资源造成的**白屏问题**

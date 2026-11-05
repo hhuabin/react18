@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2024-12-10 16:04:08
  * @LastEditors: bin
- * @LastEditTime: 2026-08-28 16:20:34
+ * @LastEditTime: 2026-11-05 10:47:11
  */
 import { useEffect, useRef } from 'react'
 
@@ -73,8 +73,8 @@ const shouldProjectUpdate = (
     const versionChanged = latest.version !== current.version
     const buildTimeChanged = latest.buildTime !== current.buildTime
     if (strictUpdate) {
-        if (versionChanged) console.warn('[useVersionUpdate] 检测到 version 变化，但 buildTime 没变')
-        if (buildTimeChanged) console.warn('[useVersionUpdate] 检测到 buildTime 变化，但 version 没变')
+        if (versionChanged) console.warn('[useVersionUpdate] 检测到 version 变化')
+        if (buildTimeChanged) console.warn('[useVersionUpdate] 检测到 buildTime 变化')
         return versionChanged && buildTimeChanged
     }
     return versionChanged || buildTimeChanged
@@ -82,7 +82,7 @@ const shouldProjectUpdate = (
 
 /**
  * @version index.html 1
- * @description 通过 index.html 中的 version 和 timestamp meta 标签检测项目更新；开发环境下不启用
+ * @description 通过 index.html 中的 version 和 timestamp meta 标签检测项目更新；开发环境下默认不启用
  * vite.config.ts 需要在构建时向两个 meta 标签分别注入版本号和构建时间
  * 优点：比 useVersionCheck 配置少，无需生成 version.json 文件；缺点：不够规范
  *
@@ -123,6 +123,10 @@ export default function useVersionUpdate(projectLink = '/', intervalRefresh = fa
         } catch (error) {
             console.warn(error)
             return
+        }
+
+        if (!projectLink.endsWith('/')) {
+            console.warn(`[useVersionCheck] projectLink 应以 / 结尾，当前值为 “${projectLink}”`)
         }
 
         // 首次更新

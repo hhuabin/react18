@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-08-20 10:07:10
  * @LastEditors: bin
- * @LastEditTime: 2026-08-25 10:46:35
+ * @LastEditTime: 2026-11-05 14:49:45
  */
 /**
  * 1.历史路由带参数：https://example.com?a=1
@@ -16,8 +16,7 @@
  * 参数可以写成 `name` 或 `name=value` 的形式。对名称进行解码后，既可以删除普通名称，
  * 也可以删除经过 URL 编码的名称。百分号编码格式错误时保留原始名称，避免 URL 清理操作直接失败
  *
- * @example
- * getParamName('hello%20world=value') === 'hello world'
+ * @example getParamName('hello%20world=value') === 'hello world'
  */
 const getParamName = (param: string): string => {
     const rawName = param.split('=', 1)[0]
@@ -35,8 +34,7 @@ const getParamName = (param: string): string => {
 /**
  * @description 从 URL 的 # 隔开部分删除匹配的参数
  *
- * @example
- * removeParamsFromPart('/list?code=111&page=1', ['code']) === '/list?page=1'
+ * @example removeParamsFromPart('/list?code=111&page=1', ['code']) === '/list?page=1'
  */
 const removeParamsFromPart = (part: string, names: readonly string[]): string => {
     const queryIndex = part.indexOf('?')
@@ -64,7 +62,6 @@ const removeParamsFromPart = (part: string, names: readonly string[]): string =>
 
 /**
  * @description 从 URL 查询字符串和 hash 查询字符串中删除一个或多个指定参数。
- *
  * @param url 待处理的 URL。
  * @param paramNames 要删除的参数名称或名称数组。
  * @returns 删除指定参数后的 URL。
@@ -98,13 +95,15 @@ export const removeUrlParams = (
         .join('#')
 }
 
-/* const removeTokenFromUrl = () => {
-    const currentUrl = window.location.href
-    const url = removeUrlParams(currentUrl, ['token'])
+/*********************   举例   *********************
+    const removeTokenFromUrl = () => {
+        const currentUrl = window.location.href
+        const url = removeUrlParams(currentUrl, ['token'])
 
-    if (url === currentUrl) return
+        if (url === currentUrl) return
 
-    window.history.replaceState(window.history.state, '', url)
+        window.history.replaceState(window.history.state, '', url)
 
-    // 保险一点，这里路由还需要做一次 replace
-} */
+        // 保险一点，这里路由还需要做一次 replace
+    }
+ ****************************************************/

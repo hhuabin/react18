@@ -61,11 +61,11 @@ safeCallMy: (callback: (my: MyApi) => void) => void;
             // 组件被卸载，不用继续执行逻辑
             if (!alive) return
 
-            const { my } = window as AlipayWindow
-            if (!my) return
+            const { my: myInstance } = window as AlipayWindow
+            if (!myInstance) return
 
-            setMy(my)
-            my.getEnv(({ miniprogram }) => {
+            setMy(myInstance)
+            myInstance.getEnv(({ miniprogram }) => {
                 if (!alive) return
 
                 setIsAlipayMiniProgram(miniprogram)

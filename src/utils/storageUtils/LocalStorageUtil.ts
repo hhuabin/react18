@@ -18,6 +18,7 @@ export default class LocalStorageUtil {
      * @param { any } value 需要存储的值，此处不需要调用stringify序列化对象
      * @param { boolean } prefixFlag 是否添加公共前缀，默认为 true
      * @param { boolean } encrypt 是否需要对存储的 json 进行加密处理，默认为 false
+     *
      * @example localStorageUtil.setItem('user_info', '', true, false)
      */
     public static setItem = (key: string, value: any, prefixFlag = true, encrypt = false) => {
@@ -42,6 +43,7 @@ export default class LocalStorageUtil {
      * @param { boolean } prefixFlag 是否添加公共前缀，默认为 true
      * @param { boolean } prefixFlag 是否需要对存储的 json 进行解密处理，默认为 false
      * @returns { T | null } 本地缓存的值或 defaultValue 默认返回值
+     *
      * @example localStorageUtil.getItem<User>('', '')
      */
     public static getItem: {

@@ -7,6 +7,7 @@ export default class CookieUtil {
      * @description 获取单个 cookie
      * @param { string } name cookie 名称
      * @returns { string | null }
+     *
      * @example CookieUtil.get('name')
      */
     public static get = (name: string): string | null => {
@@ -96,6 +97,7 @@ export default class CookieUtil {
      * @param { string } params.path 路径，默认当前页
      * @param { string } params.domain 域
      * @param { boolean } params.secure 安全标志
+     *
      * @example CookieUtil.unset({ name: 'name', path: '/', domain: 'localhost', secure: false })
      */
     public static unset = (params: { name: string, path?: string, domain?: string, secure?: boolean }) => {

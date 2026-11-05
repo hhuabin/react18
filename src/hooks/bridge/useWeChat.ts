@@ -2,7 +2,7 @@
  * @Author: bin
  * @Date: 2026-04-17 15:20:02
  * @LastEditors: bin
- * @LastEditTime: 2026-08-10 17:08:53
+ * @LastEditTime: 2026-11-05 11:42:42
  */
 import { useEffect, useMemo } from 'react'
 
@@ -84,36 +84,36 @@ export default function useWxChat(options?: UseWxChatOptions): {
             // 组件被卸载，不用继续执行逻辑
             if (!alive) return
 
-            const wx = (window as WxWindow).wx || (window as WxWindow).jWeixin
-            if (!wx) throw new Error('wx is undefined')
+            const wxInstance = (window as WxWindow).wx || (window as WxWindow).jWeixin
+            if (!wxInstance) throw new Error('wx is undefined')
 
-            setWx(wx)
+            setWx(wxInstance)
 
             // 场景 1：只用 miniProgram（不需要 config）
             if (mode === 'miniProgram') {
                 setReady(true)
-                onReady?.(wx)
+                onReady?.(wxInstance)
                 return
             }
 
             // 场景 2：必须 config
             if (mode === 'config' && config) {
                 // 👉 注册 error（必须有）
-                wx.error((error) => {
+                wxInstance.error((error) => {
                     if (!alive) return
                     console.error('wx.config error:', error?.errMsg)
                     onError?.(error)
                 })
                 // 👉 config（使用外部传入）
-                wx.config({
+                wxInstance.config({
                     debug: debug ?? false,
                     ...config,
                 })
-                wx.ready(() => {
+                wxInstance.ready(() => {
                     if (!alive) return
 
                     setReady(true)
-                    onReady?.(wx)
+                    onReady?.(wxInstance)
                 })
             }
         })
