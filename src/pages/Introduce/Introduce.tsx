@@ -48,6 +48,10 @@ const routeList = [
         path: '/svgicon',
     },
     {
+        label: '浏览器定位',
+        path: '/geolocation',
+    },
+    {
         label: 'Developing',
         path: '/developing',
     },

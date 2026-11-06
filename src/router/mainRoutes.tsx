@@ -152,6 +152,16 @@ export const routes: RouteConfig[] = [
                         },
                     },
                     {
+                        path: 'geolocation',
+                        lazy: async () => {
+                            const { default: Geolocation } = await import('@/pages/Geolocation/Geolocation')
+                            return { Component: Geolocation }
+                        },
+                        handle: {
+                            title: 'geolocation',
+                        },
+                    },
+                    {
                         path: 'developing',
                         lazy: async () => {
                             const { default: Developing } = await import('@/pages/Developing/Developing')
