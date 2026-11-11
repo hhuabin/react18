@@ -23,7 +23,7 @@ const Request: React.FC = () => {
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.message)
+            message.error(err.data?.message || '未知错误')
         })
     }
 
@@ -33,7 +33,8 @@ const Request: React.FC = () => {
         }).then((res) => {
             console.log(res)
         }).catch((err) => {
-            message.error(err.data?.message)
+            console.log(err)
+            message.error(err?.message || '未知错误')
         })
     }
 

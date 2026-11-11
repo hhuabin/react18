@@ -2,8 +2,23 @@
  * @Author: bin
  * @Date: 2025-06-04 11:01:56
  * @LastEditors: bin
- * @LastEditTime: 2025-11-14 10:52:54
+ * @LastEditTime: 2026-11-11 15:03:28
  */
+import message from '@/components/Message'
+
+import authStore from '@/store/slice/auth.store'
+import HTTP_STATUS_CODES from './httpStatusCodes'
+
+export interface HttpError {
+    status: number;
+    statusText: string;
+    url: string;
+    message: string;      // HTTP 错误码文字描述
+    data?: unknown;       // 解析成功时的 JSON
+    /** fetch 错误原始对象 */
+    cause?: Response;     // 保留原始对象，方便调试
+}
+
 export default class MobileFetchRequest {
 
     private baseURL = import.meta.env.VITE_API_BASE_URL
@@ -19,6 +34,22 @@ export default class MobileFetchRequest {
 
     // eslint-disable-next-line
     public sendRequest = <T = any>(url: string, data: any = {}, options?: RequestInit): Promise<T> => {
+        const body = data ? JSON.stringify({
+            ...data,
+        }) : undefined
+
+        if (!url.startsWith('http')) {
+            url = this.baseURL + url
+        }
+
+        const headers: HeadersInit = {
+            'Content-Type': 'application/json',
+        }
+        const { token } = authStore.getAuthState().userInfo
+        if (token) {
+            headers.Authorization = `Bearer ${token}`
+        }
+
         /**
          * 是否取消上次请求，适合用在请求数据接口，不适合在提交数据接口使用，以避免重复提交
          * 只有携带了 cancelLastRequest 参数的请求才允许被取消，避免取消必要的请求
@@ -30,33 +61,56 @@ export default class MobileFetchRequest {
             this.updateController()
         }
 
-        const body = data ? JSON.stringify({
-            ...data,
-        }) : undefined
-
-        if (!url.startsWith('http')) {
-            url = this.baseURL + url
+        // 处理 loading 逻辑
+        let closeLoadingMessage = () => {}
+        let timerId: ReturnType<typeof setTimeout>
+        if (data.showLoading) {
+            delete data.showLoading
+            timerId = setTimeout(() => {
+                closeLoadingMessage = message.loading('loading...', 0)
+            }, 1000)
         }
 
         return fetch(url, {
             signal: this.controller.signal,
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers,
             ...options,
             body,
         })
-        .then((response: Response) => {
-            if (!response.ok) return Promise.reject(response)
+        .then(async (response: Response) => {
+            if (!response.ok) {
+                const error: HttpError = {
+                    status: response.status,
+                    statusText: response.statusText,
+                    url: response.url,
+                    cause: response,
+                    message: HTTP_STATUS_CODES[response.status] || '请求错误，请稍后再试',
+                }
+
+                try {
+                    const text = await response.text()
+                    const data = JSON.parse(text)
+                    error.data = data
+                } catch { /* 不是 JSON，保留原始 text 即可 */ }
+
+                return Promise.reject(error)
+            }
+
+            // 状态码为 200～299
             return response.json()
         })
         .then(data => {
             if (data.code === 0) {
+                clearTimeout(timerId)
+                closeLoadingMessage()
                 return data
             }
             return Promise.reject(data)
         })
         .catch(error => {
+            clearTimeout(timerId)
+            closeLoadingMessage()
+
             if (error.name === 'AbortError') {
                 console.log('请求被取消')
                 /**
